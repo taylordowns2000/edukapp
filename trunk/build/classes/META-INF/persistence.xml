@@ -28,6 +28,11 @@
     		<property name="openjpa.ConnectionURL"      	value="jdbc:mysql://localhost/edukapptests"/>
     		<property name="openjpa.ConnectionUserName"     value="edukapptests"/>
     		<property name="openjpa.ConnectionPassword" 	value="edukapptests"/>   
+			
+			<!-- mysql specific properties -->
+			<property name="openjpa.ConnectionFactoryProperties" value="autoReconnect=true,roundRobinLoadBalance=true"/>
+			<property name="TableType" 	value="innodb"/>   
+			
 			<!--
             <property name="openjpa.DataCache"                value="true"/> 		
             <property name="openjpa.RemoteCommitProvider"     value="sjvm"/>

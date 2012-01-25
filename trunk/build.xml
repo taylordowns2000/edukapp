@@ -49,9 +49,29 @@
         <echo message="openJPA enhance end"/>
         
         <!-- copy persistence.xml to build dir-->
-        <copy includeemptydirs="false" todir="${classes.dir}">
-            <fileset dir="src/META-INF" excludes="**/*.launch, **/*.java"/>
+        <echo message="copy persistnece.xml"/>
+        <copy file="${src.dir}/META-INF/persistence.xml"
+         todir="${classes.dir}/META-INF/"
+         overwrite="true">
+            <!--
+            <filterset>
+            <filter token="@database.connection.url@" value="${database.connection.url}"/>
+            <filter token="@database.connection.username@" value="${database.connection.username}"/>
+            <filter token="@database.connection.password@" value="${database.connection.password}"/>
+            </filterset>
+            -->
+            <filterset begintoken="@" endtoken="@">
+                <filtersfile file="build.properties"/>
+            </filterset>
         </copy>
+        <echo message="copy persistnece.xml end"/>
+        
+        <!-- copy everything to tomcat dir
+        <copy includeemptydirs="false" todir="${classes.dir}">
+        <fileset dir="src/META-INF" excludes="**/*.launch, **/*.java"/>
+        </copy>
+        -->
+        
         
     </target>
     
@@ -114,7 +134,7 @@
     </target>
     
     <target name="clean-deploy" depends="clean-tomcat,deploy-webapp">
-    </target>    
+    </target>
     
     <!--
     <target name="tomcat-start">
@@ -148,9 +168,9 @@
             <arg value="${tomcat.home}/bin/shutdown.bat"/>
         </exec>
     </target>
-	
-	<target name="dev-cycle" depends="tomcat-stop,clean-tomcat,deploy-webapp,tomcat-start">
-	</target>
+    
+    <target name="dev-cycle" depends="tomcat-stop,clean-tomcat,deploy-webapp,tomcat-start">
+    </target>
     
     <target name="junit" depends="jar">
         <mkdir dir="${report.dir}"/>
@@ -179,12 +199,12 @@
     <target name="clean-build" depends="clean,jar"/>
     
     <target name="main" depends="clean,run"/>
-	
-	<target name="mail-commit-complete">
-		<mail from="anastluc@gmail.com"
-		      tolist="anastluc@gmail.com"
-		      subject="new commit to code repo"
-		      message=""/>
-	</target>
+    
+    <target name="mail-commit-complete">
+        <mail from="anastluc@gmail.com"
+         tolist="anastluc@gmail.com"
+         subject="new commit to code repo"
+         message=""/>
+    </target>
     
 </project>

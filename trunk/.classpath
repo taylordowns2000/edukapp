@@ -4,5 +4,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/openjpa-all-2.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.17-bin.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openJPA">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
+			<attribute name="owner.project.facets" value="jpt.jpa"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.23/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
