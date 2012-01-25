@@ -1,1 +1,23 @@
 edukapp widget store
+(http://code.google.com/p/edukapp)
+-----
+
+Assumptions: 
+1. 	there is a wookie (http://incubator.apache.org/wookie/)
+2. 	and shindig (http://shindig.apache.org/) service running in parallel
+	need to declare their locations in build.properties
+	in future integrate distribution war files and deploy all three components together through the ant script 	
+
+3. 	application server: for now app is developed and tested in tomcat v.7
+	in future offer support for other popular application servers (jboss,glassfish,..)
+
+4. 	JPA: we use openJPA (http://openjpa.apache.org/) implementation of jpa
+	support hibernate,eclipselink,toplink?
+	
+5. 	database: for now app is dev and tested in mysql
+	shall be trivial to port in other dbms - 
+	in future use apache torque to offer multiple db engines
+	
+	todo: include database schema(connection URL),db user and pass in build.properties
+
+
