@@ -6,7 +6,7 @@
 <title>EDUKApp : error</title>
 </head>
 <body>
-<h1>404</h1>
-not found
+<h1>401</h1>
+not authorized
 </body>
 </html>
