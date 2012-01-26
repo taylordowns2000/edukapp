@@ -133,7 +133,7 @@
         </copy>
     </target>
     
-    <target name="clean-deploy" depends="clean-tomcat,deploy-webapp">
+    <target name="clean-deploy" depends="clean,clean-tomcat,deploy-webapp">
     </target>
     
     <!--
