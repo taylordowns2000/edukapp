@@ -19,6 +19,8 @@
             /errors/404.jsp
         </location>
     </error-page>
+	
+	
 	<servlet>
 		<description>User account servlet</description>
 		<display-name>user</display-name>
@@ -31,5 +33,19 @@
 	<servlet-mapping>
 		<servlet-name>UserServlet</servlet-name>
 		<url-pattern>/user</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>Register operations servlet</description>
+		<display-name>register</display-name>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.RegisterServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
 </web-app>

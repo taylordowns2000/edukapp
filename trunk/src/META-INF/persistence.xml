@@ -6,7 +6,6 @@
 	<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 	<class>uk.ac.edukapp.model.Activity</class>
 	<class>uk.ac.edukapp.model.Comment</class>
-	<class>uk.ac.edukapp.model.OpenjpaSequenceTable</class>
 	<class>uk.ac.edukapp.model.Tag</class>
 	<class>uk.ac.edukapp.model.Test</class>
 	<class>uk.ac.edukapp.model.Type</class>
