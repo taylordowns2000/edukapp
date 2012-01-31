@@ -2,7 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="uk.ac.edukapp.util.*,javax.persistence.*,javax.persistence.EntityManager,javax.persistence.EntityManagerFactory"%>
+	import="org.apache.wookie.connector.framework.*,
+	uk.ac.edukapp.util.*,
+	java.util.*,
+	javax.persistence.*,
+	javax.persistence.EntityManager,
+	javax.persistence.EntityManagerFactory,
+	org.apache.commons.logging.Log,
+	org.apache.commons.logging.LogFactory"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,11 +21,12 @@
 <title>Edukapp</title>
 </head>
 <body>
-
 	<div id="page-wrapper">
 
-
 		<%
+		  //--------------------------------
+		  // deduce whether user is logged in
+		  //--------------------------------
 		  String isAuthenticated = (String) session.getAttribute("authenticated");
 
 		  if (isAuthenticated != null && isAuthenticated.equals("true")) {
@@ -73,18 +81,13 @@
 		<%@ include file="static/login-box.jsp"%>
 		<%
 		  }
-		%>
-
-		<%
 		  }
+		  //----------------------------------------
+		  //  end of deducing is user logged in
+		  //----------------------------------------
 		%>
-
-
 
 		<%@ include file="static/header.html"%>
-
-
-
 
 		<%
 		  isAuthenticated = (String) session.getAttribute("authenticated");
@@ -96,7 +99,44 @@
 		%>
 
 
+		<%
+		  WookieConnectorService conn = new WookieConnectorService(
+		      "http://localhost:8080/wookie/", "TEST", "myshareddata");
+
+		  HashMap<String, Widget> availableWookieWidgets = conn
+		      .getAvailableWidgets();
+		  Iterator it = availableWookieWidgets.keySet().iterator();
+		  while (it.hasNext()) {
+		    out.println(it.next() + "<br/>");
+		  }
+		  Iterator it2 = availableWookieWidgets.entrySet().iterator();
+		  while (it2.hasNext()) {
+
+		    Map.Entry pairs = (Map.Entry) it2.next();
+		    //  it2.remove(); // avoids a ConcurrentModificationException
+
+		    Widget widget = (Widget) pairs.getValue();
+		    out.print(pairs.getKey() + "<br/>");
+		    out.print(widget.getIdentifier() + "<br/>");
+		    out.print(widget.getTitle() + "<br/>");
+		    out.print(widget.getDescription() + "<br/>");
+		    out.print(widget.getIcon().toString() + "<br/>");
+		    out.print("<br/><br/><br/>");
+		  }
+		  
+		  conn.setCurrentUser(new User("lucas","lucasPass"));
+		  WidgetInstance ins = conn.getOrCreateInstance("http://www.opera.com/widgets/bubbles");
+		  
+		  
+		%>
+
 		welcome page of edukapp...
+
+
+<%
+out.println("<iframe src=\""+ins.getUrl()+"\" />");
+%>
+
 
 
 
