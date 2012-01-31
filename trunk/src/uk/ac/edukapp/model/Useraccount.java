@@ -26,6 +26,28 @@ public class Useraccount implements Serializable {
 
 	@Column(nullable=false, length=20)
 	private String username;
+	
+	@Column(nullable=false, length=256)
+  private String salt;
+	
+	@Column(nullable=false, length=256)
+  private String token;
+
+    public String getSalt() {
+    return salt;
+  }
+
+  public void setSalt(String salt) {
+    this.salt = salt;
+  }
+
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
+  }
 
     public Useraccount() {
     }

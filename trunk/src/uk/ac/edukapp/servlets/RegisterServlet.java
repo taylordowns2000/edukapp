@@ -2,6 +2,7 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -58,7 +59,7 @@ public class RegisterServlet extends HttpServlet {
     //String salt = null;
     
     
-    String hashedPassword = MD5Util.md5Hex(password);
+    
 
     EntityManagerFactory factory = Persistence
         .createEntityManagerFactory("edukapp");
@@ -70,7 +71,12 @@ public class RegisterServlet extends HttpServlet {
     Useraccount ua = new Useraccount();
     ua.setUsername(username);
     ua.setEmail(email);
+    
+    UUID token = UUID.randomUUID();    
+    String salt = token.toString();
+    String hashedPassword = MD5Util.md5Hex(password+salt);
     ua.setPassword(hashedPassword);
+    ua.setSalt(salt);
     em.persist(ua);
 
     em.getTransaction().commit();

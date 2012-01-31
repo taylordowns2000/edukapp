@@ -10,27 +10,27 @@
 <body>
 	<div id="formWrapper">
 		<h2>Registration page</h2>
-		<form method="post" action="register">
+		<form method="POST" action="register">
 			<div>
-				<label for="name">Name</label> <input id="name" name="name"
+				<label for="name">Name</label> <input autocomplete="off" id="name" name="name"
 					type="text" /> <span id="nameInfo">What's your real name?</span>
 			</div>
 			<div>
-				<label for="userID">userID</label> <input id="userID"
+				<label for="userID">userID</label> <input autocomplete="off" id="userID"
 					name="username" type="text" /> <span id="userInfo">what's
 					your desired ID ,you will need it to log in</span>
 			</div>
 			<div>
-				<label for="email">E-mail</label> <input id="email" name="email"
+				<label for="email">E-mail</label> <input autocomplete="off" id="email" name="email"
 					type="text" /> <span id="emailInfo">Valid E-mail please</span>
 			</div>
 			<div>
-				<label for="pass1">Password</label> <input id="pass1"
+				<label for="pass1">Password</label> <input autocomplete="off" id="pass1"
 					name="password" type="password" /> <span id="pass1Info">At
 					least 5 characters: letters, numbers and '_'</span>
 			</div>
 			<div>
-				<label for="pass2">Confirm Password</label> <input id="pass2"
+				<label for="pass2">Confirm Password</label> <input autocomplete="off" id="pass2"
 					name="pass2" type="password" /> <span id="pass2Info">Confirm
 					password</span>
 			</div>
