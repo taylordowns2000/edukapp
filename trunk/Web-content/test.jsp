@@ -9,36 +9,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%
 	
-	String username="anastluc";
-	String hashedPassword="7694f4a66316e53c8cdd9d9954bd611d";
-	
-	  EntityManagerFactory factory = Persistence
-        .createEntityManagerFactory("edukapp");
-    EntityManager em = factory.createEntityManager();
-    
-    Query q = em.createQuery("SELECT u "+
-        "FROM Useraccount u "+
-        "WHERE u.username=?1 AND u.password=?2");
-    
-    q.setParameter(1,username);
-    q.setParameter(2,hashedPassword);
-    
-    List<Useraccount> result =q.getResultList();
-	
-	if (result.size()>0) out.print("found a result!");
-	else out.print("found nada");
-	
-		Iterator<Useraccount> it = result.iterator();
-while (it.hasNext()){
-  Useraccount u = it.next();
-  out.println("found:"+u.getEmail()+" "+u.getUsername()+" "+u.getPassword());
-}
-		
-	  em.close();
-	  factory.close();
+	<%	
+	out.println("<iframe width='400' height='500' src='http://widgets.open.ac.uk:8080/gadgets/ifr?url=http://role-project.svn.sourceforge.net/viewvc/role-project/trunk/gadgets/science/math/graph.xml' />");
 	%>
+	
 	xairetai!!!
 </body>
 </html>

@@ -42,58 +42,14 @@
 
 		<%@ include file="static/header.html"%>
 
-		<%
-		  if (isAuthenticated) {
-		    Useraccount loggedinUser = (Useraccount) session
-		        .getAttribute("logged-in-user");
-		    out.println("user mail:" + loggedinUser.getEmail());
-		  }
-		%>
 
 
-		<%
-		  WookieConnectorService conn = new WookieConnectorService(
-		      "http://localhost:8080/wookie/", "TEST", "myshareddata");
+		
 
-		  HashMap<String, Widget> availableWookieWidgets = conn
-		      .getAvailableWidgets();
-		  Iterator it = availableWookieWidgets.keySet().iterator();
-		  while (it.hasNext()) {
-		    out.println(it.next() + "<br/>");
-		  }
-		  Iterator it2 = availableWookieWidgets.entrySet().iterator();
-		  while (it2.hasNext()) {
-
-		    Map.Entry pairs = (Map.Entry) it2.next();
-		    //  it2.remove(); // avoids a ConcurrentModificationException
-
-		    Widget widget = (Widget) pairs.getValue();
-		    out.print(pairs.getKey() + "<br/>");
-		    out.print(widget.getIdentifier() + "<br/>");
-		    out.print(widget.getTitle() + "<br/>");
-		    out.print(widget.getDescription() + "<br/>");
-		    out.print(widget.getIcon().toString() + "<br/>");
-		    out.print("<br/><br/><br/>");
-		  }
-
-		  conn.setCurrentUser(new User("lucas", "lucasPass"));
-		  WidgetInstance ins = conn
-		      .getOrCreateInstance("http://www.opera.com/widgets/bubbles");
-		%>
-
-		welcome page of edukapp...
-
-
-		<%
-		  out.println("<iframe src=\"" + ins.getUrl() + "\" />");
-		%>
+		template
 
 
 
-
-		<%
-		  //String s= (String)session.getAttribute("a");
-		%>
 
 		<%@ include file="static/footer.html"%>
 
