@@ -6,9 +6,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
 <link rel="stylesheet" href="css/header.css" type="text/css" />
-<link rel="stylesheet" href="css/template.css" type="text/css" />
+<link rel="stylesheet" href="css/main.css" type="text/css" />
 <link rel="stylesheet" href="css/footer.css" type="text/css" />
 <title>EDUKApp</title>
 </head>
@@ -37,20 +38,10 @@
 
 		<div id="main-content-wrapper">
 			<%@ include file="static/sidebar.jsp"%>
-			<div id="main">
-			
-			template content goes here
-			
-			</div>
+
+			<div id="main">template</div>
 		</div>
 
-
-
-
-
-
-
-		template
 
 
 
