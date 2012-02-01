@@ -58,9 +58,6 @@ public class RegisterServlet extends HttpServlet {
     //need to store it in db -> need to alter table/entity
     //String salt = null;
     
-    
-    
-
     EntityManagerFactory factory = Persistence
         .createEntityManagerFactory("edukapp");
     EntityManager em = factory.createEntityManager();
