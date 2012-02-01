@@ -4,6 +4,8 @@
 	import="org.apache.wookie.connector.framework.*,
 	uk.ac.edukapp.util.*,
 	uk.ac.edukapp.model.Useraccount,
+	uk.ac.edukapp.model.Widgetprofile,
+	uk.ac.edukapp.renderer.Renderer,
 	java.util.*,
 	javax.persistence.*,
 	javax.persistence.EntityManager,
@@ -42,13 +44,28 @@
 
 		<%@ include file="static/header.html"%>
 
+<%
+String widget_id = request.getParameter("widget_id");
 
+EntityManager em = emf.createEntityManager();
+//em.getTransaction().begin();
 
-		
+Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
+        + "WHERE u.id=?1");
 
-		template
+    q.setParameter(1, Integer.parseInt(widget_id));
 
+    Widgetprofile wid = null;
+    try {
+      wid = (Widgetprofile) q.getSingleResult();
+    }catch (javax.persistence.NoResultException e){
+      //no results
+    }
+    if (wid!=null) {
+    	out.print(Renderer.render(em, wid));
+    }
 
+%>
 
 
 		<%@ include file="static/footer.html"%>

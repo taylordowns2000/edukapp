@@ -1,142 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="edukapp" basedir="." default="main">
-    <!--
+	<!--
     *****     Properties    *****
     -->
-    <property name="src.dir" value="src"/>
-    <property name="build.dir" value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir" value="${build.dir}/jar"/>
-    <property name="main-class" value="uk.ac.edukapp.First"/>
-    <property name="test-class" value="uk.ac.edukapp.roughtests.Test"/>
-    <property name="lib.dir" value="lib"/>
-    <property name="report.dir" value="${build.dir}/junitreport"/>
-    <property name="webcontent.dir" value="Web-content"/>
-    
-    <property file="build.properties"/>
-    
-    <property name="servletEngine.webapp.dir" value="${tomcat.home}/webapps/"/>
-    
-    
-    
-    <path id="classpath">
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    </path>
-    
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-    
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
-        <copy todir="${classes.dir}">
-            <fileset dir="${src.dir}" excludes="**/*.java"/>
-        </copy>
-        
-        <!-- openJPA requires recompilation using enhancer-->
-        <echo message="openJPA enhance start"/>
-        <path id="openjpa.path.id">
-            <pathelement location="${classes.dir}"/>
-            <fileset dir="${lib.dir}" includes="*.jar"/>
-        </path>
-        <taskdef name="openjpac" classname="org.apache.openjpa.ant.PCEnhancerTask">
-            <classpath refid="openjpa.path.id"/>
-        </taskdef>
-        <openjpac>
-            <classpath refid="openjpa.path.id"/>
-        </openjpac>
-        <echo message="openJPA enhance end"/>
-        
-        <!-- copy persistence.xml to build dir-->
-        <echo message="copy persistnece.xml"/>
-        <copy file="${src.dir}/META-INF/persistence.xml"
-         todir="${classes.dir}/META-INF/"
-         overwrite="true">
-            <!--
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="main-class" value="uk.ac.edukapp.First" />
+	<property name="test-class" value="uk.ac.edukapp.roughtests.Test" />
+	<property name="lib.dir" value="lib" />
+	<property name="report.dir" value="${build.dir}/junitreport" />
+	<property name="webcontent.dir" value="Web-content" />
+
+	<property file="build.properties" />
+
+	<property name="servletEngine.webapp.dir" value="${tomcat.home}/webapps/" />
+
+
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" />
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java" />
+		</copy>
+
+		<!-- openJPA requires recompilation using enhancer-->
+		<echo message="openJPA enhance start" />
+		<path id="openjpa.path.id">
+			<pathelement location="${classes.dir}" />
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</path>
+		<taskdef name="openjpac" classname="org.apache.openjpa.ant.PCEnhancerTask">
+			<classpath refid="openjpa.path.id" />
+		</taskdef>
+		<openjpac>
+			<classpath refid="openjpa.path.id" />
+		</openjpac>
+		<echo message="openJPA enhance end" />
+
+		<!-- copy persistence.xml to build dir-->
+		<echo message="copy persistnece.xml" />
+		<copy file="${src.dir}/META-INF/persistence.xml" todir="${classes.dir}/META-INF/" overwrite="true">
+			<!--
             <filterset>
             <filter token="@database.connection.url@" value="${database.connection.url}"/>
             <filter token="@database.connection.username@" value="${database.connection.username}"/>
             <filter token="@database.connection.password@" value="${database.connection.password}"/>
             </filterset>
             -->
-            <filterset begintoken="@" endtoken="@">
-                <filtersfile file="build.properties"/>
-            </filterset>
-        </copy>
-        <echo message="copy persistnece.xml end"/>
-        
-        <!-- copy everything to tomcat dir
+			<filterset begintoken="@" endtoken="@">
+				<filtersfile file="build.properties" />
+			</filterset>
+		</copy>
+		<echo message="copy persistnece.xml end" />
+
+		<!-- copy everything to tomcat dir
         <copy includeemptydirs="false" todir="${classes.dir}">
         <fileset dir="src/META-INF" excludes="**/*.launch, **/*.java"/>
         </copy>
         -->
-        
-        
-    </target>
-    
-    <target name="jar" depends="compile">
-        <mkdir dir="${jar.dir}"/>
-        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
-            </manifest>
-        </jar>
-    </target>
-    
-    <target name="post-compile" depends="compile"/>
-    
-    <target name="run" depends="jar">
-        <java fork="true" classname="${main-class}">
-            <classpath>
-                <path refid="classpath"/>
-                <path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
-            </classpath>
-        </java>
-    </target>
-    
-    <target name="rough-test" depends="compile">
-        <jar destfile="${jar.dir}/test.jar" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${test-class}"/>
-            </manifest>
-        </jar>
-        <java fork="true" classname="${test-class}">
-            <classpath>
-                <path refid="classpath"/>
-                <path id="application" location="${jar.dir}/test.jar"/>
-            </classpath>
-        </java>
-    </target>
-    
-    <target name="rough-test-run" depends="rough-test">
-    </target>
-    
-    <target name="clean-tomcat">
-        <echo message="Deleting tomcat dir"/>
-        <delete dir="${servletEngine.webapp.dir}/edukapp"/>
-    </target>
-    
-    <target name="deploy-webapp" depends="compile">
-        <echo message="Deploying in tomcat"/>
-        <!-- copy webcontents-->
-        <copy todir="${servletEngine.webapp.dir}/edukapp">
-            <fileset dir="${webcontent.dir}"/>
-        </copy>
-        <!-- copy compiled classes-->
-        <copy todir="${servletEngine.webapp.dir}/edukapp/WEB-INF/classes">
-            <fileset dir="${classes.dir}"/>
-        </copy>
-        <!-- copy lib jars-->
-        <copy todir="${servletEngine.webapp.dir}/edukapp/WEB-INF/lib">
-            <fileset dir="${lib.dir}"/>
-        </copy>
-    </target>
-    
-    <target name="clean-deploy" depends="clean,clean-tomcat,deploy-webapp">
-    </target>
-    
-    <!--
+
+
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="post-compile" depends="compile" />
+
+	<target name="run" depends="jar">
+		<java fork="true" classname="${main-class}">
+			<classpath>
+				<path refid="classpath" />
+				<path id="application" location="${jar.dir}/${ant.project.name}.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="rough-test" depends="compile">
+		<jar destfile="${jar.dir}/test.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${test-class}" />
+			</manifest>
+		</jar>
+		<java fork="true" classname="${test-class}">
+			<classpath>
+				<path refid="classpath" />
+				<path id="application" location="${jar.dir}/test.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="rough-test-run" depends="rough-test">
+	</target>
+
+	<target name="clean-tomcat">
+		<echo message="Deleting tomcat dir" />
+		<delete dir="${servletEngine.webapp.dir}/edukapp" />
+	</target>
+
+	<target name="deploy-webapp" depends="compile">
+		<echo message="Deploying in tomcat" />
+		<!-- copy webcontents-->
+		<copy todir="${servletEngine.webapp.dir}/edukapp">
+			<fileset dir="${webcontent.dir}" />
+		</copy>
+		<!-- copy compiled classes-->
+		<copy todir="${servletEngine.webapp.dir}/edukapp/WEB-INF/classes">
+			<fileset dir="${classes.dir}" />
+		</copy>
+		<!-- copy lib jars-->
+		<copy todir="${servletEngine.webapp.dir}/edukapp/WEB-INF/lib">
+			<fileset dir="${lib.dir}" />
+		</copy>
+	</target>
+
+	<target name="clean-deploy" depends="clean,clean-tomcat,deploy-webapp">
+	</target>
+
+	<!--
     <target name="tomcat-start">
     <java jar="${tomcat.home}/bin/bootstrap.jar" fork="true">
     <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
@@ -157,54 +155,62 @@
     </java>
     </target>
     -->
-    
-    <target name="tomcat-start">
-        <exec executable="cmd" os="Windows 7">
-            <arg value="${tomcat.home}/bin/startup.bat"/>
-        </exec>
-    </target>
-    <target name="tomcat-stop">
-        <exec executable="bash" os="Windows">
-            <arg value="${tomcat.home}/bin/shutdown.bat"/>
-        </exec>
-    </target>
-    
-    <target name="dev-cycle" depends="tomcat-stop,clean-tomcat,deploy-webapp,tomcat-start">
-    </target>
-    
-    <target name="junit" depends="jar">
-        <mkdir dir="${report.dir}"/>
-        <junit printsummary="yes">
-            <classpath>
-                <path refid="classpath"/>
-                <path refid="application"/>
-            </classpath>
-            
-            <formatter type="xml"/>
-            
-            <batchtest fork="yes" todir="${report.dir}">
-                <fileset dir="${src.dir}" includes="*Test.java"/>
-            </batchtest>
-        </junit>
-    </target>
-    
-    <target name="junitreport">
-        <mkdir dir="${report.dir}"/>
-        <junitreport todir="${report.dir}">
-            <fileset dir="${report.dir}" includes="TEST-*.xml"/>
-            <report todir="${report.dir}"/>
-        </junitreport>
-    </target>
-    
-    <target name="clean-build" depends="clean,jar"/>
-    
-    <target name="main" depends="clean,run"/>
-    
-    <target name="mail-commit-complete">
-        <mail from="anastluc@gmail.com"
-         tolist="anastluc@gmail.com"
-         subject="new commit to code repo"
-         message=""/>
-    </target>
-    
+
+	<target name="tomcat-start">
+		<exec executable="cmd" os="Windows 7">
+			<arg value="${tomcat.home}/bin/startup.bat" />
+		</exec>
+	</target>
+	<target name="tomcat-stop">
+		<exec executable="bash" os="Windows">
+			<arg value="${tomcat.home}/bin/shutdown.bat" />
+		</exec>
+	</target>
+
+	<target name="dev-cycle" depends="tomcat-stop,clean-tomcat,deploy-webapp,tomcat-start">
+	</target>
+
+	<target name="junit" depends="jar">
+		<mkdir dir="${report.dir}" />
+		<junit printsummary="yes">
+			<classpath>
+				<path refid="classpath" />
+				<path refid="application" />
+			</classpath>
+
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${report.dir}">
+				<fileset dir="${src.dir}" includes="*Test.java" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="junitreport">
+		<mkdir dir="${report.dir}" />
+		<junitreport todir="${report.dir}">
+			<fileset dir="${report.dir}" includes="TEST-*.xml" />
+			<report todir="${report.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="clean-build" depends="clean,jar" />
+
+	<target name="main" depends="clean,run" />
+
+	<target name="mail-commit-complete">
+		<mail from="anastluc@gmail.com" tolist="anastluc@gmail.com" subject="new commit to code repo" message="" />
+	</target>
+
+
+	<target name="from-build-to-source" description="Copy static content (jsp,html,css,js) from tomcat to source dir">
+		<echo message="copying from tomcat ${servletEngine.webapp.dir}edukapp back to project folder ${webcontent.dir}" />
+		<!-- copy webcontents-->
+		<copy todir="C:/Users/lucas/workspace/edukapp/Web-content" overwrite="true">
+			<fileset dir="C:/apache-tomcat-7.0.25/webapps/edukapp">
+				<include name="**/*.html,**/*.jsp,**/*.css,**/*.png,**/*.js" />
+			</fileset>
+		</copy>
+	</target>
+
 </project>
