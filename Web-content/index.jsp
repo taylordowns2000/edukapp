@@ -9,7 +9,8 @@
 	javax.persistence.EntityManager,
 	javax.persistence.EntityManagerFactory,
 	org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory"%>
+	org.apache.commons.logging.LogFactory"
+	%>
 <!DOCTYPE html>
 <html>
 <head>
