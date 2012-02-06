@@ -15,6 +15,7 @@
 	<class>uk.ac.edukapp.model.Widgetprofile</class>
 	
 	<class>uk.ac.edukapp.roughtests.Person</class>
+	<class>uk.ac.edukapp.model.Accountinfo</class>
 	
 		<!--
 		<class>put your classes here</class>
