@@ -13,8 +13,6 @@
 	<class>uk.ac.edukapp.model.Useractivity</class>
 	<class>uk.ac.edukapp.model.Userreview</class>
 	<class>uk.ac.edukapp.model.Widgetprofile</class>
-	
-	<class>uk.ac.edukapp.roughtests.Person</class>
 	<class>uk.ac.edukapp.model.Accountinfo</class>
 	
 		<!--
