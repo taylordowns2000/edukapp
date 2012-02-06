@@ -31,10 +31,10 @@ public class TestJPA {
     /*-----------*/
     em.getTransaction().begin();
     
-    Person p = new Person();
-    p.setName("Lucas");
-    p.setSalary(100.09f);
-    em.persist(p);    
+//    Person p = new Person();
+//    p.setName("Lucas");
+//    p.setSalary(100.09f);
+//    em.persist(p);    
     
     em.getTransaction().commit();
     /*----------*/

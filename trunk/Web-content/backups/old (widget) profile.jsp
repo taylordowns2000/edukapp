@@ -3,7 +3,10 @@
 <%@ page
 	import="org.apache.wookie.connector.framework.*,
 	uk.ac.edukapp.util.*,
-	uk.ac.edukapp.model.Useraccount,java.util.*,
+	uk.ac.edukapp.model.Useraccount,
+	uk.ac.edukapp.model.Widgetprofile,
+	uk.ac.edukapp.renderer.Renderer,
+	java.util.*,
 	javax.persistence.*,
 	javax.persistence.EntityManager,
 	javax.persistence.EntityManagerFactory,
@@ -13,8 +16,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="css/layout.css00000000000" type="text/css" />
-<link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
 <link rel="stylesheet" href="css/header.css" type="text/css" />
 <link rel="stylesheet" href="css/main.css" type="text/css" />
@@ -25,7 +26,7 @@
 	<div id="page-wrapper">
 		<%
 		  //--------------------------------
-		  // deduce whether user is logged in
+		  // deduce whether user is logged in 
 		  //--------------------------------
 		  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
 		      .getAttribute("emf");
@@ -43,14 +44,28 @@
 
 		<%@ include file="static/header.html"%>
 
-		<div id="main-content-wrapper">
-			<%@ include file="static/sidebar.jsp"%>
+<%
+String widget_id = request.getParameter("widget_id");
 
-			<div id="main">template</div>
-		</div>
+EntityManager em = emf.createEntityManager();
+//em.getTransaction().begin();
 
+Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
+        + "WHERE u.id=?1");
 
+    q.setParameter(1, Integer.parseInt(widget_id));
 
+    Widgetprofile wid = null;
+    try {
+      wid = (Widgetprofile) q.getSingleResult();
+    }catch (javax.persistence.NoResultException e){
+      //no results
+    }
+    if (wid!=null) {
+    	out.print(Renderer.render(em, wid));
+    }
+
+%>
 
 
 		<%@ include file="static/footer.html"%>

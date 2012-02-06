@@ -2,6 +2,7 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import uk.ac.edukapp.model.Accountinfo;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.util.MD5Util;
 
@@ -48,7 +50,7 @@ public class LoginServlet extends HttpServlet {
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-        doPost(request,response);
+    doPost(request, response);
   }
 
   /**
@@ -57,7 +59,7 @@ public class LoginServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-   
+
     // get parameters
     String username = null;
     String password = null;
@@ -66,7 +68,6 @@ public class LoginServlet extends HttpServlet {
     username = request.getParameter("username");
     password = request.getParameter("password");
     remember = request.getParameter("remember");
-  
 
     EntityManagerFactory factory = (EntityManagerFactory) getServletContext()
         .getAttribute("emf");
@@ -82,8 +83,8 @@ public class LoginServlet extends HttpServlet {
     Useraccount ua = null;
     try {
       ua = (Useraccount) q.getSingleResult();
-    }catch (javax.persistence.NoResultException e){
-      //no results
+    } catch (javax.persistence.NoResultException e) {
+      // no results
     }
 
     if (ua != null) {// user exists
@@ -91,25 +92,44 @@ public class LoginServlet extends HttpServlet {
       String salt = ua.getSalt();
       String inputHashedPassword = MD5Util.md5Hex(password + salt);
 
-      
       if (ua.getPassword().equals(inputHashedPassword)) {// correct password
 
         if (remember != null && remember.equals("on")) {
-          // produce remember me token, store in user bean and cookie          
+          // produce remember me token, store in user bean and cookie
           UUID token = UUID.randomUUID();
-          Cookie rememberCookie = new Cookie("edukapp-remember", token.toString());
+          Cookie rememberCookie = new Cookie("edukapp-remember",
+              token.toString());
           rememberCookie.setPath("/");
           rememberCookie.setMaxAge(30 * 24 * 60 * 60);
           response.addCookie(rememberCookie);
           ua.setToken(token.toString());
-          em.persist(ua);          
+          em.persist(ua);
         }
-        em.getTransaction().commit();
-        
+        //em.getTransaction().commit();
+
         HttpSession session = request.getSession();
         session.setAttribute("authenticated", "true");
         session.setAttribute("logged-in-user", ua);
+
+        log.info("update account info last seen field");
         
+        try {
+          log.info("user id ="+ua.getId());
+          Accountinfo ai = (Accountinfo) em.createQuery(
+              "SELECT a " + "FROM Accountinfo a WHERE a.id=?1")
+              .setParameter(1, ua.getId())
+              .getSingleResult();
+          java.util.Date date = new java.util.Date();
+          Timestamp now = new Timestamp(date.getTime());
+          ai.setLastseen(now);
+
+          em.persist(ai);
+          em.getTransaction().commit();
+        } catch (Exception e) {
+          log.info("exception");
+e.printStackTrace();
+        }
+
         
         doForward(request, response, "/index.jsp");
 
@@ -127,12 +147,13 @@ public class LoginServlet extends HttpServlet {
   private void doForward(HttpServletRequest request,
       HttpServletResponse response, String jsp) throws ServletException,
       IOException {
-    
+
     log.info("doFroward() before dispatching");
-    //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(jsp);
-    //dispatcher.forward(request, response);
-    response.sendRedirect(request.getContextPath()+jsp);
-    
+    // RequestDispatcher dispatcher =
+    // getServletContext().getRequestDispatcher(jsp);
+    // dispatcher.forward(request, response);
+    response.sendRedirect(request.getContextPath() + jsp);
+
   }
 
 }
