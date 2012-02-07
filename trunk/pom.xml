@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>uk.ac.edukapp</groupId>
+	<artifactId>edukapp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Edukapp</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+					<wait>true</wait>
+					<configuration>
+						<properties>
+							<cargo.tomcat.context.reloadable>true</cargo.tomcat.context.reloadable>
+						</properties>
+						<home>${project.build.directory}/tomcat6x</home>
+						<deployables>
+							<deployable>
+								<groupId>uk.ac.edukapp</groupId>
+								<artifactId>edukapp</artifactId>
+								<type>war</type>
+								<properties>
+									<context>/</context>
+								</properties>
+							</deployable>
+							<deployable>
+								<groupId>org.apache.wookie</groupId>
+								<artifactId>wookie</artifactId>
+								<type>war</type>
+								<properties>
+									<context>/wookie</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</configuration>
+					<container>
+						<containerId>tomcat6x</containerId>
+						<timeout>180000</timeout>
+						<zipUrlInstaller>
+							<downloadDir>${settings.localRepository}/org/codehaus/cargo/cargo-container-archives</downloadDir>
+							<url>
+								http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.32/bin/apache-tomcat-6.0.32.tar.gz
+                            </url>
+						</zipUrlInstaller>
+						<systemProperties>
+							<net.sf.ehcache.skipUpdateCheck>true</net.sf.ehcache.skipUpdateCheck>
+							<!-- Documentation: http://incubator.apache.org/rave/documentation/host-configuration.html -->
+							<!-- <portal.override.properties>/path/to/custom.portal.properties</portal.override.properties> 
+								<shindig.override.properties>/path/to/custom.shindig.properties</shindig.override.properties> 
+								<shindig.host>localhost</shindig.host> <shindig.port>8080</shindig.port> 
+								<shindig.contextroot /> -->
+						</systemProperties>
+					</container>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wookie</groupId>
+			<artifactId>wookie-java-connector</artifactId>
+			<version>0.9.1-incubating</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa-all</artifactId>
+			<version>2.1.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wookie</groupId>
+			<artifactId>wookie</artifactId>
+			<version>0.9.2-incubating-SNAPSHOT</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+    </repository>
+    </repositories>
+</project>
