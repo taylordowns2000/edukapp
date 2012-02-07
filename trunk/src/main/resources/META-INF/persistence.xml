@@ -22,9 +22,9 @@
 		
     	<properties>	    
     		<property name="openjpa.ConnectionDriverName"   value="com.mysql.jdbc.Driver"/>
-    		<property name="openjpa.ConnectionURL"      	value="@database.connection.url@"/>
-    		<property name="openjpa.ConnectionUserName"     value="@database.connection.username@"/>
-    		<property name="openjpa.ConnectionPassword" 	value="@database.connection.password@"/>   
+    		<property name="openjpa.ConnectionURL"      	value="jdbc:mysql://localhost/edukapptests"/>
+    		<property name="openjpa.ConnectionUserName"     value="edukapptests"/>
+    		<property name="openjpa.ConnectionPassword" 	value="edukapptests"/>   
 			
 			<!-- mysql specific properties -->
 			<property name="openjpa.ConnectionFactoryProperties" value="autoReconnect=true,roundRobinLoadBalance=true"/>
