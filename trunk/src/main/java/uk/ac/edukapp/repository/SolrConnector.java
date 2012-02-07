@@ -45,41 +45,9 @@ public class SolrConnector {
 	}
 
 	/**
-	 * Constructor. Bookmarks are initialized with some data.
+	 * Constructor.
 	 */
 	private SolrConnector() {
-	}
-
-	/**
-	 * Search widgets
-	 * @param q
-	 * @return list of matching widgets
-	 */
-	public List<Widget> search(String q, String lang) {
-		List<Widget> widgets = query(q,lang);
-		return widgets;
-	}
-
-	/**
-	 * List all widgets
-	 * @return list of all widgets
-	 */
-	public List<Widget> getWidgets(String lang) {
-		List<Widget> widgets = query("*:*",lang);
-		return widgets;
-	}
-
-	/**
-	 * Gives widget of requested widget Id (NOT URI).
-	 * 
-	 * @param key requested widget key (widget Id).
-	 * @return requested widget, or <tt>null</tt> if widget with such key
-	 *         does not exist.
-	 */
-	public Widget getWidget(String key, String lang) {
-		List<Widget> widgets = query("id:"+key,lang);
-		if (widgets.size()==1) return widgets.get(0);
-		return null;
 	}
 
 	/**
@@ -88,10 +56,12 @@ public class SolrConnector {
 	 * @param term
 	 * @return list of matching widgets
 	 */
-	private List<Widget> query(String term, String lang){
+	public List<Widget> query(String term, String lang, int rows, int offset){
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			SolrQuery query = new SolrQuery();
+			query.setRows(rows);
+			query.setStart(offset);
 			query.setQuery(term);
 			QueryResponse rsp = server.query(query);
 			List<Widget> widgets = rsp.getBeans(Widget.class);
@@ -104,7 +74,7 @@ public class SolrConnector {
 
 	private SolrServer getLocalizedSolrServer(String lang) throws MalformedURLException{
 		if (lang==null || lang.trim().equals("")) lang="en";
-		return new CommonsHttpSolrServer( "http://localhost:8983/solr/"+lang);    	
+		return new CommonsHttpSolrServer( "http://localhost:8080/solr/"+lang);    	
 	}
 
 }
