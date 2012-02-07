@@ -37,6 +37,14 @@
 									<context>/wookie</context>
 								</properties>
 							</deployable>
+							<deployable>
+								<groupId>org.apache.solr</groupId>
+								<artifactId>solr</artifactId>
+								<type>war</type>
+								<properties>
+									<context>/solr</context>
+								</properties>
+							</deployable>
 						</deployables>
 					</configuration>
 					<container>
@@ -48,14 +56,6 @@
 								http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.32/bin/apache-tomcat-6.0.32.tar.gz
                             </url>
 						</zipUrlInstaller>
-						<systemProperties>
-							<net.sf.ehcache.skipUpdateCheck>true</net.sf.ehcache.skipUpdateCheck>
-							<!-- Documentation: http://incubator.apache.org/rave/documentation/host-configuration.html -->
-							<!-- <portal.override.properties>/path/to/custom.portal.properties</portal.override.properties> 
-								<shindig.override.properties>/path/to/custom.shindig.properties</shindig.override.properties> 
-								<shindig.host>localhost</shindig.host> <shindig.port>8080</shindig.port> 
-								<shindig.contextroot /> -->
-						</systemProperties>
 					</container>
 				</configuration>
 			</plugin>
@@ -108,6 +108,21 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.18</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr</artifactId>
+			<version>3.5.0</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>3.5.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

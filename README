@@ -2,6 +2,32 @@ edukapp widget store
 (http://code.google.com/p/edukapp)
 -----
 
+Before you start:
+
+1. Create a new local MySQL database called "edukapptest" (username and password the same)
+2. Run the "edukapptests_06_02.sql" query to setup the tables
+
+To start:
+
+mvn install
+mvn cargo:start
+
+This will start the following web applications:
+
+1. The Edukapp web application at localhost:8080
+2. An Apache Wookie widget server at localhost:8080/wookie
+3. An Apache Solr search engine server at localhost:8080/solr
+
+To add the widget metadata from Wookie into the Solr search engine:
+
+http://localhost:8080/solr/en/dataimport?command=full-import
+
+TODO
+
+1. Set up Shindig automatically 
+
+====
+
 Assumptions: 
 1. 	there is a wookie (http://incubator.apache.org/wookie/)
 2. 	and shindig (http://shindig.apache.org/) service running in parallel
