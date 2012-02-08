@@ -39,6 +39,20 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>Similar servlet</description>
+		<display-name>similar</display-name>
+		<servlet-name>SimilarServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.SimilarServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>SimilarServlet</servlet-name>
+		<url-pattern>/similar</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<description>User account servlet</description>
 		<display-name>user</display-name>
 		<servlet-name>UserServlet</servlet-name>
