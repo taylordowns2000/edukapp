@@ -1,6 +1,13 @@
 package uk.ac.edukapp.renderer;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
 import uk.ac.edukapp.model.Widgetprofile;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JavaTypeMapper;
 
 /*
  *  (c) 2012 University of Bolton
@@ -23,6 +30,37 @@ import uk.ac.edukapp.model.Widgetprofile;
  * @author scott.bradley.wilson@gmail.com
  */
 public class MetadataRenderer {
+	
+	private static JavaTypeMapper mapper;
+	
+	private static JavaTypeMapper getObjectMapper(){
+		if (mapper == null) mapper = new JavaTypeMapper();
+		return mapper;
+	}
+
+	public static void render(OutputStream out, List<Widgetprofile> widgetProfiles){
+		try {
+			getObjectMapper().writeValue(out, widgetProfiles);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void render(OutputStream out, Widgetprofile widgetProfile){
+		try {
+			getObjectMapper().writeValue(out, widgetProfile);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static String render(Widgetprofile widgetProfile){
 		return widgetProfile.getName()+"\n";

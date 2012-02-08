@@ -17,6 +17,7 @@
 package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -47,10 +48,10 @@ public class SearchServlet extends HttpServlet{
 		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
 		List<Widgetprofile> widgetProfiles = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, 0);
 		
-		for (Widgetprofile widgetProfile:widgetProfiles){
-			resp.getWriter().append(MetadataRenderer.render(widgetProfile));
-		}
-		resp.getWriter().flush();
+		OutputStream out = resp.getOutputStream();
+		MetadataRenderer.render(out, widgetProfiles);
+		out.flush();
+		out.close();
 	}
 	
 	
