@@ -22,6 +22,14 @@ To add the widget metadata from Wookie into the Solr search engine:
 
 http://localhost:8080/solr/en/dataimport?command=full-import
 
+To search widgets:
+
+http://localhost:8080/search?q=chat
+
+To find widgets that are similar to a specific widget:
+
+http://localhost:8080/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+
 TODO
 
 1. Set up Shindig automatically 
