@@ -24,6 +24,19 @@
       <listener-class>uk.ac.edukapp.listeners.ConnectionListener</listener-class> 
    </listener>
 	
+	<servlet>
+		<description>Search servlet</description>
+		<display-name>seach</display-name>
+		<servlet-name>SearchServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.SearchServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>SearchServlet</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
 	
 	<servlet>
 		<description>User account servlet</description>

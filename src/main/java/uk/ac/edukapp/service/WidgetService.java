@@ -26,12 +26,12 @@ import uk.ac.edukapp.repository.Widget;
  * Provides services for obtaining widgets and their metadata, which can then be
  * associated with relevant Widgetprofile data
  * 
- * @author scottw
+ * @author scott.bradley.wilson@gmail.com
  *
  */
 public class WidgetService {
 	
-	public List<Widget> findWidgetProfiles(String query){
+	public List<Widget> findWidgets(String query){
 		return findWidgets(query,"en",10,0);
 	}
 	
