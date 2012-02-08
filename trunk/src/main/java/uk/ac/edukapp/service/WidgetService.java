@@ -50,5 +50,19 @@ public class WidgetService {
 		if (widgets.size()==1) widget = widgets.get(0);
 		return widget;
 	}
+	
+	/**
+	 * Find widgets similar to that identified by the supplied uri
+	 * @param uri the URI (widId) of the widget
+	 * @param lang the language to use for the search
+	 * @return a list of similar widgets
+	 */
+	public List<Widget> findSimilarWidgets(String uri, String lang){
+		//
+		// Escape the ":" from the search term
+		//
+		uri = uri.replace(":", "\\:");
+		return SolrConnector.getInstance().moreLikeThis("uri:"+uri,lang);   	
+	}
 
 }
