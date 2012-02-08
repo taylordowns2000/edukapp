@@ -22,40 +22,42 @@
 <title>EDUKApp</title>
 </head>
 <body>
+
+	<%
+	  //--------------------------------
+	  // deduce whether user is logged in
+	  //--------------------------------
+	  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
+	      .getAttribute("emf");
+	  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
+	  if (isAuthenticated) {
+	%>
+	<%@ include file="static/logged-in-as-box.jsp"%>
+	<%
+	  } else {
+	%>
+	<%@ include file="static/login-box.jsp"%>
+	<%
+	  }
+	%>
+
+	<%@ include file="static/header.html"%>
+
 	<div id="page-wrapper">
-		<%
-		  //--------------------------------
-		  // deduce whether user is logged in
-		  //--------------------------------
-		  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
-		      .getAttribute("emf");
-		  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
-		  if (isAuthenticated) {
-		%>
-		<%@ include file="static/logged-in-as-box.jsp"%>
-		<%
-		  } else {
-		%>
-		<%@ include file="static/login-box.jsp"%>
-		<%
-		  }
-		%>
-
-		<%@ include file="static/header.html"%>
-
 		<div id="main-content-wrapper">
 			<%@ include file="static/sidebar.jsp"%>
 
 			<div id="main">template</div>
+			<div class="clear"></div>
 		</div>
 
 
-
-
-
-		<%@ include file="static/footer.html"%>
-
 	</div>
 	<!-- end of page-wrapper -->
+
+
+	<%@ include file="static/footer.html"%>
+
+
 </body>
 </html>

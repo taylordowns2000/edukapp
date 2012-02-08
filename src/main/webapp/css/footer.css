@@ -1,5 +1,5 @@
-#footer {
-	margin:0 auto;
+#footer-wrapper {
+	margin-left:20%;
 }
 #footer-logos,#footer-site-links,#footer-types,#footer-tags {
 	width:200px;
