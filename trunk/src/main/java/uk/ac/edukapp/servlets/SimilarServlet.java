@@ -17,6 +17,7 @@
 package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,10 +50,10 @@ public class SimilarServlet extends HttpServlet{
 		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 		List<Widgetprofile> widgetProfiles = widgetProfileService.findSimilarWidgetsProfiles(widgetProfile, "en");
 		
-		for (Widgetprofile similarWidgetProfile:widgetProfiles){
-			resp.getWriter().append(MetadataRenderer.render(similarWidgetProfile));
-		}
-		resp.getWriter().flush();
+		OutputStream out = resp.getOutputStream();
+		MetadataRenderer.render(out, widgetProfiles);
+		out.flush();
+		out.close();
 	}
 	
 	
