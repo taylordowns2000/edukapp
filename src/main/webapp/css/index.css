@@ -1,0 +1,67 @@
+#first-row-boxes {
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid blue;
+    background-color: #ddd;
+}
+
+#intro-text {
+	width:50%;
+	float:left;
+}
+
+#intro-screencast {
+	width:48%;
+	float:left;
+}
+
+#widget-slider {
+}
+
+#widget-slider-left-btn {
+	height:300px;
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid blue;
+    background-color: #fdb;
+    width: 25px;
+    float: left;
+}
+
+#widget-slider-container {
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid blue;
+    background-color: #adb;
+	width:736px;
+    float: left;
+}
+
+#widget-slider-right-btn {
+	height:300px;
+    margin: 1px;
+    padding: 1px;
+    border: 1px solid blue;
+    background-color: #fdb;
+    width: 25px;
+    float: left;
+}
+
+#widget-slider-control-buttons {
+	margin: 1px;
+    padding: 1px;
+    border: 1px solid blue;
+    background-color: #1db;
+	width:90%;
+	height:25px;
+}
+
+
+.widget-box{
+	width:100px;
+	float:left;
+	border:1px solid green;
+	padding:2px;
+	margin:2px;
+	height:100px;
+}
