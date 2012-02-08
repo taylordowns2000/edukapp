@@ -5,8 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import uk.ac.edukapp.model.Activity;
+import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.repository.Widget;
 
@@ -36,9 +39,57 @@ public class WidgetProfileService extends AbstractService{
 		super(ctx);
 	}
 	
-	public List<Widgetprofile> findWidgetProfile(String query, String language, int rows, int offset){
+	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag){
+		return null;
+	}
+	
+	public List<Widgetprofile> findWidgetProfilesForActivity(Activity activity){
+		return null;
+	}
+	
+	public List<Widgetprofile> findFeaturedWidgetProfiles(){
+		return null;
+	}
+
+	public List<Widgetprofile> searchWidgetProfilesOrderedByRelevance(String query, String language, int rows, int offset){
+		return searchWidgetProfiles(query,language,rows,offset);
+	}
+	
+	public List<Widgetprofile> searchWidgetProfilesOrderedByRating(String query, String language, int rows, int offset){
+		// FIXME create comparator using ratings
+		return searchWidgetProfiles(query,language,rows,offset);
+	}
+	
+	public List<Widgetprofile> findSimilarWidgetsProfiles(Widgetprofile profile, String language){
+		WidgetService widgetService = new WidgetService();
+		List<Widget> widgets = widgetService.findSimilarWidgets(profile.getWidId(), language);
+		return getWidgetProfilesForWidgets(widgets);
+	}
+	
+	public List<Widgetprofile> searchWidgetProfilesOrderedByPopularity(String query, String language, int rows, int offset){
+		// FIXME create comparator using popularity
+		return searchWidgetProfiles(query,language,rows,offset);
+	}
+	
+	public Widgetprofile findWidgetProfileByUri(String uri){
+		try {
+			EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+			Query wpQuery = entityManager.createNamedQuery("Widgetprofile.findByUri");
+			wpQuery.setParameter("uri", uri);
+			return (Widgetprofile) wpQuery.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+		
+	}
+	
+	private List<Widgetprofile> searchWidgetProfiles(String query, String language, int rows, int offset){
 		WidgetService widgetService = new WidgetService();
 		List<Widget> widgets = widgetService.findWidgets(query, language, rows, offset);
+		return getWidgetProfilesForWidgets(widgets);
+	}
+	
+	private List<Widgetprofile> getWidgetProfilesForWidgets(List<Widget> widgets){
 		List<Widgetprofile> widgetProfiles = new ArrayList<Widgetprofile>();
 		
 		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
@@ -57,7 +108,9 @@ public class WidgetProfileService extends AbstractService{
 			// TODO replace with a named query
 			//
 			try {
-				widgetProfile = (Widgetprofile) entityManager.createQuery("SELECT w FROM Widgetprofile w WHERE w.widId = '"+widget.getUri()+"'").getSingleResult();
+				Query wpQuery = entityManager.createNamedQuery("Widgetprofile.findByUri");
+				wpQuery.setParameter("uri", widget.getUri());
+				widgetProfile = (Widgetprofile) wpQuery.getSingleResult();
 			} catch (NoResultException e) {
 				
 				//

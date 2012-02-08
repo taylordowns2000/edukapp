@@ -9,6 +9,9 @@ import java.util.List;
  * 
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Widgetprofile.findByUri", query="SELECT w FROM Widgetprofile w WHERE w.widId = :uri")
+}) 
 @Table(name = "widgetprofiles")
 public class Widgetprofile implements Serializable {
   private static final long serialVersionUID = 1L;
