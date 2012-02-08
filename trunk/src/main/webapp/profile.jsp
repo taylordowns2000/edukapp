@@ -20,19 +20,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<<<<<<< .mine
 <link rel="stylesheet" href="css/layout.css00000000000" type="text/css" />
-=======
 <link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
->>>>>>> .r18
 <link rel="stylesheet" href="css/header.css" type="text/css" />
 <link rel="stylesheet" href="css/main.css" type="text/css" />
 <link rel="stylesheet" href="css/footer.css" type="text/css" />
 <title>EDUKApp</title>
 </head>
 <body>
-	<div id="page-wrapper">
+
 		<%
 		  //--------------------------------
 		  // deduce whether user is logged in
@@ -52,7 +49,7 @@
 		%>
 
 		<%@ include file="static/header.html"%>
-
+	<div id="page-wrapper">
 		<div id="main-content-wrapper">
 			<%@ include file="static/sidebar.jsp"%>
 
@@ -74,14 +71,7 @@
 			        .setParameter(1, user_id).getSingleResult();
 			  } catch (Exception e) {
 
-			  }
-
-			  if (ai == null) {
-			    out.print("account info is null");
-			  } else {
-			    out.print("Account inf0:" + ai.getId() + " " + ai.getShortbio() + " "
-			        + ai.getWebsite() + " " + ai.getLastseen() + " " + ai.getJoined());
-			  }
+			  }			  
 			%>
 
 
@@ -90,6 +80,14 @@
 
 
 			<div id="main">
+<%
+if (ai == null) {
+			    out.print("account info is null");
+			  } else {
+			    out.print("Account inf0:" + ai.getId() + " " + ai.getShortbio() + " "
+			        + ai.getWebsite() + " " + ai.getLastseen() + " " + ai.getJoined());
+			  
+%>
 
 				<div id="account-info-bar">
 					<div id="account-info-bar-left">
@@ -237,19 +235,15 @@
 					</div>
 					</div>
 				</div>
-
+				
+				<%}//end of user exists  %>
+				
 			</div>
-
-
+			<div class="clear"></div>
 		</div>
-
-
-
-
-
-		<%@ include file="static/footer.html"%>
-
 	</div>
 	<!-- end of page-wrapper -->
+		<%@ include file="static/footer.html"%>
+
 </body>
 </html>

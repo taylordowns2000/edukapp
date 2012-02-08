@@ -13,39 +13,38 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<<<<<<< .mine
 <link rel="stylesheet" href="css/layout.css00000000000" type="text/css" />
-=======
 <link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
->>>>>>> .r18
 <link rel="stylesheet" href="css/header.css" type="text/css" />
 <link rel="stylesheet" href="css/main.css" type="text/css" />
 <link rel="stylesheet" href="css/footer.css" type="text/css" />
 <title>EDUKApp</title>
 </head>
 <body>
+
+	<%
+	  //--------------------------------
+	  // deduce whether user is logged in
+	  //--------------------------------
+	  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
+	      .getAttribute("emf");
+	  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
+	  if (isAuthenticated) {
+	%>
+	<%@ include file="static/logged-in-as-box.jsp"%>
+	<%
+	  } else {
+	%>
+	<%@ include file="static/login-box.jsp"%>
+	<%
+	  }
+	%>
+
+	<%@ include file="static/header.html"%>
+	
+	
 	<div id="page-wrapper">
-		<%
-		  //--------------------------------
-		  // deduce whether user is logged in
-		  //--------------------------------
-		  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
-		      .getAttribute("emf");
-		  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
-		  if (isAuthenticated) {
-		%>
-		<%@ include file="static/logged-in-as-box.jsp"%>
-		<%
-		  } else {
-		%>
-		<%@ include file="static/login-box.jsp"%>
-		<%
-		  }
-		%>
-
-		<%@ include file="static/header.html"%>
-
 		<div id="main-content-wrapper">
 			<%@ include file="static/sidebar.jsp"%>
 
@@ -91,7 +90,8 @@
 											the lazy dox jumped the quick brown fox</div>
 										<div class="clear"></div>
 									</div>
-								</div></li>
+								</div>
+							</li>
 							<li>
 								<div class="review-item-wrapper">
 									<div class="review-item-pic"></div>
@@ -106,7 +106,8 @@
 											the lazy dox jumped the quick brown fox</div>
 										<div class="clear"></div>
 									</div>
-								</div></li>
+								</div>
+							</li>
 						</ul>
 					</div>
 					<div id="related-widgets">
@@ -125,15 +126,16 @@
 				<div class="clear"></div>
 
 			</div>
+			<div class="clear"></div>
 		</div>
-
-
-
-
-
-		<%@ include file="static/footer.html"%>
 
 	</div>
 	<!-- end of page-wrapper -->
+
+
+
+	<%@ include file="static/footer.html"%>
+
+
 </body>
 </html>
