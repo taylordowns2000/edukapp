@@ -19,7 +19,7 @@
 						<properties>
 							<cargo.tomcat.context.reloadable>true</cargo.tomcat.context.reloadable>
 						</properties>
-						<home>${project.build.directory}/tomcat6x</home>
+						<home>${project.build.directory}/tomcat7x</home>
 						<deployables>
 							<deployable>
 								<groupId>uk.ac.edukapp</groupId>
@@ -48,12 +48,12 @@
 						</deployables>
 					</configuration>
 					<container>
-						<containerId>tomcat6x</containerId>
+						<containerId>tomcat7x</containerId>
 						<timeout>180000</timeout>
 						<zipUrlInstaller>
 							<downloadDir>${settings.localRepository}/org/codehaus/cargo/cargo-container-archives</downloadDir>
 							<url>
-								http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.32/bin/apache-tomcat-6.0.32.tar.gz
+								http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.25/bin/apache-tomcat-7.0.25.tar.gz
                             </url>
 						</zipUrlInstaller>
 					</container>
@@ -79,9 +79,16 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie-java-connector</artifactId>
-			<version>0.9.1-incubating</version>
+			<version>0.9.2-incubating-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
+			<!-- We have to exclude this for now as its a conflicting version. The 0.9.2 release fixes this -->
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
@@ -123,6 +130,13 @@
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 			<version>3.5.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.4</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
