@@ -12,13 +12,7 @@ import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.service.WidgetProfileService;
 
-/**
- * Search API endpoint
- * TODO replace with Wink/JAX-RS
- * @author scott.bradley.wilson@gmail.com
- *
- */
-public class SearchServlet extends HttpServlet{
+public class SimilarServlet extends HttpServlet{
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -26,13 +20,14 @@ public class SearchServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String query = req.getParameter("q");
+		String uri = req.getParameter("uri");
 		
 		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
-		List<Widgetprofile> widgetProfiles = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, 0);
+		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
+		List<Widgetprofile> widgetProfiles = widgetProfileService.findSimilarWidgetsProfiles(widgetProfile, "en");
 		
-		for (Widgetprofile widgetProfile:widgetProfiles){
-			resp.getWriter().append(MetadataRenderer.render(widgetProfile));
+		for (Widgetprofile similarWidgetProfile:widgetProfiles){
+			resp.getWriter().append(MetadataRenderer.render(similarWidgetProfile));
 		}
 		resp.getWriter().flush();
 	}
