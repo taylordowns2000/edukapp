@@ -19,6 +19,9 @@
 stopworda
 stopwordb
 
+#Special stopwords
+widget
+
 #Standard english stop words taken from Lucene's StopAnalyzer
 a
 an
