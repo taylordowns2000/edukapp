@@ -24,6 +24,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.params.MoreLikeThisParams;
 
 /**
  * Store implementation for the Widget Discovery Service
@@ -64,6 +65,33 @@ public class SolrConnector {
 			query.setStart(offset);
 			query.setQuery(term);
 			QueryResponse rsp = server.query(query);
+			List<Widget> widgets = rsp.getBeans(Widget.class);
+			return widgets;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Widget>();   	
+	}
+	
+	/**
+	 * Execute a MoreLikeThis query on the Solr server
+	 * @param term the match term, typically a uri: match
+	 * @param lang the language core to search
+	 * @return more widgets like the one identified by term
+	 */
+	public List<Widget> moreLikeThis(String term, String lang){
+		try {
+			SolrServer server = getLocalizedSolrServer(lang);
+			SolrQuery query = new SolrQuery();
+			
+			query.setQueryType("/"+MoreLikeThisParams.MLT);
+			query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
+			query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
+			query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+			query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title,description");
+			query.setQuery(term);
+			QueryResponse rsp = server.query(query);
+			
 			List<Widget> widgets = rsp.getBeans(Widget.class);
 			return widgets;
 		} catch (Exception e) {
