@@ -70,6 +70,9 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>openjpa-maven-plugin</artifactId>
 				<version>1.2</version>
+				<configuration>
+                   <includes>**/model/*.class</includes>
+                </configuration>
 				<executions>
 					<execution>
 						<id>enhancer</id>
