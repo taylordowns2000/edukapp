@@ -16,12 +16,14 @@ package uk.ac.edukapp.repository;
  * limitations under the License.
  */
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.MoreLikeThisParams;
@@ -49,6 +51,26 @@ public class SolrConnector {
 	 * Constructor.
 	 */
 	private SolrConnector() {
+	}
+	
+	/**
+	 * Add a Widget to the index
+	 * @param widget
+	 * @param lang
+	 * @return true if added successfully; false if an error was logged
+	 */
+	public boolean index(Widget widget, String lang){
+		try {
+			SolrServer server = getLocalizedSolrServer(lang);
+			server.addBean(widget);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} catch (SolrServerException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
