@@ -59,9 +59,6 @@ public class WidgetProfileService extends AbstractService{
 			try {
 				widgetProfile = (Widgetprofile) entityManager.createQuery("SELECT w FROM Widgetprofile w WHERE w.widId = '"+widget.getUri()+"'").getSingleResult();
 			} catch (NoResultException e) {
-			}
-			
-			if(widgetProfile == null){
 				
 				//
 				// Create a new profile
