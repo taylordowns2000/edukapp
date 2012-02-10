@@ -1,3 +1,5 @@
+<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
+<%@page import="uk.ac.edukapp.model.Widgetprofile"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
@@ -74,6 +76,31 @@
 						<div class="clear"></div>
 					</div>
 					<div id="widget-slider-container">
+						<%
+						  List<Widgetprofile> featuredWidgets = null;
+
+						  EntityManager em = emf.createEntityManager();
+						  Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
+						      + "WHERE u.featured=1");
+
+						  Widgetprofile wid = null;
+
+						  featuredWidgets = (List<Widgetprofile>) q.getResultList();
+						  if (featuredWidgets != null) {
+						    WidgetRenderer renderer = WidgetRenderer.getInstance();
+						    for (Widgetprofile f : featuredWidgets) {
+						      String html = renderer.render(f.getWidId()); 
+						      if (html!=null) {
+						        out.print(html);
+						      }else {
+						        out.print("html is null");
+						      }
+						    }						    
+						  } else {
+						    out.print("no featured widgets");
+						  }
+						%>
+
 						<div class="widget-box">
 							widget a
 							<div class="clear"></div>
@@ -115,7 +142,8 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-	</div><!-- end of page-wrapper -->
+	</div>
+	<!-- end of page-wrapper -->
 
 	<%@ include file="static/footer.html"%>
 

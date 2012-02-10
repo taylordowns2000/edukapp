@@ -1,6 +1,8 @@
-<h3>logged in as box</h3>
+<div id="login-box">
 <%
 Useraccount loggedinuser = (Useraccount)session.getAttribute("logged-in-user");
-out.print(loggedinuser.getEmail());
 %>
+<a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><% out.print(loggedinuser.getUsername());%></a>
+
 <a href="<% out.print(request.getContextPath().toString()); %>/logout">logout</a>
+</div>
