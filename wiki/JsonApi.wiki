@@ -15,7 +15,7 @@ Example:
  {
  "id":1251,
  "name":"ShareDraw",
-  "w3cOrOs":0,
+  "type":"W3C Widget",
   "featured":1,
   "uri":"http://wookie.apache.org/widgets/sharedraw",
   "tags":[],
@@ -24,7 +24,7 @@ Example:
  {
   "id":1252,
   "name":"Butterfly",
-  "w3cOrOs":0,
+  "type":"W3C Widget",
   "featured":1,
   "uri":"http://wookie.apache.org/widgets/butterfly",
   "tags":[
@@ -63,7 +63,7 @@ Returns:
   {
   "id":1153,
   "name":"Natter",
-  "w3cOrOs":0,
+  "type":"W3C Widget",
   "featured":0,
   "uri":"http://www.getwookie.org/widgets/natter",
   "tags":[],
