@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  * The persistent class for the userreview database table.
@@ -34,6 +36,7 @@ public class Userreview implements Serializable {
 	@Column(nullable=false)
 	private Date time;
 
+	@JsonIgnore
 	@Column(nullable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="widgetprofile_id", referencedColumnName="id")
