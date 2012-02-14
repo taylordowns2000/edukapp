@@ -2,6 +2,9 @@ package uk.ac.edukapp.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.List;
 
 
@@ -45,6 +48,7 @@ public class Activity implements Serializable {
 		this.activitytext = activitytext;
 	}
 
+	@JsonIgnore
 	public List<Widgetprofile> getWidgetprofiles() {
 		return this.widgetprofiles;
 	}
