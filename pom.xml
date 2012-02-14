@@ -185,8 +185,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-asl</artifactId>
-			<version>0.9.5</version>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.4</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
