@@ -40,15 +40,18 @@ public class WidgetProfileService extends AbstractService{
 	}
 	
 	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag){
-		return null;
+		return tag.getWidgetprofiles();
 	}
 	
 	public List<Widgetprofile> findWidgetProfilesForActivity(Activity activity){
-		return null;
+		return activity.getWidgetprofiles();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Widgetprofile> findFeaturedWidgetProfiles(){
-		return null;
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.featured");
+		return (List<Widgetprofile>) wpQuery.getResultList();
 	}
 
 	public List<Widgetprofile> searchWidgetProfilesOrderedByRelevance(String query, String language, int rows, int offset){
