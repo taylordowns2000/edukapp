@@ -86,6 +86,11 @@ public class WidgetProfileService extends AbstractService{
 		
 	}
 	
+	public Widgetprofile findWidgetProfileById(String id){
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		return entityManager.find(Widgetprofile.class, id);
+	}
+	
 	private List<Widgetprofile> searchWidgetProfiles(String query, String language, int rows, int offset){
 		WidgetService widgetService = new WidgetService();
 		List<Widget> widgets = widgetService.findWidgets(query, language, rows, offset);
