@@ -17,7 +17,7 @@ Example:
  "name":"ShareDraw",
   "w3cOrOs":0,
   "featured":1,
-  "widId":"http://wookie.apache.org/widgets/sharedraw",
+  "uri":"http://wookie.apache.org/widgets/sharedraw",
   "tags":[],
   "activities":[]
  },
@@ -26,7 +26,7 @@ Example:
   "name":"Butterfly",
   "w3cOrOs":0,
   "featured":1,
-  "widId":"http://wookie.apache.org/widgets/butterfly",
+  "uri":"http://wookie.apache.org/widgets/butterfly",
   "tags":[
     {"id":1,"tagtext":"test tag text"},
     {"id":2,"tagtext":"test tag text"}
@@ -65,7 +65,7 @@ Returns:
   "name":"Natter",
   "w3cOrOs":0,
   "featured":0,
-  "widId":"http://www.getwookie.org/widgets/natter",
+  "uri":"http://www.getwookie.org/widgets/natter",
   "tags":[],
   "activities":[]
   }
