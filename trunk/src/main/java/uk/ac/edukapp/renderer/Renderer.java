@@ -12,7 +12,7 @@ public class Renderer {
 		byte w3cOrOs = widgetprofile.getW3cOrOs();
 		
 		if (w3cOrOs==0){//is w3c
-			return WidgetRenderer.render(widgetprofile.getWidId());
+			return WidgetRenderer.getInstance().render(widgetprofile.getWidId());
 		}else if (w3cOrOs==1){//is os
 			return GadgetRenderer.render(widgetprofile.getWidId());
 		}
