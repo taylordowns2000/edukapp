@@ -43,7 +43,7 @@ Search for widgets matching the search terms.
 Example:
 
 {{{
-GET http://localhost:8080/search?q=chat
+GET /search?q=chat
 }}}
 
 = GET /similar?uri=[widget uri]=
@@ -53,7 +53,7 @@ Search for similar widgets to the widget identified with the uri parameter.
 Example:
 
 {{{
-GET http://localhost:8080/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+GET /similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
 }}}
 
 Returns:
@@ -72,3 +72,27 @@ Returns:
 ]
 }}}
 
+= GET /review?uri={widget uri} =
+
+Get user reviews for the specified widget.
+
+
+Example:
+
+{{{
+GET /review?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+}}}
+
+Returns:
+
+{{{
+[
+  {
+  "id":1,
+  "comment":{"id":1,"commenttext":"TEST"},
+  "rating":3,
+  "time":"2012-02-14T10:20:01.000+0000",
+  "userAccount":{"username":"scott"}
+  }
+]
+}}}
