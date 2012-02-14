@@ -53,6 +53,20 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>Review servlet</description>
+		<display-name>review</display-name>
+		<servlet-name>ReviewServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.ReviewServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>ReviewServlet</servlet-name>
+		<url-pattern>/review</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<description>User account servlet</description>
 		<display-name>user</display-name>
 		<servlet-name>UserServlet</servlet-name>
