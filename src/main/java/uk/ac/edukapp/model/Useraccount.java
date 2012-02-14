@@ -3,6 +3,8 @@ package uk.ac.edukapp.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  * The persistent class for the useraccount database table.
@@ -33,6 +35,7 @@ public class Useraccount implements Serializable {
 	@Column(nullable=false, length=256)
   private String token;
 
+	@JsonIgnore
     public String getSalt() {
     return salt;
   }
@@ -41,6 +44,7 @@ public class Useraccount implements Serializable {
     this.salt = salt;
   }
 
+  @JsonIgnore
   public String getToken() {
     return token;
   }
@@ -52,6 +56,7 @@ public class Useraccount implements Serializable {
     public Useraccount() {
     }
 
+	@JsonIgnore
 	public int getId() {
 		return this.id;
 	}
@@ -60,6 +65,7 @@ public class Useraccount implements Serializable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public String getEmail() {
 		return this.email;
 	}
@@ -68,6 +74,7 @@ public class Useraccount implements Serializable {
 		this.email = email;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return this.password;
 	}
