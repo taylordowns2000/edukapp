@@ -2,6 +2,10 @@ package uk.ac.edukapp.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -25,12 +29,14 @@ public class Widgetprofile implements Serializable {
   @Column(nullable = false, length = 100)
   private String name;
 
+  @JsonIgnore
   @Column(name = "w3c_or_os", nullable = false)
   private byte w3cOrOs;
 
   @Column(name = "featured", nullable = true)
   private byte featured;
 
+  @JsonProperty(value="uri")
   @Column(name = "wid_id", nullable = false, length = 150)
   private String widId;
 
@@ -100,6 +106,14 @@ public class Widgetprofile implements Serializable {
 
   public void setFeatured(byte featured) {
     this.featured = featured;
+  }
+  
+  public String getType(){
+	  if(this.getW3cOrOs() == 0){
+		  return "W3C Widget";
+	  } else {
+		  return "OpenSocial Gadget";
+	  }
   }
 
 }
