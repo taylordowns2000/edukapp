@@ -1,0 +1,74 @@
+Edukapp provides a JSON API that can be used to create the user interface.
+
+= Introduction =
+
+
+
+= GET /featured=
+
+Gets the list of featured widgets.
+
+Example:
+
+{{{
+[
+ {
+ "id":1251,
+ "name":"ShareDraw",
+  "w3cOrOs":0,
+  "featured":1,
+  "widId":"http://wookie.apache.org/widgets/sharedraw",
+  "tags":[],
+  "activities":[]
+ },
+ {
+  "id":1252,
+  "name":"Butterfly",
+  "w3cOrOs":0,
+  "featured":1,
+  "widId":"http://wookie.apache.org/widgets/butterfly",
+  "tags":[
+    {"id":1,"tagtext":"test tag text"},
+    {"id":2,"tagtext":"test tag text"}
+  ],
+  "activities":[]
+ }
+]
+}}}
+
+= GET /search?q={search terms} =
+
+Search for widgets matching the search terms.
+
+Example:
+
+{{{
+GET http://localhost:8080/search?q=chat
+}}}
+
+= GET /similar?uri=[widget uri]=
+
+Search for similar widgets to the widget identified with the uri parameter.
+
+Example:
+
+{{{
+GET http://localhost:8080/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+}}}
+
+Returns:
+
+{{{
+[
+  {
+  "id":1153,
+  "name":"Natter",
+  "w3cOrOs":0,
+  "featured":0,
+  "widId":"http://www.getwookie.org/widgets/natter",
+  "tags":[],
+  "activities":[]
+  }
+]
+}}}
+
