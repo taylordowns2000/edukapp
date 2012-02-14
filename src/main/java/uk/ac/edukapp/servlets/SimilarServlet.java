@@ -46,8 +46,19 @@ public class SimilarServlet extends HttpServlet{
 			throws ServletException, IOException {
 		String uri = req.getParameter("uri");
 		
+		if (uri == null || uri.trim().length() == 0){
+			resp.sendError(400);
+			return;
+		}
+		
 		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
 		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
+		
+		if(widgetProfile == null){
+			resp.sendError(404);
+			return;
+		}
+		
 		List<Widgetprofile> widgetProfiles = widgetProfileService.findSimilarWidgetsProfiles(widgetProfile, "en");
 		
 		OutputStream out = resp.getOutputStream();
