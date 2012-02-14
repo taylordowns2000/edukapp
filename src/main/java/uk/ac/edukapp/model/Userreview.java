@@ -1,8 +1,9 @@
 package uk.ac.edukapp.model;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 
 /**
@@ -11,6 +12,9 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="userreview")
+@NamedQueries({
+    @NamedQuery(name="Userreview.findForWidgetProfile", query="SELECT r FROM Userreview r WHERE r.widgetProfile = :widgetprofile")
+}) 
 public class Userreview implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,20 +23,26 @@ public class Userreview implements Serializable {
 	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(name="comment_id", nullable=false)
-	private int commentId;
-
+	@Column(nullable=false)
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="comment_id", referencedColumnName="id")
+	private Comment comment;
+	
 	@Column(nullable=false)
 	private byte rating;
 
 	@Column(nullable=false)
-	private Timestamp time;
+	private Date time;
 
-	@Column(name="user_id", nullable=false)
-	private int userId;
-
-	@Column(name="widgetprofile_id", nullable=false)
-	private int widgetprofileId;
+	@Column(nullable=false)
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="widgetprofile_id", referencedColumnName="id")
+	private Widgetprofile widgetProfile;
+	
+	@Column(nullable=false)
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id", referencedColumnName="id")
+	private Useraccount userAccount;
 
     public Userreview() {
     }
@@ -45,14 +55,6 @@ public class Userreview implements Serializable {
 		this.id = id;
 	}
 
-	public int getCommentId() {
-		return this.commentId;
-	}
-
-	public void setCommentId(int commentId) {
-		this.commentId = commentId;
-	}
-
 	public byte getRating() {
 		return this.rating;
 	}
@@ -61,28 +63,54 @@ public class Userreview implements Serializable {
 		this.rating = rating;
 	}
 
-	public Timestamp getTime() {
+	public Date getTime() {
 		return this.time;
 	}
 
-	public void setTime(Timestamp time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 
-	public int getUserId() {
-		return this.userId;
+	/**
+	 * @return the widgetProfile
+	 */
+	public Widgetprofile getWidgetProfile() {
+		return widgetProfile;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	/**
+	 * @param widgetProfile the widgetProfile to set
+	 */
+	public void setWidgetProfile(Widgetprofile widgetProfile) {
+		this.widgetProfile = widgetProfile;
 	}
 
-	public int getWidgetprofileId() {
-		return this.widgetprofileId;
+	/**
+	 * @return the userAccount
+	 */
+	public Useraccount getUserAccount() {
+		return userAccount;
 	}
 
-	public void setWidgetprofileId(int widgetprofileId) {
-		this.widgetprofileId = widgetprofileId;
+	/**
+	 * @param userAccount the userAccount to set
+	 */
+	public void setUserAccount(Useraccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	/**
+	 * @return the comment
+	 */
+	public Comment getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(Comment comment) {
+		this.comment = comment;
 	}
 
 }
