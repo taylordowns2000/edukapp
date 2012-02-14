@@ -81,6 +81,20 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>Widget servlet</description>
+		<display-name>widget</display-name>
+		<servlet-name>WidgetServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.WidgetServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>WidgetServlet</servlet-name>
+		<url-pattern>/widget</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<description>User account servlet</description>
 		<display-name>user</display-name>
 		<servlet-name>UserServlet</servlet-name>
