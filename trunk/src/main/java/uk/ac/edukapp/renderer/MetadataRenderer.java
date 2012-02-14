@@ -9,6 +9,7 @@ import uk.ac.edukapp.model.Widgetprofile;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 
 /*
  *  (c) 2012 University of Bolton
@@ -36,6 +37,7 @@ public class MetadataRenderer {
 	
 	private static ObjectMapper getObjectMapper(){
 		if (mapper == null) mapper = new ObjectMapper();
+		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 		return mapper;
 	}
 
