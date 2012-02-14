@@ -89,7 +89,7 @@ Returns:
 [
   {
   "id":1,
-  "comment":{"id":1,"commenttext":"TEST"},
+  "text":"TEST",
   "rating":3,
   "time":"2012-02-14T10:20:01.000+0000",
   "userAccount":{"username":"scott"}
