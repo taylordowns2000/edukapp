@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 
 /**
@@ -91,6 +92,7 @@ public class Userreview implements Serializable {
 	/**
 	 * @return the userAccount
 	 */
+	@JsonIgnore
 	public Useraccount getUserAccount() {
 		return userAccount;
 	}
@@ -105,6 +107,7 @@ public class Userreview implements Serializable {
 	/**
 	 * @return the comment
 	 */
+	@JsonIgnore
 	public Comment getComment() {
 		return comment;
 	}
@@ -114,6 +117,22 @@ public class Userreview implements Serializable {
 	 */
 	public void setComment(Comment comment) {
 		this.comment = comment;
+	}
+	
+	/**
+	 * Return the actual comment text, e.g. for serialization
+	 * @return
+	 */
+	public String getText(){
+		return this.getComment().getCommenttext();
+	}
+	
+	/**
+	 * Return just the user name, e.g. for serialization
+	 * @return
+	 */
+	public String getUser(){
+		return this.getUserAccount().getUsername();
 	}
 
 }
