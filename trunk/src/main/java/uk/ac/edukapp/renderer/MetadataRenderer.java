@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JavaTypeMapper;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /*
  *  (c) 2012 University of Bolton
@@ -31,10 +32,10 @@ import org.codehaus.jackson.map.JavaTypeMapper;
  */
 public class MetadataRenderer {
 	
-	private static JavaTypeMapper mapper;
+	private static ObjectMapper mapper;
 	
-	private static JavaTypeMapper getObjectMapper(){
-		if (mapper == null) mapper = new JavaTypeMapper();
+	private static ObjectMapper getObjectMapper(){
+		if (mapper == null) mapper = new ObjectMapper();
 		return mapper;
 	}
 
@@ -64,5 +65,17 @@ public class MetadataRenderer {
 
 	public static String render(Widgetprofile widgetProfile){
 		return widgetProfile.getName()+"\n";
+	}
+	
+	public static void renderReviews(OutputStream out, List<Userreview> userReviews){
+		try {
+			getObjectMapper().writeValue(out, userReviews);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
