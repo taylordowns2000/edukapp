@@ -46,7 +46,7 @@ Example:
 GET /search?q=chat
 }}}
 
-= GET /similar?uri=[widget uri]=
+= GET /similar?uri={widget uri}=
 
 Search for similar widgets to the widget identified with the uri parameter.
 
