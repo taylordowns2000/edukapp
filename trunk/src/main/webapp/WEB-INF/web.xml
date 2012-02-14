@@ -53,6 +53,20 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<description>Featured servlet</description>
+		<display-name>featured</display-name>
+		<servlet-name>FeaturedServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.FeaturedServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>FeaturedServlet</servlet-name>
+		<url-pattern>/featured</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<description>Review servlet</description>
 		<display-name>review</display-name>
 		<servlet-name>ReviewServlet</servlet-name>

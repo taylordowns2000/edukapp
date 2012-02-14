@@ -10,7 +10,8 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="Widgetprofile.findByUri", query="SELECT w FROM Widgetprofile w WHERE w.widId = :uri")
+    @NamedQuery(name="Widgetprofile.findByUri", query="SELECT w FROM Widgetprofile w WHERE w.widId = :uri"),
+    @NamedQuery(name="Widgetprofile.featured", query="SELECT w FROM Widgetprofile w WHERE w.featured = 1")
 }) 
 @Table(name = "widgetprofiles")
 public class Widgetprofile implements Serializable {
