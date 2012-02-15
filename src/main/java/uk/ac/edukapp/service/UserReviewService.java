@@ -42,6 +42,7 @@ public class UserReviewService extends AbstractService {
 		entityManager.getTransaction().begin();
 		entityManager.persist(userReview);
 		entityManager.getTransaction().commit();
+		entityManager.close();
 		
 	}
 	
@@ -51,6 +52,7 @@ public class UserReviewService extends AbstractService {
 		Query wpQuery = entityManager.createNamedQuery("Userreview.findForWidgetProfile");
 		wpQuery.setParameter("widgetprofile", widgetProfile);
 		List<Userreview> reviews = (List<Userreview>)wpQuery.getResultList();
+		entityManager.close();
 		return reviews;
 	}
 

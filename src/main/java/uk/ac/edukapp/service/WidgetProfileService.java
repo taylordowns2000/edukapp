@@ -51,7 +51,9 @@ public class WidgetProfileService extends AbstractService{
 	public List<Widgetprofile> findFeaturedWidgetProfiles(){
 		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
 		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.featured");
-		return (List<Widgetprofile>) wpQuery.getResultList();
+		List<Widgetprofile> widgetProfiles = (List<Widgetprofile>) wpQuery.getResultList();
+		entityManager.close();
+		return widgetProfiles;
 	}
 
 	public List<Widgetprofile> searchWidgetProfilesOrderedByRelevance(String query, String language, int rows, int offset){
@@ -79,7 +81,14 @@ public class WidgetProfileService extends AbstractService{
 			EntityManager entityManager = getEntityManagerFactory().createEntityManager();
 			Query wpQuery = entityManager.createNamedQuery("Widgetprofile.findByUri");
 			wpQuery.setParameter("uri", uri);
-			return (Widgetprofile) wpQuery.getSingleResult();
+			Widgetprofile widgetProfile =  (Widgetprofile) wpQuery.getSingleResult();
+			//
+			// Ensure dependent objects are available when detached
+			// 
+			widgetProfile.getTags();
+			widgetProfile.getActivities();
+			entityManager.close();
+			return widgetProfile;
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -88,7 +97,14 @@ public class WidgetProfileService extends AbstractService{
 	
 	public Widgetprofile findWidgetProfileById(String id){
 		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-		return entityManager.find(Widgetprofile.class, id);
+		Widgetprofile widgetProfile = entityManager.find(Widgetprofile.class, id);
+		//
+		// Ensure dependent objects are available when detached
+		// 
+		widgetProfile.getTags();
+		widgetProfile.getActivities();
+		entityManager.close();
+		return widgetProfile;
 	}
 	
 	private List<Widgetprofile> searchWidgetProfiles(String query, String language, int rows, int offset){
@@ -119,6 +135,12 @@ public class WidgetProfileService extends AbstractService{
 				Query wpQuery = entityManager.createNamedQuery("Widgetprofile.findByUri");
 				wpQuery.setParameter("uri", widget.getUri());
 				widgetProfile = (Widgetprofile) wpQuery.getSingleResult();
+				//
+				// Ensure dependent objects are available when detached
+				// 
+				widgetProfile.getTags();
+				widgetProfile.getActivities();
+				
 			} catch (NoResultException e) {
 				
 				//
@@ -134,6 +156,7 @@ public class WidgetProfileService extends AbstractService{
 		}
 		
 		entityManager.getTransaction().commit();
+		entityManager.close();
 		
 		return widgetProfiles;
 	}
