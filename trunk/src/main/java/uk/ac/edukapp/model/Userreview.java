@@ -27,7 +27,7 @@ public class Userreview implements Serializable {
 	private int id;
 
 	@Column(nullable=false)
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="comment_id", referencedColumnName="id")
 	private Comment comment;
 	
@@ -44,7 +44,7 @@ public class Userreview implements Serializable {
 	private Widgetprofile widgetProfile;
 	
 	@Column(nullable=false)
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName="id")
 	private Useraccount userAccount;
 
