@@ -52,9 +52,9 @@
      // Load similar widget profiles
      //
      $.getJSON('/similar?uri='+widgetUri, function(similar){ 
-       for(var i=0;i<similar.length;i++){ 
-         $("#related-widgets").append("<div>"+similar[i].name+"</div>");
-       };
+       for(var i=0;i<similar.length;i++){
+         $("<div>"+similar[i].name+"</div>").hide().appendTo("#related-widgets").fadeIn("slow");
+       };  
      }); 
      
     //
@@ -64,6 +64,7 @@
        for(var i=0;i<reviews.length;i++){ 
        
          var li = document.createElement("li");
+         $(li).hide();
          
          var wrapper = document.createElement("div");
          $(wrapper).attr("class","review-item-wrapper");
@@ -96,8 +97,7 @@
          $(wrapper).append(clear);       
                 
          $(li).append(wrapper);
-     
-         $("#user-reviews ul").append(li);
+         $(li).appendTo("#user-reviews ul").fadeIn("slow");
        };
      });     
     
