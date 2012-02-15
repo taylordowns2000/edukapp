@@ -2,6 +2,7 @@ package uk.ac.edukapp.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 
@@ -11,6 +12,9 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="useractivities")
+@NamedQueries({
+    @NamedQuery(name="Useractivity.uploaded", query="SELECT act " + "FROM Useractivity act WHERE (act.objectId = :objectId AND act.activity='uploaded')")
+}) 
 public class Useractivity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
