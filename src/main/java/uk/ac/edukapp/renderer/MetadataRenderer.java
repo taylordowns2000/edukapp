@@ -40,6 +40,18 @@ public class MetadataRenderer {
 		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 		return mapper;
 	}
+	
+	public static void render(OutputStream out, ExtendedWidgetProfile extendedWidgetProfile){
+		try {
+			getObjectMapper().writeValue(out, extendedWidgetProfile);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void render(OutputStream out, List<Widgetprofile> widgetProfiles){
 		try {
