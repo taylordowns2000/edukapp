@@ -24,16 +24,28 @@
    // Load the widget profile
    //
    $.getJSON('/widget?id=<%=request.getParameter("id")%>', function(data){
-     widgetUri = data[0].uri;
-     $("#widget_name").text(data[0].name);
+     widgetUri = data.widgetProfile.uri;
      
-     var tags = data[0].tags;
-     for (var i=0;i<tags.length;i++){
-       var tag = document.createElement("a");
-       $(tag).attr("class", "small blue tag");
-       $(tag).text(tags[i].tagtext);
-       $(tag).attr("href", "/tags/"+tags[i].id);
-       $("#widget-tags").append(tag);
+     //
+     // Show metadata
+     //
+     $("#widget_name").text(data.widgetProfile.name);
+     if (data.uploadedBy){
+       $("#upload-info").text("Uploaded by "+data.uploadedBy.username);
+     }
+     
+     //
+     // Show tags
+     //
+     if (data.widgetProfile.tags){
+       var tags = data.widgetProfile.tags;
+       for (var i=0;i<tags.length;i++){
+         var tag = document.createElement("a");
+         $(tag).attr("class", "small blue tag");
+         $(tag).text(tags[i].tagtext);
+         $(tag).attr("href", "/tags/"+tags[i].id);
+         $("#widget-tags").append(tag);
+       }
      }
      
      //
@@ -128,7 +140,7 @@
 			<div id="main">
 
 				<h1 id="widget_name"></h1>
-				<p class="upload-info">no upload info available</p>
+				<p id="upload-info" class="upload-info">no upload info available</p>
 
 				<div class="clear"></div>
 
