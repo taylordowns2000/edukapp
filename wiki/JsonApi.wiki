@@ -96,3 +96,12 @@ Returns:
   }
 ]
 }}}
+
+= GET /widget?id={widget id}=
+
+Get the specified widget profile
+
+
+= GET /widget?uri={widget uri}=
+
+Get the specified widget profile
