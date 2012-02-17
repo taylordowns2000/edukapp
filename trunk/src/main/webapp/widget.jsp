@@ -9,23 +9,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<link rel="stylesheet" href="css/reset.css" type="text/css" />
-<link rel="stylesheet" href="css/layout.css" type="text/css" />
-<link rel="stylesheet" href="css/header.css" type="text/css" />
-<link rel="stylesheet" href="css/widget.css" type="text/css" />
-<link rel="stylesheet" href="css/footer.css" type="text/css" />
 <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-<title>EDUKApp</title>
+<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
 
+.sidebar-nav {
+	padding: 9px 0;
+}
+</style>
+<link rel="stylesheet" href="css/bootstrap-responsive.css"
+	type="text/css" />
+<title>EDUKApp</title>
 <script>
- $(document).ready(function(){
- 
-   var widgetUri;
-   //
-   // Load the widget profile
-   //
-   $.getJSON('/widget?id=<%=request.getParameter("id")%>',function(data) {
+$(document).ready(function(){
+
+  var widgetUri;
+  //
+  // Load the widget profile
+  //
+  $.getJSON('/widget?id=<%=request.getParameter("id")%>',function(data) {
 	   console.log(data);
 	   
 											widgetUri = data.widgetProfile.uri;
@@ -45,11 +52,16 @@
 												var tags = data.widgetProfile.tags;
 												for ( var i = 0; i < tags.length; i++) {
 													var tag = document.createElement("a");
-													$(tag).attr("class","small blue tag");
+													var tag_icon = document.createElement("i");
+													$(tag_icon).attr("class","icon-tag");
+													$(tag).attr("class","btn");
 													$(tag).text(tags[i].tagtext);
 													$(tag).attr("href","/tags/"	+ tags[i].id);
+													$(tag).prepend(tag_icon);
 													$("#widget-tags").append(tag);
 												}
+												
+												
 											}
 
 											//
@@ -164,119 +176,177 @@
 
 					});
 </script>
+
 </head>
+
+<%
+  //--------------------------------
+  // deduce whether user is logged in 
+  //--------------------------------
+  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
+      .getAttribute("emf");
+  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
+%>
+
+
 <body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="brand" href="#">Edukapp</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+					<%
+					  if (isAuthenticated) {
+					    
+					    Useraccount loggedinuser = (Useraccount)session.getAttribute("logged-in-user");
+					    
+					%>
+					<p class="navbar-text pull-right">
+						Logged in as <a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><% out.print(loggedinuser.getUsername());%></a><a style="margin-left:5px;" href="/logout">logout</a>
+					</p>
+					<%
+					  } else {
+					%>
 
-	<%
-	  //--------------------------------
-	  // deduce whether user is logged in
-	  //--------------------------------
-	  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
-	      .getAttribute("emf");
-	  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
-	  if (isAuthenticated) {
-	%>
-	<%@ include file="static/logged-in-as-box.jsp"%>
-	<%
-	  } else {
-	%>
-	<%@ include file="static/login-box.jsp"%>
-	<%
-	  }
-	%>
+					<form class="navbar-text pull-right form-inline">
+						<input type="text" class="input-small" placeholder="Email">
+						<input type="password" class="input-small" placeholder="Password">
+						<button type="submit" class="btn">Go</button>
+					</form>
 
-	<%@ include file="static/header.html"%>
-
-
-	<div id="page-wrapper">
-
-		<div id="main-content-wrapper">
-			<div id="sidebar">
-				<ul>
-					<li id="sidebar-embed-list-item"><div class="img-holder">&nbsp;</div>
-						<span>Embed</span>
-						<div class="clear"></div></li>
-					<li id="sidebar-download-list-item"><div class="img-holder">&nbsp;</div>
-						<span>Download</span>
-						<div class="clear"></div></li>
-					<li id="sidebar-tag-list-item"><div class="img-holder">&nbsp;</div>
-						<span>Tag</span>
-						<div class="clear"></div></li>
-					<li id="sidebar-review-list-item"><div class="img-holder">&nbsp;</div>
-						<span>Review</span>
-						<div class="clear"></div></li>
-				</ul>
+					<%
+					  }
+					%>
+				</div>
 			</div>
+		</div>
+	</div>
 
-			<div id="main">
 
-				<h1 id="widget_name"></h1>
-				<p id="upload-info" class="upload-info">no upload info available</p>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Sidebar</li>
+						<li><a href="#"><i class="icon-share-alt"></i>Embed</a>
+						</li>
+						<li><a href="#"><i class="icon-share-alt"></i>Download</a>
+						</li>
+						<li><a href="#"><i class="icon-tag"></i>Tag</a>
+						</li>
+						<li><a href="#"><i class="icon-comment"></i>Review</a>
+						</li>
+					</ul>
+				</div>
+				<!--/.well -->
+			</div>
+			<!--/span-->
+			<div class="span9">
+				<div class="row-fluid">
+					<h1 id="widget_name">Widget name</h1>
+					<p id="upload-info" class="upload-info">no upload info
+						available</p>
+				</div>
+				<div class="row-fluid">
+					<div class="span6">
 
-				<div class="clear"></div>
-
-				<div id="first-row-boxes">
-					<div id="widget-left">
 						<div id="widget-preview">screenshot or preview instance</div>
 						<div id="widget-stats-bar">
 							<div id="widget-usage">usage</div>
 							<div id="widget-rating">rating</div>
 							<div class="clear"></div>
 						</div>
+
+
 					</div>
-					<div id="widget-right">
-						<h2>Description:</h2>
-						<div id="widget-description-text">Lorem Ipsum is simply
-							dummy text of the printing and typesetting industry. Lorem Ipsum
-							has been the industry's standard dummy text ever since the 1500s,
-							when an unknown printer took a galley of type and scrambled it to
-							make a type specimen book. It has survived not only five
-							centuries, but also the leap into electronic typesetting,
-							remaining essentially unchanged. It was popularised in the 1960s
-							with the release of Letraset sheets containing Lorem Ipsum
-							passages, and more recently with desktop publishing software like
-							Aldus PageMaker including versions of Lorem Ipsum.</div>
-
-						<h2>Tagged as:</h2>
-						<div id="widget-tags"></div>
-
-						<h2>Useful for:</h2>
+					<!--/span-->
+					<div class="span6">
+						<h4>Descripiton:</h4>
+						<dl>Lorem Ipsum is simply dummy text of the printing and
+							typesetting industry. Lorem Ipsum has been the industry's
+							standard dummy text ever since the 1500s, when an unknown printer
+							took a galley of type and scrambled it to make a type specimen
+							book. It has survived not only five centuries, but also the leap
+							into electronic typesetting, remaining essentially unchanged. It
+							was popularised in the 1960s with the release of Letraset sheets
+							containing Lorem Ipsum passages, and more recently with desktop
+							publishing software like Aldus PageMaker including versions of
+							Lorem Ipsum.
+						</dl>
+						<h4>Tagged as:</h4>
+						<div id="widget-tags">
+							
+						</div>
+						<h4>Useful for:</h4>
 						<div id="widget-useful-for">
-							<a href="#" class="btn">collaboration</a> <a href="#"
-								class="btn">learning</a> <a href="#"
-								class="btn">fun</a>
+							<a class="btn"><i class="icon-ok-circle"></i>use1</a> <a
+								class="btn"><i class="icon-ok-circle"></i>use2</a> <a
+								class="btn"><i class="icon-ok-circle"></i>use3</a>
 						</div>
 					</div>
-					<div class="clear"></div>
+					<!--/span-->
 				</div>
-				<!-- end of first-row-boxes -->
+				<div class="row-fluid">
+					<div class="span6">reviews</div>
 
-				<div class="clear"></div>
-
-				<div id="second-row-boxes">
-					<div id="user-reviews">
-						<h2>User reviews</h2>
-						<ul id="user-reviews-list">
-						</ul>
-					</div>
-					<div id="related-widgets">
-						<h2>Related widgets</h2>
-					</div>
-					<div class="clear"></div>
+					<div class="span6">similar</div>
 				</div>
-				<!-- end of second-row-boxes -->
-				<div class="clear"></div>
-
+				<!--/row-->
 			</div>
-			<div class="clear"></div>
+			<!--/span-->
 		</div>
+		<!--/row-->
+
+		<hr>
+
+		<footer>
+			<div class="row-fluid">
+				<div id="footer-logos" class="span3">
+					<div id="ou-logo">
+						<img width="45" src="images/ou-logo.png"
+							alt="open university logo" />
+					</div>
+					<div id="jisc-logo">
+						<img width="45" src="images/jisc-logo.png" alt="jisc logo" />
+					</div>
+				</div>
+				<div id="footer-site-links" class="span3">
+					<h3>Site links</h3>
+					<ul>
+						<li>Home</li>
+						<li>Upload</li>
+						<li>About</li>
+						<li>Contact</li>
+						<li>Blog</li>
+					</ul>
+				</div>
+				<div id="footer-types" class="span3">
+					<h3>Types</h3>
+					<ul>
+						<li>alpha</li>
+						<li>beta</li>
+						<li>gamma</li>
+						<li>delta</li>
+						<li>epsilon</li>
+					</ul>
+					<h4 class="see-more">
+						<a href="#">see more..</a>
+					</h4>
+				</div>
+				<div id="footer-tags" class="span3">tttt</div>
+			</div>
+		</footer>
 
 	</div>
-	<!-- end of page-wrapper -->
 
 
 
-	<%@ include file="static/footer.html"%>
 
 
 </body>
