@@ -142,5 +142,17 @@ h2 {
     border: 1px solid blue;
     background-color: grey;
 }
-
+#sidebar ul {margin:0px;padding:0px;}
+#sidebar ul li {list-style:none;}
+#sidebar ul li .img-holder{float:left;
+	background-image:url('/images/glyphicons-halflings.png');
+	margin:0px;
+	padding:0px;
+	width:20px;height:20px;
+}
+#sidebar ul li span {margin-left:5px;float:left;}
+#sidebar-embed-list-item .img-holder{background-position:140px 39px;}
+#sidebar-download-list-item .img-holder{background-position:-114px -20px;}
+#sidebar-tag-list-item .img-holder{background-position:-20px -43px;}
+#sidebar-review-list-item .img-holder{background-position:235px -115px;}
 

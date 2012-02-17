@@ -10,10 +10,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
 <link rel="stylesheet" href="css/header.css" type="text/css" />
 <link rel="stylesheet" href="css/widget.css" type="text/css" />
 <link rel="stylesheet" href="css/footer.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
 <title>EDUKApp</title>
 
 <script>
@@ -23,90 +25,144 @@
    //
    // Load the widget profile
    //
-   $.getJSON('/widget?id=<%=request.getParameter("id")%>', function(data){
-     widgetUri = data.widgetProfile.uri;
-     
-     //
-     // Show metadata
-     //
-     $("#widget_name").text(data.widgetProfile.name);
-     if (data.uploadedBy){
-       $("#upload-info").text("Uploaded by "+data.uploadedBy.username);
-     }
-     
-     //
-     // Show tags
-     //
-     if (data.widgetProfile.tags){
-       var tags = data.widgetProfile.tags;
-       for (var i=0;i<tags.length;i++){
-         var tag = document.createElement("a");
-         $(tag).attr("class", "small blue tag");
-         $(tag).text(tags[i].tagtext);
-         $(tag).attr("href", "/tags/"+tags[i].id);
-         $("#widget-tags").append(tag);
-       }
-     }
-     
-     //
-     // Load similar widget profiles
-     //
-     $.getJSON('/similar?uri='+widgetUri, function(similar){ 
-       for(var i=0;i<similar.length;i++){
-         $("<div>"+similar[i].name+"</div>").hide().appendTo("#related-widgets").fadeIn("slow");
-       };  
-     }); 
-     
-    //
-    // Load reviews
-    //
-     $.getJSON('/review?uri='+widgetUri, function(reviews){ 
-       for(var i=0;i<reviews.length;i++){ 
-       
-         var li = document.createElement("li");
-         $(li).hide();
-         
-         var wrapper = document.createElement("div");
-         $(wrapper).attr("class","review-item-wrapper");
-         
-         var pic = document.createElement("div");
-         $(pic).attr("class", "review-item-pic");
-         var img = document.createElement("img");
-         $(img).attr("src","http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
-         $(pic).append(img);
-         $(wrapper).append(pic);
-         
-         var item = document.createElement("div");
-         $(item).attr("class", "review-item-content");
-         
-         var iteminfo  = document.createElement("div");
-         $(iteminfo).attr("class", "review-item-info-wrapper");
-         $(iteminfo).append("<p><a href='#'>"+reviews[i].user+"</a> "+reviews[i].time+"</p>");
-         $(iteminfo).append("<p> "+reviews[i].rating+" stars</p>");
-         $(item).append(iteminfo);
-         
-         var itemtext = document.createElement("div");
-         $(itemtext).attr("class", "review-content-text");
-         $(itemtext).text(reviews[i].text);
-         $(item).append(itemtext);
-         
-         $(wrapper).append(item);  
+   $.getJSON('/widget?id=<%=request.getParameter("id")%>',function(data) {
+	   console.log(data);
+	   
+											widgetUri = data.widgetProfile.uri;
 
-         var clear = document.createElement("div");
-         $("clear").attr("class", "clear");  
-         $(wrapper).append(clear);       
-                
-         $(li).append(wrapper);
-         $(li).appendTo("#user-reviews ul").fadeIn("slow");
-       };
-     });     
-    
-   });
-   
-   
+											//
+											// Show metadata
+											//
+											$("#widget_name").text(data.widgetProfile.name);
+											if (data.uploadedBy) {
+												$("#upload-info").text("Uploaded by "+ data.uploadedBy.username);
+											}
 
- });
+											//
+											// Show tags
+											//
+											if (data.widgetProfile.tags) {
+												var tags = data.widgetProfile.tags;
+												for ( var i = 0; i < tags.length; i++) {
+													var tag = document.createElement("a");
+													$(tag).attr("class","small blue tag");
+													$(tag).text(tags[i].tagtext);
+													$(tag).attr("href","/tags/"	+ tags[i].id);
+													$("#widget-tags").append(tag);
+												}
+											}
 
+											//
+											// Load similar widget profiles
+											//
+											$.getJSON('/similar?uri='+ widgetUri,function(similar) {
+												for ( var i = 0; i < similar.length; i++) {
+													$("<div>"+ similar[i].name+ "</div>").hide()
+																			.appendTo("#related-widgets")
+																			.fadeIn("slow");
+												};
+											});
+
+											//
+											// Load reviews
+											//
+											$.getJSON('/review?uri='+ widgetUri,function(reviews) {
+												for ( var i = 0; i < reviews.length; i++) {
+													var li = document.createElement("li");
+													$(li).hide();
+													var wrapper = document.createElement("div");
+													$(wrapper).attr("class","review-item-wrapper");
+
+																	var pic = document
+																			.createElement("div");
+																	$(pic)
+																			.attr(
+																					"class",
+																					"review-item-pic");
+																	var img = document
+																			.createElement("img");
+																	$(img)
+																			.attr(
+																					"src",
+																					"http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
+																	$(pic)
+																			.append(
+																					img);
+																	$(wrapper)
+																			.append(
+																					pic);
+
+																	var item = document
+																			.createElement("div");
+																	$(item)
+																			.attr(
+																					"class",
+																					"review-item-content");
+
+																	var iteminfo = document
+																			.createElement("div");
+																	$(iteminfo)
+																			.attr(
+																					"class",
+																					"review-item-info-wrapper");
+																	$(iteminfo)
+																			.append(
+																					"<p><a href='#'>"
+																							+ reviews[i].user
+																							+ "</a> "
+																							+ reviews[i].time
+																							+ "</p>");
+																	$(iteminfo)
+																			.append(
+																					"<p> "
+																							+ reviews[i].rating
+																							+ " stars</p>");
+																	$(item)
+																			.append(
+																					iteminfo);
+
+																	var itemtext = document
+																			.createElement("div");
+																	$(itemtext)
+																			.attr(
+																					"class",
+																					"review-content-text");
+																	$(itemtext)
+																			.text(
+																					reviews[i].text);
+																	$(item)
+																			.append(
+																					itemtext);
+
+																	$(wrapper)
+																			.append(
+																					item);
+
+																	var clear = document
+																			.createElement("div");
+																	$("clear")
+																			.attr(
+																					"class",
+																					"clear");
+																	$(wrapper)
+																			.append(
+																					clear);
+
+																	$(li)
+																			.append(
+																					wrapper);
+																	$(li)
+																			.appendTo(
+																					"#user-reviews ul")
+																			.fadeIn(
+																					"slow");
+																}
+																;
+															});
+
+										});
+
+					});
 </script>
 </head>
 <body>
@@ -135,7 +191,22 @@
 	<div id="page-wrapper">
 
 		<div id="main-content-wrapper">
-			<%@ include file="static/sidebar.jsp"%>
+			<div id="sidebar">
+				<ul>
+					<li id="sidebar-embed-list-item"><div class="img-holder">&nbsp;</div>
+						<span>Embed</span>
+						<div class="clear"></div></li>
+					<li id="sidebar-download-list-item"><div class="img-holder">&nbsp;</div>
+						<span>Download</span>
+						<div class="clear"></div></li>
+					<li id="sidebar-tag-list-item"><div class="img-holder">&nbsp;</div>
+						<span>Tag</span>
+						<div class="clear"></div></li>
+					<li id="sidebar-review-list-item"><div class="img-holder">&nbsp;</div>
+						<span>Review</span>
+						<div class="clear"></div></li>
+				</ul>
+			</div>
 
 			<div id="main">
 
@@ -167,14 +238,13 @@
 							Aldus PageMaker including versions of Lorem Ipsum.</div>
 
 						<h2>Tagged as:</h2>
-						<div id="widget-tags">
-						</div>
-						
+						<div id="widget-tags"></div>
+
 						<h2>Useful for:</h2>
 						<div id="widget-useful-for">
-							<a href="#" class="small blue tag">collaboration</a> <a href="#"
-								class="small blue tag">learning</a> <a href="#"
-								class="small blue tag">fun</a>
+							<a href="#" class="btn">collaboration</a> <a href="#"
+								class="btn">learning</a> <a href="#"
+								class="btn">fun</a>
 						</div>
 					</div>
 					<div class="clear"></div>

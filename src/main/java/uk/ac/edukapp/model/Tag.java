@@ -26,7 +26,10 @@ public class Tag implements Serializable {
 	private String tagtext;
 
 	//bi-directional many-to-many association to Widgetprofile
-	@ManyToMany(mappedBy="tags")
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name = "widgetprofiles_tags", 
+	    joinColumns = { @JoinColumn(name = "tag_id", referencedColumnName="id",nullable = false) }, 
+	    inverseJoinColumns = { @JoinColumn(name = "widgetprofile_id", referencedColumnName="id",nullable = false) })
 	private List<Widgetprofile> widgetprofiles;
 
     public Tag() {

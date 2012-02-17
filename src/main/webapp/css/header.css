@@ -1,9 +1,18 @@
+#header h1{
+	color: #eee;
+	border-bottom: none;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;    
+    line-height: 18px;    
+}
 #header-wrapper {
 	margin-left:20%;
 }
 #logo-holder {
 	width:100px;
+	float:left;
 }
 #header-search-box {
+	margin-left:20px;
 	width:250px;
+	float:left;
 }
