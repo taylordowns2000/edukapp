@@ -52,6 +52,26 @@
 		<url-pattern>/similar</url-pattern>
 	</servlet-mapping>
 	
+	
+	
+	<!-- upload servlet -->
+		<servlet>
+		<description>Uplad servlet</description>
+		<display-name>upload</display-name>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>
+			uk.ac.edukapp.servlets.UploadServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	<!-- upload servlet end-->
+	
+	
+	
 	<servlet>
 		<description>Featured servlet</description>
 		<display-name>featured</display-name>
