@@ -66,6 +66,7 @@ public class WidgetServlet extends HttpServlet{
 			extendedWidgetProfile.setUploadedBy(activityService.getUploadedBy(widgetProfile));
 		}
 		
+		
 		OutputStream out = resp.getOutputStream();
 		MetadataRenderer.render(out, extendedWidgetProfile);
 		out.flush();

@@ -7,7 +7,6 @@
 	<class>uk.ac.edukapp.model.Activity</class>
 	<class>uk.ac.edukapp.model.Comment</class>
 	<class>uk.ac.edukapp.model.Tag</class>
-	<class>uk.ac.edukapp.model.Test</class>
 	<class>uk.ac.edukapp.model.Type</class>
 	<class>uk.ac.edukapp.model.Useraccount</class>
 	<class>uk.ac.edukapp.model.Useractivity</class>
@@ -30,13 +29,13 @@
 			<property name="openjpa.ConnectionFactoryProperties" value="autoReconnect=true,roundRobinLoadBalance=true"/>
 			<property name="TableType" 	value="innodb"/>   
 			
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
 			<!--
             <property name="openjpa.DataCache"                value="true"/> 		
             <property name="openjpa.RemoteCommitProvider"     value="sjvm"/>
             <property name="openjpa.InitializeEagerly"        value="true"/>
     		<property name="openjpa.DynamicEnhancementAgent"  value="false"/>
-    		<property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>
-            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+    		<property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>            
     		<property name="openjpa.jdbc.QuerySQLCache"       value="true(EnableStatistics=true)"/>
 			-->
     	</properties>

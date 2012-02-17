@@ -5,6 +5,7 @@
 	import="org.apache.wookie.connector.framework.*,
 	uk.ac.edukapp.util.*,
 	uk.ac.edukapp.model.*,
+	uk.ac.edukapp.service.*,
 	java.util.*,
 	javax.persistence.*,
 	javax.persistence.EntityManager,
@@ -23,33 +24,41 @@
 	  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
 	      .getAttribute("emf");
 	  EntityManager em = emf.createEntityManager();
+	  WidgetProfileService ws = new WidgetProfileService(request.getServletContext());
 
-	  Query q = em.createQuery("SELECT act " + "FROM Useractivity act "
-	      + "WHERE (act.objectId = ?1 AND act.activity='uploaded')");
-	  q.setParameter(1, 1051);
-
-	  //get the widget profile
-	  Useractivity uactivity = null;
-	  Useractivity result = null;
-	  Useraccount uploader = null;
-	  List<Useractivity> results = (List<Useractivity>) q.getResultList();
-	  if (results != null && results.size() > 0) {
-	    result = results.get(0);
+	  Query q = em.createQuery("SELECT w FROM Widgetprofile w WHERE w.id=901");
+	  Widgetprofile widgetProfile2=(Widgetprofile)q.getSingleResult();
+	  
+	  Widgetprofile widgetProfile = ws.findWidgetProfileById("901");
+	  
+	  out.print(widgetProfile.getName());
+// 	  out.print(widgetProfile2.getName());
+	  
+// 	  List<Tag> tags = new ArrayList<Tag>();
+// 	  Tag tag1 = new Tag();
+// 	  tag1.setTagtext("test5");
+	  
+	  
+// 	  em.persist(tag1);
+	  
+// 	  tags.add(tag1);
+// 	  widgetProfile.setTags(tags);
+	  
+	  //em.persist(widgetProfile);
+	  List<Tag> tags = widgetProfile.getTags();
+	  
+	  for(Tag t:tags){
+	    out.print(t.getTagtext());
 	  }
 	  
-	  if (result != null) {
-	    List<Useraccount> userResultList = (List<Useraccount>) em
-	        .createQuery("SELECT u FROM Useraccount u WHERE u.id=?1")
-	        .setParameter(1, result.getSubjectId())
-	        .getResultList();
-	    if (userResultList != null && userResultList.size() > 0) {
-		    uploader = userResultList.get(0);
-		  }
-	  }
 	  
-	  out.print(uploader.getEmail());
+	 
+	  
+	  
+	  
+	
 	%>
 
-	xairetai!!!
+	
 </body>
 </html>

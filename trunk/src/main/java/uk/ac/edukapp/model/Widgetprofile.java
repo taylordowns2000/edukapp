@@ -41,8 +41,10 @@ public class Widgetprofile implements Serializable {
   private String widId;
 
   // bi-directional many-to-many association to Tag
-  @ManyToMany
-  @JoinTable(name = "widgetprofiles_tags", joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "tag_id", nullable = false) })
+  @ManyToMany(cascade=CascadeType.ALL)
+  @JoinTable(name = "widgetprofiles_tags",
+      joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, 
+      inverseJoinColumns = { @JoinColumn(name = "tag_id", nullable = false) })
   private List<Tag> tags;
 
   // bi-directional many-to-many association to Activity
