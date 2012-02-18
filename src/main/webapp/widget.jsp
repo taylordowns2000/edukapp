@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
 <style type="text/css">
 body {
-	padding-top: 60px;
+	padding-top: 60px; 
 	padding-bottom: 40px;
 }
 
@@ -25,157 +25,7 @@ body {
 <link rel="stylesheet" href="css/bootstrap-responsive.css"
 	type="text/css" />
 <title>EDUKApp</title>
-<script>
-$(document).ready(function(){
-
-  var widgetUri;
-  //
-  // Load the widget profile
-  //
-  $.getJSON('/widget?id=<%=request.getParameter("id")%>',function(data) {
-	   console.log(data);
-	   
-											widgetUri = data.widgetProfile.uri;
-
-											//
-											// Show metadata
-											//
-											$("#widget_name").text(data.widgetProfile.name);
-											if (data.uploadedBy) {
-												$("#upload-info").text("Uploaded by "+ data.uploadedBy.username);
-											}
-
-											//
-											// Show tags
-											//
-											if (data.widgetProfile.tags) {
-												var tags = data.widgetProfile.tags;
-												for ( var i = 0; i < tags.length; i++) {
-													var tag = document.createElement("a");
-													var tag_icon = document.createElement("i");
-													$(tag_icon).attr("class","icon-tag");
-													$(tag).attr("class","btn");
-													$(tag).text(tags[i].tagtext);
-													$(tag).attr("href","/tags/"	+ tags[i].id);
-													$(tag).prepend(tag_icon);
-													$("#widget-tags").append(tag);
-												}
-												
-												
-											}
-
-											//
-											// Load similar widget profiles
-											//
-											$.getJSON('/similar?uri='+ widgetUri,function(similar) {
-												for ( var i = 0; i < similar.length; i++) {
-													$("<div>"+ similar[i].name+ "</div>").hide()
-																			.appendTo("#related-widgets")
-																			.fadeIn("slow");
-												};
-											});
-
-											//
-											// Load reviews
-											//
-											$.getJSON('/review?uri='+ widgetUri,function(reviews) {
-												for ( var i = 0; i < reviews.length; i++) {
-													var li = document.createElement("li");
-													$(li).hide();
-													var wrapper = document.createElement("div");
-													$(wrapper).attr("class","review-item-wrapper");
-
-																	var pic = document
-																			.createElement("div");
-																	$(pic)
-																			.attr(
-																					"class",
-																					"review-item-pic");
-																	var img = document
-																			.createElement("img");
-																	$(img)
-																			.attr(
-																					"src",
-																					"http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
-																	$(pic)
-																			.append(
-																					img);
-																	$(wrapper)
-																			.append(
-																					pic);
-
-																	var item = document
-																			.createElement("div");
-																	$(item)
-																			.attr(
-																					"class",
-																					"review-item-content");
-
-																	var iteminfo = document
-																			.createElement("div");
-																	$(iteminfo)
-																			.attr(
-																					"class",
-																					"review-item-info-wrapper");
-																	$(iteminfo)
-																			.append(
-																					"<p><a href='#'>"
-																							+ reviews[i].user
-																							+ "</a> "
-																							+ reviews[i].time
-																							+ "</p>");
-																	$(iteminfo)
-																			.append(
-																					"<p> "
-																							+ reviews[i].rating
-																							+ " stars</p>");
-																	$(item)
-																			.append(
-																					iteminfo);
-
-																	var itemtext = document
-																			.createElement("div");
-																	$(itemtext)
-																			.attr(
-																					"class",
-																					"review-content-text");
-																	$(itemtext)
-																			.text(
-																					reviews[i].text);
-																	$(item)
-																			.append(
-																					itemtext);
-
-																	$(wrapper)
-																			.append(
-																					item);
-
-																	var clear = document
-																			.createElement("div");
-																	$("clear")
-																			.attr(
-																					"class",
-																					"clear");
-																	$(wrapper)
-																			.append(
-																					clear);
-
-																	$(li)
-																			.append(
-																					wrapper);
-																	$(li)
-																			.appendTo(
-																					"#user-reviews ul")
-																			.fadeIn(
-																					"slow");
-																}
-																;
-															});
-
-										});
-
-					});
-</script>
+<script src="scripts/widget.js"></script>
 
 </head>
 
@@ -190,6 +40,7 @@ $(document).ready(function(){
 
 
 <body>
+<input id="widgetid" type="hidden" value="<%=request.getParameter("id")%>" />
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -213,9 +64,9 @@ $(document).ready(function(){
 					  } else {
 					%>
 
-					<form class="navbar-text pull-right form-inline">
-						<input type="text" class="input-small" placeholder="Email">
-						<input type="password" class="input-small" placeholder="Password">
+					<form type="POST" action="login" class="navbar-text pull-right form-inline">
+						<input autocomplete="off" id="name" name="username" type="text" class="input-small" placeholder="Email">
+						<input autocomplete="off" id="pass"	name="password" type="password" class="input-small" placeholder="Password">
 						<button type="submit" class="btn">Go</button>
 					</form>
 
@@ -236,7 +87,7 @@ $(document).ready(function(){
 						<li class="nav-header">Sidebar</li>
 						<li><a href="#"><i class="icon-share-alt"></i>Embed</a>
 						</li>
-						<li><a href="#"><i class="icon-share-alt"></i>Download</a>
+						<li><a href="#"><i class="icon-download"></i>Download</a>
 						</li>
 						<li><a href="#"><i class="icon-tag"></i>Tag</a>
 						</li>
@@ -268,7 +119,7 @@ $(document).ready(function(){
 					<!--/span-->
 					<div class="span6">
 						<h4>Descripiton:</h4>
-						<dl>Lorem Ipsum is simply dummy text of the printing and
+						<dl id="widget-description">Lorem Ipsum is simply dummy text of the printing and
 							typesetting industry. Lorem Ipsum has been the industry's
 							standard dummy text ever since the 1500s, when an unknown printer
 							took a galley of type and scrambled it to make a type specimen
@@ -279,6 +130,7 @@ $(document).ready(function(){
 							publishing software like Aldus PageMaker including versions of
 							Lorem Ipsum.
 						</dl>
+						<a id="edit-widget-information" href="#">edit</a>
 						<h4>Tagged as:</h4>
 						<div id="widget-tags">
 							
@@ -298,13 +150,7 @@ $(document).ready(function(){
 					<div class="span6">similar</div>
 				</div>
 				<!--/row-->
-			</div>
-			<!--/span-->
-		</div>
-		<!--/row-->
-
-		<hr>
-
+				
 		<footer>
 			<div class="row-fluid">
 				<div id="footer-logos" class="span3">
@@ -318,36 +164,44 @@ $(document).ready(function(){
 				</div>
 				<div id="footer-site-links" class="span3">
 					<h3>Site links</h3>
-					<ul>
-						<li>Home</li>
-						<li>Upload</li>
+					<ul class="unstyled">
+						<li><i class="icon-home"></i>Home</li>
+						<li><i class="icon-upload"></i>Submit a widget</li>
 						<li>About</li>
 						<li>Contact</li>
 						<li>Blog</li>
 					</ul>
 				</div>
 				<div id="footer-types" class="span3">
-					<h3>Types</h3>
-					<ul>
-						<li>alpha</li>
-						<li>beta</li>
-						<li>gamma</li>
-						<li>delta</li>
-						<li>epsilon</li>
+					<h3><i class="icon-ok-circle"></i>Activities</h3>
+					<ul class="unstyled">
+						<li class="btn-small">alpha</li>
+						<li class="btn-small">beta</li>
+						<li class="btn-small">gamma</li>
+						<li class="btn-small">delta</li>
+						<li class="btn-small">epsilon</li>
 					</ul>
 					<h4 class="see-more">
 						<a href="#">see more..</a>
 					</h4>
 				</div>
-				<div id="footer-tags" class="span3">tttt</div>
+				<div id="footer-tags" class="span3">
+				<h3><i class="icon-tags"></i>Tags</h3>
+				<ul class="unstyled">
+						<li class="btn-small">tag-alpha</li>
+						<li class="btn-small">beta-tag</li>
+						<li class="btn-small">gamma-tag</li>
+						<li class="btn-small">tag-delta</li>
+						<li class="btn-small">tag_epsilon</li>
+					</ul>
+				</div>
 			</div>
 		</footer>
-
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+		<hr>
 	</div>
-
-
-
-
-
 </body>
 </html>

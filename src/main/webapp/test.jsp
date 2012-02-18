@@ -25,37 +25,14 @@
 	      .getAttribute("emf");
 	  EntityManager em = emf.createEntityManager();
 	  WidgetProfileService ws = new WidgetProfileService(request.getServletContext());
-
-	  Query q = em.createQuery("SELECT w FROM Widgetprofile w WHERE w.id=901");
-	  Widgetprofile widgetProfile2=(Widgetprofile)q.getSingleResult();
-	  
-	  Widgetprofile widgetProfile = ws.findWidgetProfileById("901");
+	  	  
+	  Widgetprofile widgetProfile = ws.findWidgetProfileById("1");
 	  
 	  out.print(widgetProfile.getName());
-// 	  out.print(widgetProfile2.getName());
 	  
-// 	  List<Tag> tags = new ArrayList<Tag>();
-// 	  Tag tag1 = new Tag();
-// 	  tag1.setTagtext("test5");
+	  WidgetDescription desc = widgetProfile.getDescription(); 
 	  
-	  
-// 	  em.persist(tag1);
-	  
-// 	  tags.add(tag1);
-// 	  widgetProfile.setTags(tags);
-	  
-	  //em.persist(widgetProfile);
-	  List<Tag> tags = widgetProfile.getTags();
-	  
-	  for(Tag t:tags){
-	    out.print(t.getTagtext());
-	  }
-	  
-	  
-	 
-	  
-	  
-	  
+	  out.print(desc.getDescription());	  
 	
 	%>
 
