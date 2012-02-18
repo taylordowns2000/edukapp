@@ -84,39 +84,39 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>
-                    com.googlecode.mavenfilesync
-                </groupId>
-				<artifactId>
-                    maven-filesync-plugin
-                </artifactId>
-				<version>
-                    1.0.0
-                </version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>
-                                generate
-                            </goal>
-						</goals>
-						<configuration>
-							<!--<override>false</override> -->
-							<mappings>
-								<mapping>
-									<sourceFolder>
-										\:edukapp/target/tomcat7x/webapps/ROOT
-									</sourceFolder>
-									<destinationFolder>
-										\:edukapp/src/main/webapp
-									</destinationFolder>
-								</mapping>
-							</mappings>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId> -->
+<!--                     com.googlecode.mavenfilesync -->
+<!--                 </groupId> -->
+<!-- 				<artifactId> -->
+<!--                     maven-filesync-plugin -->
+<!--                 </artifactId> -->
+<!-- 				<version> -->
+<!--                     1.0.0 -->
+<!--                 </version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal> -->
+<!--                                 generate -->
+<!--                             </goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<override>false</override> -->
+<!-- 							<mappings> -->
+<!-- 								<mapping> -->
+<!-- 									<sourceFolder> -->
+<!-- 										\:edukapp/target/tomcat7x/webapps/ROOT -->
+<!-- 									</sourceFolder> -->
+<!-- 									<destinationFolder> -->
+<!-- 										\:edukapp/src/main/webapp -->
+<!-- 									</destinationFolder> -->
+<!-- 								</mapping> -->
+<!-- 							</mappings> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
 	<dependencies>
