@@ -77,16 +77,12 @@ $(document)
 										if (data.widgetProfile.tags) {
 											var tags = data.widgetProfile.tags;
 											for ( var i = 0; i < tags.length; i++) {
-												var tag = document
-														.createElement("a");
-												var tag_icon = document
-														.createElement("i");
-												$(tag_icon).attr("class",
-														"icon-tag");
-												$(tag).attr("class", "btn");
+												var tag = document.createElement("a");
+												var tag_icon = document.createElement("i");
+												$(tag_icon).attr("class","icon-tag icon-white");
+												$(tag).attr("class", "btn btn-info");
 												$(tag).text(tags[i].tagtext);
-												$(tag).attr("href",
-														"/tags/" + tags[i].id);
+												$(tag).attr("href","/tags/" + tags[i].id);
 												$(tag).prepend(tag_icon);
 												$("#widget-tags").append(tag);
 											}
@@ -115,111 +111,55 @@ $(document)
 															;
 														});
 
-										//
-										// Load reviews
-										//
-										$
-												.getJSON(
-														'/review?uri='
-																+ widgetUri,
-														function(reviews) {
-															for ( var i = 0; i < reviews.length; i++) {
-																var li = document
-																		.createElement("li");
-																$(li).hide();
-																var wrapper = document
-																		.createElement("div");
-																$(wrapper)
-																		.attr(
-																				"class",
-																				"review-item-wrapper");
-
-																var pic = document
-																		.createElement("div");
-																$(pic)
-																		.attr(
-																				"class",
-																				"review-item-pic");
-																var img = document
-																		.createElement("img");
-																$(img)
-																		.attr(
-																				"src",
-																				"http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
-																$(pic).append(
-																		img);
-																$(wrapper)
-																		.append(
-																				pic);
-
-																var item = document
-																		.createElement("div");
-																$(item)
-																		.attr(
-																				"class",
-																				"review-item-content");
-
-																var iteminfo = document
-																		.createElement("div");
-																$(iteminfo)
-																		.attr(
-																				"class",
-																				"review-item-info-wrapper");
-																$(iteminfo)
-																		.append(
-																				"<p><a href='#'>"
-																						+ reviews[i].user
-																						+ "</a> "
-																						+ reviews[i].time
-																						+ "</p>");
-																$(iteminfo)
-																		.append(
-																				"<p> "
-																						+ reviews[i].rating
-																						+ " stars</p>");
-																$(item)
-																		.append(
-																				iteminfo);
-
-																var itemtext = document
-																		.createElement("div");
-																$(itemtext)
-																		.attr(
-																				"class",
-																				"review-content-text");
-																$(itemtext)
-																		.text(
-																				reviews[i].text);
-																$(item)
-																		.append(
-																				itemtext);
-
-																$(wrapper)
-																		.append(
-																				item);
-
-																var clear = document
-																		.createElement("div");
-																$("clear")
-																		.attr(
-																				"class",
-																				"clear");
-																$(wrapper)
-																		.append(
-																				clear);
-
-																$(li)
-																		.append(
-																				wrapper);
-																$(li)
-																		.appendTo(
-																				"#user-reviews ul")
-																		.fadeIn(
-																				"slow");
-															}
-															;
-														});
-
-									});
+       //
+       // Load reviews
+       //
+       $.getJSON('/review?uri='+widgetUri, function(reviews){ 
+       for(var i=0;i<reviews.length;i++){ 
+       
+         var li = document.createElement("div");
+         $(li).hide();
+         
+         var wrapper = document.createElement("div");
+         $(wrapper).attr("class", "row-fluid");  
+                 
+         //
+         // User avatar, handle and link
+         //
+         var pic = document.createElement("div");
+         $(pic).attr("class", "span1");          
+         var img = document.createElement("img");
+         $(img).attr("src","http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
+         $(pic).append(img);
+         $(pic).append("<h5><a href='#'>"+reviews[i].user+"</a></h5>");
+         $(wrapper).append(pic);
+         
+         //
+         // Date, stars and comment
+         //
+         var item = document.createElement("div");
+         $(item).attr("class", "span11");
+         
+         var iteminfo  = document.createElement("div");
+         $(iteminfo).attr("class", "review-item-info-wrapper");
+         for (var stars=0;stars<reviews[i].rating;stars++){
+           $(iteminfo).append("<i class='icon-star'></i>");
+         }
+         $(item).append(iteminfo);
+         
+         var itemtext = document.createElement("p");
+         $(itemtext).attr("class", "review-content-text");
+         $(itemtext).text(reviews[i].text);
+         $(item).append(itemtext);
+         $(item).append("<h6>"+reviews[i].time+"</h6>");
+         
+         $(wrapper).append(item);       
+                
+         $(li).append(wrapper);
+         $(li).appendTo("#user-reviews").fadeIn("slow");
+       };
+     });     
+    
+   });
 
 				});
