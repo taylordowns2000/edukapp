@@ -10,77 +10,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-<style type="text/css">
-body {
-	padding-top: 60px; 
-	padding-bottom: 40px;
-}
 
-.sidebar-nav {
-	padding: 9px 0;
-}
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
 
-footer {
-    margin-top: 50px;
-}
-</style>
-<link rel="stylesheet" href="css/bootstrap-responsive.css"
-	type="text/css" />
 <title>EDUKApp</title>
 <script src="scripts/widget.js"></script>
 
 </head>
 
-<%
-  //--------------------------------
-  // deduce whether user is logged in 
-  //--------------------------------
-  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
-      .getAttribute("emf");
-  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
-%>
 
 
 <body>
 <input id="widgetid" type="hidden" value="<%=request.getParameter("id")%>" />
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<a class="brand" href="#">Edukapp</a>
-				<div class="nav-collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-					<%
-					  if (isAuthenticated) {
-					    
-					    Useraccount loggedinuser = (Useraccount)session.getAttribute("logged-in-user");
-					    
-					%>
-					<p class="navbar-text pull-right">
-						Logged in as <a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><% out.print(loggedinuser.getUsername());%></a><a style="margin-left:5px;" href="/logout">logout</a>
-					</p>
-					<%
-					  } else {
-					%>
-
-					<form type="POST" action="login" class="pull-right form-inline" style="display: inline; margin-bottom: 0; margin-left: 15px">
-						<input autocomplete="off" id="name" name="username" type="text" class="input-small" placeholder="Email">
-						<input autocomplete="off" id="pass"	name="password" type="password" class="input-small" placeholder="Password">
-						<button type="submit" class="btn" style="margin: 5px">log in</button>
-					</form>
-					
-					<%
-					  }
-					%>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file='components/header.jsp'%>
 
 
 	<div class="container-fluid">
@@ -163,58 +106,13 @@ footer {
                     <div class="span4">&nbsp;</div>
 				</div>
 				<!--/row-->
-				
-		<footer>
-			<div class="row-fluid">
-				<div id="footer-logos" class="span3">
-					<div id="ou-logo">
-						<img width="45" src="images/ou-logo.png"
-							alt="open university logo" />
-					</div>
-					<div id="jisc-logo">
-						<img width="45" src="images/jisc-logo.png" alt="jisc logo" />
-					</div>
-				</div>
-				<div id="footer-site-links" class="span3">
-					<h3>Site links</h3>
-					<ul class="unstyled">
-						<li><i class="icon-home"></i>Home</li>
-						<li><i class="icon-upload"></i>Submit a widget</li>
-						<li>About</li>
-						<li>Contact</li>
-						<li>Blog</li>
-					</ul>
-				</div>
-				<div id="footer-types" class="span3">
-					<h3><i class="icon-ok-circle"></i>Activities</h3>
-					<ul class="unstyled">
-						<li class="btn-small">alpha</li>
-						<li class="btn-small">beta</li>
-						<li class="btn-small">gamma</li>
-						<li class="btn-small">delta</li>
-						<li class="btn-small">epsilon</li>
-					</ul>
-					<h4 class="see-more">
-						<a href="#">see more..</a>
-					</h4>
-				</div>
-				<div id="footer-tags" class="span3">
-				<h3><i class="icon-tags"></i>Tags</h3>
-				<ul class="unstyled">
-						<li class="btn-small">tag-alpha</li>
-						<li class="btn-small">beta-tag</li>
-						<li class="btn-small">gamma-tag</li>
-						<li class="btn-small">tag-delta</li>
-						<li class="btn-small">tag_epsilon</li>
-					</ul>
-				</div>
-			</div>
-		</footer>
 			</div>
 			<!--/span-->
 		</div>
 		<!--/row-->
 		<hr>
 	</div>
+	
+   <%@ include file='components/footer.jsp'%>
 </body>
 </html>
