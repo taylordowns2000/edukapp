@@ -102,6 +102,7 @@ public class WidgetProfileService extends AbstractService {
 			//
 			widgetProfile.getTags();
 			widgetProfile.getActivities();
+			widgetProfile.getDescription();
 			entityManager.close();
 			return widgetProfile;
 		} catch (NoResultException e) {
@@ -120,6 +121,7 @@ public class WidgetProfileService extends AbstractService {
 		//
 		widgetProfile.getTags();
 		widgetProfile.getActivities();
+		widgetProfile.getDescription();
 		entityManager.close();
 		return widgetProfile;
 	}
