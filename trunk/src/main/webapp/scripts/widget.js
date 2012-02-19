@@ -84,7 +84,7 @@ $(document)
 												$(tag).text(tags[i].tagtext);
 												$(tag).attr("href","/tags/" + tags[i].id);
 												$(tag).prepend(tag_icon);
-												$("#widget-tags").append(tag);
+												$("#widget-tags").append(tag).append(" ");
 											}
 
 										}
