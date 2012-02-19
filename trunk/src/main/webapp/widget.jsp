@@ -108,17 +108,19 @@ body {
 					<div class="span6">
 
 						<div id="widget-preview">screenshot or preview instance</div>
-						<div id="widget-stats-bar">
-							<div id="widget-usage">usage</div>
-							<div id="widget-rating">rating</div>
-							<div class="clear"></div>
-						</div>
+						<p id="widget-stats-bar" class="label">
+							<span id="widget-usage">
+                                <i class="icon-download icon-white"></i> 3 downloads <br>
+                                <i class="icon-share-alt icon-white"></i>16 embeds<br>
+                            </span>
+							<span id="widget-rating">average rating <i class="icon-star icon-white"></i><i class="icon-star icon-white"></i><i class="icon-star icon-white"></i> (1 rating)</span>
+						</p>
 
 
 					</div>
 					<!--/span-->
 					<div class="span6">
-						<h4>Descripiton:</h4>
+						<h6>Descripiton:</h6>
 						<dl id="widget-description">Lorem Ipsum is simply dummy text of the printing and
 							typesetting industry. Lorem Ipsum has been the industry's
 							standard dummy text ever since the 1500s, when an unknown printer
@@ -131,23 +133,30 @@ body {
 							Lorem Ipsum.
 						</dl>
 						<a id="edit-widget-information" href="#">edit</a>
-						<h4>Tagged as:</h4>
+						<h6>Tagged as:</h6>
 						<div id="widget-tags">
 							
 						</div>
-						<h4>Useful for:</h4>
+						<h6>Useful for:</h6>
 						<div id="widget-useful-for">
-							<a class="btn"><i class="icon-ok-circle"></i>use1</a> <a
-								class="btn"><i class="icon-ok-circle"></i>use2</a> <a
-								class="btn"><i class="icon-ok-circle"></i>use3</a>
+							<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> collaboration</a> 
+                            <a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> learning</a> 
+                            <a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> fun</a>
 						</div>
+						
+						<h6>Related widgets</h6>
+                        <ul id="related-widgets" class="thumbnails"></ul>
 					</div>
 					<!--/span-->
 				</div>
 				<div class="row-fluid">
-					<div class="span6">reviews</div>
-
-					<div class="span6">similar</div>
+					<div id="user-reviews" class="span6">
+						<h6>User reviews</h6>
+                        <p><a href="#">Write a review</a></p>
+						<div id="user-reviews-list">
+                        </div>
+					</div>
+                    <div class="span4">&nbsp;</div>
 				</div>
 				<!--/row-->
 				
