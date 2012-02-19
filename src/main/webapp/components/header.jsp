@@ -5,25 +5,32 @@
 			<div class="container-fluid">
 				<a class="brand" href="#">Edukapp</a>
 				<div class="nav-collapse">
+				
 					<%
 					  if (isAuthenticated) {
-					    
 					    Useraccount loggedinuser = (Useraccount)session.getAttribute("logged-in-user");
-					    
 					%>
-					<p class="navbar-text pull-right">
-						Logged in as <a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><% out.print(loggedinuser.getUsername());%></a><a style="margin-left:5px;" href="/logout">logout</a>
-					</p>
+					
+				    <ul class="nav">
+						<li><a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><i class="icon icon-user icon-white"></i><% out.print(loggedinuser.getUsername());%></a></li>
+						<li><a style="margin-left:5px;" href="/logout">Log out</a></li>
+				    </ul>
+
 					<%
 					  } else {
 					%>
-                    <form class="navbar-search pull-left"><input type="text" class="search-query" placeholder="Search"></form>
+				
+				    <%@ include file="login_form.jsp"%>
 
-	                <%@ include file="login_form.jsp"%>
-					
+					<ul class="nav">
+				        <li id="login_link"><a href="#" onclick="$('#login_form').css('display','inline');$('#login_link').hide();">Log in</a></li>
+                        <li><a href="register.jsp">Register</a></li>
+                    </ul>
+                    
 					<%
 					  }
 					%>
+				    <form class="navbar-search pull-right"><input type="text" class="search-query" placeholder="Search"></form>
 				</div>
 			</div>
 		</div>
