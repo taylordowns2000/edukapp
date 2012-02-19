@@ -20,38 +20,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="css/layout.css00000000000" type="text/css" />
-<link rel="stylesheet" href="css/reset.css" type="text/css" />
-<link rel="stylesheet" href="css/layout.css" type="text/css" />
-<link rel="stylesheet" href="css/header.css" type="text/css" />
-<link rel="stylesheet" href="css/main.css" type="text/css" />
-<link rel="stylesheet" href="css/footer.css" type="text/css" />
+
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
+
 <title>EDUKApp</title>
 </head>
 <body>
 
-		<%
-		  //--------------------------------
-		  // deduce whether user is logged in
-		  //--------------------------------
-		  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
-		      .getAttribute("emf");
-		  boolean isAuthenticated = JspUtils.isAuthenticated(session, request, emf);
-		  if (isAuthenticated) {
-		%>
-		<%@ include file="static/logged-in-as-box.jsp"%>
-		<%
-		  } else {
-		%>
-		<%@ include file="static/login-box.jsp"%>
-		<%
-		  }
-		%>
 
-		<%@ include file="static/header.html"%>
-	<div id="page-wrapper">
-		<div id="main-content-wrapper">
-			<%@ include file="static/sidebar.jsp"%>
+		    
+        <%@ include file='components/header.jsp'%>
+
+        <div class="container-fluid">
+		   <div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+				   <ul class="nav nav-list">
+						<li class="nav-header">Sidebar</li>
+						<li><a href="#"><i class="icon-question-sign"></i>What goes here?</a>
+						</li>
+					</ul>
+				</div>
+            </div>
+            <div class="span9">
+		
 
 			<%
 			  String userid = request.getParameter("userid");
@@ -75,11 +68,6 @@
 			%>
 
 
-
-
-
-
-			<div id="main">
 <%
 if (ai == null) {
 			    out.print("account info is null");
@@ -239,11 +227,10 @@ if (ai == null) {
 				<%}//end of user exists  %>
 				
 			</div>
-			<div class="clear"></div>
 		</div>
 	</div>
 	<!-- end of page-wrapper -->
-		<%@ include file="static/footer.html"%>
+	<%@ include file="components/footer.jsp"%>
 
 </body>
 </html>
