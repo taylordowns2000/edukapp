@@ -21,6 +21,10 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+
+footer {
+    margin-top: 50px;
+}
 </style>
 <link rel="stylesheet" href="css/bootstrap-responsive.css"
 	type="text/css" />
