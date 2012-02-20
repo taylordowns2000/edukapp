@@ -1,7 +1,4 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page
+	<%@ page
 	import="org.apache.wookie.connector.framework.*,
 	uk.ac.edukapp.util.*,
 	uk.ac.edukapp.model.*,
@@ -11,15 +8,7 @@
 	javax.persistence.EntityManager,
 	javax.persistence.EntityManagerFactory,
 	org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
+	org.apache.commons.logging.LogFactory"%>	
 	<%
 	  EntityManagerFactory emf = (EntityManagerFactory) getServletContext()
 	      .getAttribute("emf");
@@ -54,9 +43,7 @@ String newTag = "tag for widget2";
 
 		if (widget_tags == null) {
 			widget_tags = new ArrayList<Tag>();
-		}
-
-		
+		}	
 		
 		
 		if (widget_tags.contains(tag)) {
@@ -65,11 +52,11 @@ out.print("contains");
 			widget_tags.add(tag);
 			out.print("does not contains");
 
-// 			widget.setTags(widget_tags);
+ 			widget.setTags(widget_tags);
 			
-// 			entityManager.merge((widget));
+ 			entityManager.merge((widget));
 
-// 			entityManager.getTransaction().commit();
+			entityManager.getTransaction().commit();
 
 		}
 	  
@@ -77,7 +64,3 @@ out.print("contains");
 	  
 	  
 	%>
-
-	
-</body>
-</html>

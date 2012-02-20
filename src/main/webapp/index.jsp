@@ -4,13 +4,11 @@
 	pageEncoding="UTF-8"%>
 <%@ page
 	import="org.apache.wookie.connector.framework.*,
-	uk.ac.edukapp.util.*,
-	uk.ac.edukapp.model.Useraccount,java.util.*,
-	javax.persistence.*,
-	javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory,
-	org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory"%>
+	uk.ac.edukapp.util.*,uk.ac.edukapp.model.Useraccount,java.util.*,
+	javax.persistence.*,javax.persistence.EntityManager,
+	javax.persistence.EntityManagerFactory,org.apache.commons.logging.Log,
+	org.apache.commons.logging.LogFactory,
+	uk.ac.edukapp.renderer.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,75 +18,172 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
+<script src="scripts/jquery.anythingslider.min.js"></script>
+<link rel="stylesheet" href="css/anythingslider.css" />
+<script>
+	// DOM Ready
+	$(function() {
+		$('#widget-slider').anythingSlider({
+			expand : false,
+			buildNavigation : false,
+			buildStartStop : false,
+
+		});
+	});
+</script>
 </head>
 <body>
-    
-    <%@ include file='components/header.jsp'%>
-    
+
+	<%@ include file='components/header.jsp'%>
+
 	<div class="container-fluid">
-        <div class="span3">
+		<div class="row-fluid">
+			<div class="span3">
 				<div class="well sidebar-nav">
-				   <ul class="nav nav-list">
+					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="#"><i class="icon-question-sign"></i>Something here...</a>
-						</li>
+						<li><a href="#"><i class="icon-question-sign"></i>Something
+								here...</a></li>
 					</ul>
 				</div>
-        </div>
-		<div class="span9">
-			<div id="main">
-				<div id="first-row-boxes">
-					<div id="intro-text">
-						<h2>Edukapp</h2>
-						<p>EDUkation UK wide App store</p>
-						<div id="intro-text-container">Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit. Nunc ac lacus dui, sit amet placerat
-							enim. Integer euismod pulvinar velit id porta. Fusce varius nisl
-							sit amet velit molestie nec commodo sem malesuada. Morbi orci mi,
-							consequat ac bibendum non, porttitor eget nisl. Donec
-							sollicitudin metus sit amet nibh sagittis dictum. Praesent
-							porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
-							Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
-							Mauris id molestie nulla. In feugiat, odio in porta volutpat,
-							ante magna ultricies diam, at iaculis est mauris congue mauris.
-							Mauris eget turpis nec turpis tempor congue ac eget ligula.
-							Phasellus ultricies interdum enim, tempor luctus augue posuere
-							eget.</div>
-					</div>
-					<div id="intro-screencast">screencast</div>
-					<div class="clear"></div>
+			</div>
+			<div class="span9">
+				<div class="hero-unit" style="position: relative;">
+					<h1>EDUKApp</h1>
+					<p>Education UK wide App store</p>
+					<span> Lorem ipsum dolor sit amet, consectetur adipiscing
+						elit. Nunc ac lacus dui, sit amet placerat enim. Integer euismod
+						pulvinar velit id porta. Fusce varius nisl sit amet velit molestie
+						nec commodo sem malesuada. Morbi orci mi, consequat ac bibendum
+						non, porttitor eget nisl. Donec sollicitudin metus sit amet nibh
+						sagittis dictum. Praesent porttitor bibendum quam a auctor. Proin
+						blandit dictum faucibus. Sed purus urna, cursus quis blandit eget,
+						consequat vitae nisl. Mauris id molestie nulla. In feugiat, odio
+						in porta volutpat, ante magna ultricies diam, at iaculis est
+						mauris congue mauris. Mauris eget turpis nec turpis tempor congue
+						ac eget ligula. Phase </span>
+					<p>
+						<a class="btn btn-primary btn-large">Learn more »</a>
+					</p>
+
+					<div
+						style="position: absolute; top: 10px; right: 10px; width: 300px; height: 200px; background-color: pink;"
+						id="intro-screencast">screencast</div>
+
+
 				</div>
+				<div id="main">
+
+
+					<div id="widget-slider-wrapper">
+
+						<style>
+#slider {
+	width: 700px;
+	height: 390px;
+}
+</style>
+
+
+						<%
+							List<Widgetprofile> featuredWidgets = null;
+
+							EntityManager em = emf.createEntityManager();
+							Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
+									+ "WHERE u.featured=1");
+
+							Widgetprofile wid = null;
+
+							featuredWidgets = (List<Widgetprofile>) q.getResultList();
+							if (featuredWidgets != null) {
+						%>
+
+
+
+						<ul id="widget-slider">
+
+							<li class="panel" style="height: 200px;">
+							
+							
+							<%
+							
+							for (int i=0;i<featuredWidgets.size();i++){
+												
+								Widgetprofile w = (Widgetprofile)featuredWidgets.get(i);
+								String iframe = Renderer.renderById(session.getServletContext(),""+w.getId());//,400,250);
+								out.print("<div class='widget-wrapper'>");
+								out.print(iframe);								
+								out.print("</div>");
+								out.print("<div class='widget-short-info'>");
+								out.print("<a href='widget.jsp?id="+w.getId()+"'>"+w.getName()+"</a>");
+								out.print("widget name,rating,stats");
+								out.print("</div>");
+								
+								
+							}
+							%>
+							
+							
+							
+							</li>
+
+							<li class="panel">22222Lorem ipsum dolor sit amet,
+								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
+								placerat enim. Integer euismod pulvinar velit id porta. Fusce
+								varius nisl sit amet velit molestie nec commodo sem malesuada.
+								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
+								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
+								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
+								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
+								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
+								ante magna ultricies diam, at iaculis est mauris congue mauris.
+								Mauris eget turpis nec turpis tempor congue ac eget ligula.
+								Phase</li>
+
+							<li class="panel">33333Lorem ipsum dolor sit amet,
+								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
+								placerat enim. Integer euismod pulvinar velit id porta. Fusce
+								varius nisl sit amet velit molestie nec commodo sem malesuada.
+								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
+								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
+								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
+								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
+								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
+								ante magna ultricies diam, at iaculis est mauris congue mauris.
+								Mauris eget turpis nec turpis tempor congue ac eget ligula.
+								Phase</li>
+
+							<li class="panel">4444Lorem ipsum dolor sit amet,
+								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
+								placerat enim. Integer euismod pulvinar velit id porta. Fusce
+								varius nisl sit amet velit molestie nec commodo sem malesuada.
+								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
+								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
+								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
+								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
+								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
+								ante magna ultricies diam, at iaculis est mauris congue mauris.
+								Mauris eget turpis nec turpis tempor congue ac eget ligula.
+								Phase</li>
+					</div>
+
+					<%
+						} else {
+							out.print("no featured widgets");
+						}
+					%>
+
+					<!-- 
 				<div id="widget-slider">
+				
+				
+				
 					<div id="widget-slider-left-btn">
 						&lt;
 						<div class="clear"></div>
 					</div>
 					<div id="widget-slider-container">
-						<%
-						  List<Widgetprofile> featuredWidgets = null;
-
-						  EntityManager em = emf.createEntityManager();
-						  Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
-						      + "WHERE u.featured=1");
-
-						  Widgetprofile wid = null;
-
-						  featuredWidgets = (List<Widgetprofile>) q.getResultList();
-						  if (featuredWidgets != null) {
-						    WidgetRenderer renderer = WidgetRenderer.getInstance();
-						    for (Widgetprofile f : featuredWidgets) {
-						      String html = renderer.render(f.getWidId()); 
-						      if (html!=null) {
-						        out.print(html);
-						      }else {
-						        out.print("html is null");
-						      }
-						    }						    
-						  } else {
-						    out.print("no featured widgets");
-						  }
-						%>
-
+						
 						<div class="widget-box">
 							widget a
 							<div class="clear"></div>
@@ -128,13 +223,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="clear"></div>
+			-->
+					<div class="clear"></div>
+				</div>
+				<%@ include file="components/footer.jsp"%>
+			</div>
+			
 		</div>
-	</div>
-	<!-- end of page-wrapper -->
+		<!-- end of page-wrapper -->
 
-	<%@ include file="components/footer.jsp"%>
-
-
+		
 </body>
 </html>
