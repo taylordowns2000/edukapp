@@ -1,15 +1,54 @@
+<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
+<%@page import="uk.ac.edukapp.model.Widgetprofile"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page
+	import="org.apache.wookie.connector.framework.*,
+	uk.ac.edukapp.util.*,uk.ac.edukapp.model.Useraccount,java.util.*,
+	javax.persistence.*,javax.persistence.EntityManager,
+	javax.persistence.EntityManagerFactory,org.apache.commons.logging.Log,
+	org.apache.commons.logging.LogFactory,
+	uk.ac.edukapp.renderer.*"%>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="css/login.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
+
+<title>EDUKApp</title>
+<script src="scripts/jquery.anythingslider.min.js"></script>
+<link rel="stylesheet" href="css/anythingslider.css" />
+<script>
+	// DOM Ready
+	$(function() {
+		$('#widget-slider').anythingSlider({
+			expand : false,
+			buildNavigation : false,
+			buildStartStop : false,
+
+		});
+	});
+</script>
 </head>
 <body>
 
-<%
+	<%@ include file='components/header.jsp'%>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">Sidebar</li>
+						<li><a href="#"><i class="icon-question-sign"></i>Something
+								here...</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="span9">
+			<%
 String wrong = request.getParameter("wrong");
 %>
 
@@ -45,8 +84,12 @@ String wrong = request.getParameter("wrong");
 		</p>
 
 	</div>
+			
+			<%@ include file="components/footer.jsp"%>
+			</div>
 
-
-
+		</div>
+		<!-- end of page-wrapper -->
 </body>
 </html>
+
