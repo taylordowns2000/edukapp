@@ -3,12 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="org.apache.wookie.connector.framework.*,
-	uk.ac.edukapp.util.*,uk.ac.edukapp.model.Useraccount,java.util.*,
-	javax.persistence.*,javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory,org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory,
-	uk.ac.edukapp.renderer.*"%>
+	import="org.apache.wookie.connector.framework.*,uk.ac.edukapp.util.*,uk.ac.edukapp.model.Useraccount,java.util.*,javax.persistence.*,javax.persistence.EntityManager,javax.persistence.EntityManagerFactory,org.apache.commons.logging.Log,org.apache.commons.logging.LogFactory,uk.ac.edukapp.renderer.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,25 +46,32 @@
 				<div class="hero-unit" style="position: relative;">
 					<h1>EDUKApp</h1>
 					<p>Education UK wide App store</p>
-					<span> Lorem ipsum dolor sit amet, consectetur adipiscing
-						elit. Nunc ac lacus dui, sit amet placerat enim. Integer euismod
-						pulvinar velit id porta. Fusce varius nisl sit amet velit molestie
-						nec commodo sem malesuada. Morbi orci mi, consequat ac bibendum
-						non, porttitor eget nisl. Donec sollicitudin metus sit amet nibh
-						sagittis dictum. Praesent porttitor bibendum quam a auctor. Proin
-						blandit dictum faucibus. Sed purus urna, cursus quis blandit eget,
-						consequat vitae nisl. Mauris id molestie nulla. In feugiat, odio
-						in porta volutpat, ante magna ultricies diam, at iaculis est
-						mauris congue mauris. Mauris eget turpis nec turpis tempor congue
-						ac eget ligula. Phase </span>
-					<p>
-						<a class="btn btn-primary btn-large">Learn more »</a>
-					</p>
+					<div class="span8">
+						<span> Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit. Nunc ac lacus dui, sit amet placerat enim. Integer euismod
+							pulvinar velit id porta. Fusce varius nisl sit amet velit
+							molestie nec commodo sem malesuada. Morbi orci mi, consequat ac
+							bibendum non, porttitor eget nisl. Donec sollicitudin metus sit
+							amet nibh sagittis dictum. Praesent porttitor bibendum quam a
+							auctor. Proin blandit dictum faucibus. Sed purus urna, cursus
+							quis blandit eget, consequat vitae nisl. Mauris id molestie
+							nulla. In feugiat, odio in porta volutpat, ante magna ultricies
+							diam, at iaculis est mauris congue mauris. Mauris eget turpis nec
+							turpis tempor congue ac eget ligula. Phase </span>
+						<p style="margin-top: 10px;">
+							<a class="btn btn-primary btn-large">Learn more »</a>
+						</p>
+					</div>
 
-					<div
-						style="position: absolute; top: 10px; right: 10px; width: 300px; height: 200px; background-color: pink;"
-						id="intro-screencast">screencast</div>
+					<div class="span4" id="intro-screencast">
 
+						<iframe
+							src="http://player.vimeo.com/video/36818561?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff"
+							width="401" height="228" frameborder="0" webkitAllowFullScreen
+							mozallowfullscreen allowFullScreen></iframe>
+						<div class="clear" style="clear: both;"></div>
+					</div>
+					<div class="clear" style="clear: both;"></div>
 
 				</div>
 				<div id="main">
@@ -80,7 +82,11 @@
 						<style>
 #slider {
 	width: 700px;
-	height: 390px;
+	height: 690px;
+}
+
+.widget-wrapper {
+	float: left;
 }
 </style>
 
@@ -101,70 +107,40 @@
 
 
 						<ul id="widget-slider">
-
-							<li class="panel" style="height: 200px;">
-							
-							
 							<%
-							
-							for (int i=0;i<featuredWidgets.size();i++){
-												
-								Widgetprofile w = (Widgetprofile)featuredWidgets.get(i);
-								String iframe = Renderer.renderById(session.getServletContext(),""+w.getId());//,400,250);
-								out.print("<div class='widget-wrapper'>");
-								out.print(iframe);								
-								out.print("</div>");
-								out.print("<div class='widget-short-info'>");
-								out.print("<a href='widget.jsp?id="+w.getId()+"'>"+w.getName()+"</a>");
-								out.print("widget name,rating,stats");
-								out.print("</div>");
-								
-								
-							}
+							out.print("homw many:"+featuredWidgets.size());
+								for (int i = 0; i < featuredWidgets.size()/2; i++) {
 							%>
-							
-							
-							
+							<li class="panel" style="height: 200px;">
+								<%
+									//show 2 widgets per page
+											for (int j = i*2; (j < i + 2) && (j < featuredWidgets.size()-1); j++) {
+
+												Widgetprofile w = (Widgetprofile) featuredWidgets
+														.get(j);
+												String iframe = Renderer.renderById(
+														session.getServletContext(), "" + w.getId());//,400,250);
+												out.print("<div class='widget-wrapper'>");
+												out.print(iframe);
+
+												out.print("<div class='widget-short-info'>");
+												out.print("<a href='widget.jsp?id=" + w.getId() + "'>"
+														+ w.getName() + "</a>");
+												out.print("widget name,rating,stats");
+												out.print("<div class='clear' style='clear:both;'></div>");
+												out.print("</div>");
+												out.print("</div>");
+
+											}
+								%>
+								<div class="clear" style="clear: both;"></div>
+
+
 							</li>
-
-							<li class="panel">22222Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
-								placerat enim. Integer euismod pulvinar velit id porta. Fusce
-								varius nisl sit amet velit molestie nec commodo sem malesuada.
-								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
-								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
-								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
-								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
-								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
-								ante magna ultricies diam, at iaculis est mauris congue mauris.
-								Mauris eget turpis nec turpis tempor congue ac eget ligula.
-								Phase</li>
-
-							<li class="panel">33333Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
-								placerat enim. Integer euismod pulvinar velit id porta. Fusce
-								varius nisl sit amet velit molestie nec commodo sem malesuada.
-								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
-								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
-								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
-								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
-								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
-								ante magna ultricies diam, at iaculis est mauris congue mauris.
-								Mauris eget turpis nec turpis tempor congue ac eget ligula.
-								Phase</li>
-
-							<li class="panel">4444Lorem ipsum dolor sit amet,
-								consectetur adipiscing elit. Nunc ac lacus dui, sit amet
-								placerat enim. Integer euismod pulvinar velit id porta. Fusce
-								varius nisl sit amet velit molestie nec commodo sem malesuada.
-								Morbi orci mi, consequat ac bibendum non, porttitor eget nisl.
-								Donec sollicitudin metus sit amet nibh sagittis dictum. Praesent
-								porttitor bibendum quam a auctor. Proin blandit dictum faucibus.
-								Sed purus urna, cursus quis blandit eget, consequat vitae nisl.
-								Mauris id molestie nulla. In feugiat, odio in porta volutpat,
-								ante magna ultricies diam, at iaculis est mauris congue mauris.
-								Mauris eget turpis nec turpis tempor congue ac eget ligula.
-								Phase</li>
+							<%
+								}
+							%>
+						
 					</div>
 
 					<%
@@ -228,10 +204,8 @@
 				</div>
 				<%@ include file="components/footer.jsp"%>
 			</div>
-			
+
 		</div>
 		<!-- end of page-wrapper -->
-
-		
 </body>
 </html>
