@@ -15,6 +15,8 @@ import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.WidgetDescription;
 import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.renderer.SearchResults;
+import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 
 /*
@@ -64,12 +66,12 @@ public class WidgetProfileService extends AbstractService {
 		return widgetProfiles;
 	}
 
-	public List<Widgetprofile> searchWidgetProfilesOrderedByRelevance(
+	public SearchResults searchWidgetProfilesOrderedByRelevance(
 			String query, String language, int rows, int offset) {
 		return searchWidgetProfiles(query, language, rows, offset);
 	}
 
-	public List<Widgetprofile> searchWidgetProfilesOrderedByRating(
+	public SearchResults searchWidgetProfilesOrderedByRating(
 			String query, String language, int rows, int offset) {
 		// FIXME create comparator using ratings
 		return searchWidgetProfiles(query, language, rows, offset);
@@ -83,7 +85,7 @@ public class WidgetProfileService extends AbstractService {
 		return getWidgetProfilesForWidgets(widgets);
 	}
 
-	public List<Widgetprofile> searchWidgetProfilesOrderedByPopularity(
+	public SearchResults searchWidgetProfilesOrderedByPopularity(
 			String query, String language, int rows, int offset) {
 		// FIXME create comparator using popularity
 		return searchWidgetProfiles(query, language, rows, offset);
@@ -126,13 +128,14 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.close();
 		return widgetProfile;
 	}
-
-	private List<Widgetprofile> searchWidgetProfiles(String query,
-			String language, int rows, int offset) {
-		WidgetService widgetService = new WidgetService();
-		List<Widget> widgets = widgetService.findWidgets(query, language, rows,
-				offset);
-		return getWidgetProfilesForWidgets(widgets);
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public SearchResults searchWidgetProfiles(String query, String lang, int rows, int offset){
+		SearchResults searchResults = SolrConnector.getInstance().query(query, lang, rows, offset);
+		List widgets = searchResults.getWidgets();
+		searchResults.setWidgets(getWidgetProfilesForWidgets(widgets));
+		return searchResults;
+		
 	}
 
 	private List<Widgetprofile> getWidgetProfilesForWidgets(List<Widget> widgets) {

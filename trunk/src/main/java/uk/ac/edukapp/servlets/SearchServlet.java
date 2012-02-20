@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
@@ -45,11 +46,20 @@ public class SearchServlet extends HttpServlet{
 			throws ServletException, IOException {
 		String query = req.getParameter("q");
 		
+		int offset;
+		try {
+			String start = req.getParameter("start");
+			if (start == null || start.trim().length() == 0) start = "0";
+			offset = Integer.parseInt(start);
+		} catch (NumberFormatException e) {
+			offset = 0;
+		}
+		
 		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
-		List<Widgetprofile> widgetProfiles = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, 0);
+		SearchResults searchResults = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, offset);
 		
 		OutputStream out = resp.getOutputStream();
-		MetadataRenderer.render(out, widgetProfiles);
+		MetadataRenderer.render(out, searchResults);
 		out.flush();
 		out.close();
 	}
