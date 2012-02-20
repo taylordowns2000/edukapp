@@ -2,6 +2,7 @@ package uk.ac.edukapp.service;
 
 import java.util.List;
 
+import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 
@@ -36,7 +37,8 @@ public class WidgetService {
 	}
 	
 	public List<Widget> findWidgets(String query, String lang, int rows, int offset){
-		List<Widget> widgets = SolrConnector.getInstance().query(query, lang, rows, offset);
+		@SuppressWarnings("unchecked")
+		List<Widget> widgets = SolrConnector.getInstance().query(query, lang, rows, offset).getWidgets();
 		return widgets; 
 	}
 
@@ -45,7 +47,8 @@ public class WidgetService {
 	}
 	
 	public Widget findWidgetByUri(String uri, String lang){
-		List<Widget> widgets = SolrConnector.getInstance().query("uri:"+uri,lang, 1,0);
+		@SuppressWarnings("unchecked")
+		List<Widget> widgets = SolrConnector.getInstance().query("uri:"+uri,lang, 1,0).getWidgets();
 		Widget widget = null;
 		if (widgets.size()==1) widget = widgets.get(0);
 		return widget;

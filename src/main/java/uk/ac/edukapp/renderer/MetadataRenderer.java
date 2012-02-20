@@ -2,10 +2,6 @@ package uk.ac.edukapp.renderer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-
-import uk.ac.edukapp.model.Userreview;
-import uk.ac.edukapp.model.Widgetprofile;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -41,9 +37,9 @@ public class MetadataRenderer {
 		return mapper;
 	}
 	
-	public static void render(OutputStream out, ExtendedWidgetProfile extendedWidgetProfile){
+	public static void render(OutputStream out, Object object){
 		try {
-			getObjectMapper().writeValue(out, extendedWidgetProfile);
+			getObjectMapper().writeValue(out, object);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,43 +49,4 @@ public class MetadataRenderer {
 		}
 	}
 
-	public static void render(OutputStream out, List<Widgetprofile> widgetProfiles){
-		try {
-			getObjectMapper().writeValue(out, widgetProfiles);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public static void render(OutputStream out, Widgetprofile widgetProfile){
-		try {
-			getObjectMapper().writeValue(out, widgetProfile);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static String render(Widgetprofile widgetProfile){
-		return widgetProfile.getName()+"\n";
-	}
-	
-	public static void renderReviews(OutputStream out, List<Userreview> userReviews){
-		try {
-			getObjectMapper().writeValue(out, userReviews);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

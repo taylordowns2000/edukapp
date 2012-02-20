@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.MoreLikeThisParams;
 
+import uk.ac.edukapp.renderer.SearchResults;
+
 /**
  * Store implementation for the Widget Discovery Service
  * 
@@ -77,9 +79,9 @@ public class SolrConnector {
 	 * Execute query on Solr server. Always returns a result set list, even
 	 * if the query fails.
 	 * @param term
-	 * @return list of matching widgets
+	 * @return search results object including matching widgets
 	 */
-	public List<Widget> query(String term, String lang, int rows, int offset){
+	public SearchResults query(String term, String lang, int rows, int offset){
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			SolrQuery query = new SolrQuery();
@@ -87,12 +89,15 @@ public class SolrConnector {
 			query.setStart(offset);
 			query.setQuery(term);
 			QueryResponse rsp = server.query(query);
+			SearchResults searchResults = new SearchResults();
 			List<Widget> widgets = rsp.getBeans(Widget.class);
-			return widgets;
+			searchResults.setWidgets(widgets);
+			searchResults.setNumber_of_results(rsp.getResults().getNumFound());
+			return searchResults;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<Widget>();   	
+		return new SearchResults();   	
 	}
 	
 	/**

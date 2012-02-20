@@ -55,7 +55,7 @@ public class ReviewServlet extends HttpServlet {
 				UserReviewService userReviewService = new UserReviewService(req.getServletContext());
 				List<Userreview> reviews = userReviewService.getUserReviewsForWidgetProfile(widgetProfile); 
 				OutputStream out = resp.getOutputStream();
-				MetadataRenderer.renderReviews(out, reviews);
+				MetadataRenderer.render(out, reviews);
 				out.flush();
 				out.close();
 			}
