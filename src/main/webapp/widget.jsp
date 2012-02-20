@@ -112,20 +112,21 @@
 				<div class="row-fluid">
 					<div id="user-reviews" class="span6">
 						<h6>User reviews</h6>
-                        <p><a href="#">Write a review</a></p>
+                        <p id="write-a-review-anchor"><a href="#write-a-review">Write a review</a></p>
 						<div id="user-reviews-list">
                         </div>
 					</div>
                     <div class="span4">&nbsp;</div>
 				</div>
 				<!--/row-->
+				 <%@ include file='components/footer.jsp'%>
 			</div>
-			<!--/span-->
+			<!--/span-->			
 		</div>
 		<!--/row-->
 		<hr>
 	</div>
 	
-   <%@ include file='components/footer.jsp'%>
+  
 </body>
 </html>
