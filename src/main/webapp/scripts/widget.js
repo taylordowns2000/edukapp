@@ -40,35 +40,38 @@ $(document)
 					
 					
 					$('#add-tag').click(function(){
-						$('#widget-tags').append('<form id="add-tag-form" action="javascript:addTag" class="well form-inline"><input type="text" class="input-small">'+
+						$('#widget-tags').append('<form id="add-tag-form" action="javascript:return false;" class="well form-inline"><input type="text" class="input-small">'+
 						'<button type="submit" class="btn">add</button>'+
-						'</form>'
+						'</form>');				
 						
 						
 						
-						);
+						$('#add-tag-form').submit(function (){
+							
+							var newTag = $('#add-tag-form input[type="text"]').val();
+							
+							$.ajax({
+							  url: "ajaxHandlers/addTag.jsp?id="+widget_id+"&newTag="+newTag,
+							  cache: false,
+							  success: function(resp){
+								  console.log("s"+resp+"s");
+							    if (resp.substring(0,13)==="addition done"){
+							    	var tag_db_id=resp.substring(13);
+							    	console.log(resp.substring(13));
+							    	$('#add-tag-form').remove();
+							    	$('#widget-tags').append('<a class="btn btn-info" href="/tags/'+tag_db_id+'"><i class="icon-tag icon-white"></i>'+newTag+'</a>');
+							    }else {
+							    	$('#widget-tags').append("1 - there was an error in your addition");
+							    }
+							  },
+							  error:function(){
+								  $('#widget-tags').append("2 - there was an error in your addition");
+							  }
+							});
+						});
 						
-						addTag = function (){console.log('22222');}
 						
-//						$('#widget-tags').delegate('#add-tag-form','submit',function(){
-//							console.log("asasa");
-//						});
-						
-//						$.ajax({
-//							  url: "ajaxHandlers/addTag.jsp?id="+widget_id+"&newTag="+newTag,
-//							  cache: false,
-//							  success: function(resp){
-//								  console.log("s"+resp+"s");
-//							    if (resp==="update done"){
-//							    	console.log("tag added");
-//							    }else {
-//							    	$('#widget-tags').append("1 - there was an error in your addition");
-//							    }
-//							  },
-//							  error:function(){
-//								  $('#widget-tags').append("2 - there was an error in your addition");
-//							  }
-//							});
+
 						console.log("done"); 
 					});
 					
