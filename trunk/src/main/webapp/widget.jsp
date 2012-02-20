@@ -1,9 +1,11 @@
+<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
 <%@page import="uk.ac.edukapp.model.Widgetprofile"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
 	import="uk.ac.edukapp.util.JspUtils,
 	uk.ac.edukapp.model.Useraccount,
+	uk.ac.edukapp.renderer.*,
 	javax.persistence.EntityManagerFactory"%>
 <!DOCTYPE html>
 <html>
@@ -54,7 +56,16 @@
 				<div class="row-fluid">
 					<div class="span6">
 
-						<div id="widget-preview">screenshot or preview instance</div>
+						<div id="widget-preview">
+						
+						<%					
+						
+						String previewHtml = Renderer.renderById(session.getServletContext(),request.getParameter("id"));
+						out.print(previewHtml);
+						
+						%>
+						
+						</div>
 						<p id="widget-stats-bar" class="label">
 							<span id="widget-usage">
                                 <i class="icon-download icon-white"></i> 3 downloads <br>
@@ -84,6 +95,8 @@
 						<div id="widget-tags">
 							
 						</div>
+						<a id="add-tag" href="#">add tag</a>
+
 						<h6>Useful for:</h6>
 						<div id="widget-useful-for">
 							<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> collaboration</a> 

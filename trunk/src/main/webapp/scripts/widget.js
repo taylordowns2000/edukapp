@@ -39,6 +39,40 @@ $(document)
 					});
 					
 					
+					$('#add-tag').click(function(){
+						$('#widget-tags').append('<form id="add-tag-form" action="javascript:addTag" class="well form-inline"><input type="text" class="input-small">'+
+						'<button type="submit" class="btn">add</button>'+
+						'</form>'
+						
+						
+						
+						);
+						
+						addTag = function (){console.log('22222');}
+						
+//						$('#widget-tags').delegate('#add-tag-form','submit',function(){
+//							console.log("asasa");
+//						});
+						
+//						$.ajax({
+//							  url: "ajaxHandlers/addTag.jsp?id="+widget_id+"&newTag="+newTag,
+//							  cache: false,
+//							  success: function(resp){
+//								  console.log("s"+resp+"s");
+//							    if (resp==="update done"){
+//							    	console.log("tag added");
+//							    }else {
+//							    	$('#widget-tags').append("1 - there was an error in your addition");
+//							    }
+//							  },
+//							  error:function(){
+//								  $('#widget-tags').append("2 - there was an error in your addition");
+//							  }
+//							});
+						console.log("done"); 
+					});
+					
+					
 					var widgetUri;
 					//
 					// Load the widget profile
