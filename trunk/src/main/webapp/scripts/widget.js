@@ -72,6 +72,64 @@ $(document)
 						console.log("done"); 
 					});
 					
+					//
+					// write a review handlers
+					//
+					
+					$('#write-a-review-anchor').click(function(){
+						$(this).replaceWith('<div style="width:100%;" id="write-a-review">'+
+											'<label>Your review:</label>'+
+											'<div class="controls">'+
+											'<textarea class="input-xlarge" id="review-textarea" rows="3"></textarea>'+
+											'</div><button type="submit" class="btn btn-primary">Submit</button>'+
+											'<button id="edit-description-cancel" class="btn">Cancel</button>'+
+											'</div>');
+						
+						$('#write-a-review button[type="submit"]').click(function(){
+							//get info from hidden fields
+							var reviewText 	= $('#review-textarea').val();
+							var userid     	= $('#logged-in-user-id').val();
+							var gravatarImg = $('#logged-in-user-gravatar-img').val();
+							var username    = $('#logged-in-user-name').val();
+							
+							$.ajax({
+								  url: "ajaxHandlers/addReview.jsp?id="+widget_id+"&userid="+userid+"&reviewText="+reviewText,
+								  cache: false,
+								  success: function(resp){
+									  
+									  console.log("$"+resp.substring(0,11)+"$")
+								    if (resp.substring(0,11)==="update done"){
+								    	$('#user-reviews').append('<div style="">'+
+								    			'<div class="row-fluid">'+
+								    			'	<div class="span1">'+
+								    			'		<img src="http://www.gravatar.com/avatar/'+gravatarImg+'?s=35&amp;d=identicon">'+
+								    			'		<h5><a href="profile.jsp?id='+userid+'">'+username+'</a></h5>'+
+								    			'	</div>'+
+								    			'	<div class="span11">'+
+								    			'		<div class="review-item-info-wrapper"></div>'+
+								    			'		<p class="review-content-text">'+reviewText+'</p>'+
+								    			'		<h6>just now</h6>'+
+								    			'	</div>'+
+								    			'</div>'+
+								    			'</div>');
+								    	$('#write-a-review').remove();
+								    }else {
+								    	console.log('error');
+								    	//$('#widget-description').append("1there was an error in your update");
+								    }
+								  },
+								  error:function(){
+									  console.log('error');
+								  }
+								});
+						});
+						
+						$('#widget-description #edit-description-cancel').click(function(){							
+							$('#widget-description').replaceWith('<dl id="widget-description">'+current_desc+'</dl>');
+						});			
+						
+					});
+					
 					
 					var widgetUri;
 					//

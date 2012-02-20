@@ -1,6 +1,7 @@
 <!-- Top Navbar -->
 
-    <div class="navbar navbar-fixed-top">
+    <%@page import="uk.ac.edukapp.util.MD5Util"%>
+<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container-fluid">
 				<a class="brand" href="index.jsp">Edukapp</a>
@@ -9,8 +10,11 @@
 					<%
 					  if (isAuthenticated) {
 					    Useraccount loggedinuser = (Useraccount)session.getAttribute("logged-in-user");
+					    String gravatarImg = MD5Util.md5Hex(loggedinuser.getEmail());
 					%>
-					
+					<input type="hidden" id="logged-in-user-id" value="<%=loggedinuser.getId() %>" />
+					<input type="hidden" id="logged-in-user-name" value="<%=loggedinuser.getUsername() %>" />
+					<input type="hidden" id="logged-in-user-gravatar-img" value="<%=gravatarImg %>" />
 				    <ul class="nav">
 						<li><a href="profile.jsp?userid=<% out.print(loggedinuser.getId());%>"><i class="icon icon-user icon-white"></i><% out.print(loggedinuser.getUsername());%></a></li>
 						<li><a style="margin-left:5px;" href="/logout">Log out</a></li>
