@@ -9,25 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uk.ac.edukapp.exceptions.WidgetUpdateException;
 import uk.ac.edukapp.service.WidgetProfileService;
 
-/**
- * Similar API endpoint
- * 
- * TODO replace with Wink/JAX-RS
- * 
- * @author scott.bradley.wilson@gmail.com
- * 
- */
 public class UpdateWidgetServlet extends HttpServlet {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
-	 * , javax.servlet.http.HttpServletResponse)
-	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -36,6 +22,7 @@ public class UpdateWidgetServlet extends HttpServlet {
 		String id = req.getParameter("id");
 		String operation = req.getParameter("operation");
 		String newText = req.getParameter("newText");
+		String newTag = req.getParameter("newTag");
 
 		PrintWriter out = resp.getWriter();
 
@@ -64,6 +51,24 @@ public class UpdateWidgetServlet extends HttpServlet {
 					out.print("update done");
 				}
 			} else if (operation.equals("add-tag")) {
+
+				if (newTag != null && newTag.trim().length() != 0) {
+					// update description
+					WidgetProfileService widgetProfileService = new WidgetProfileService(
+							req.getServletContext());
+					try {
+						widgetProfileService.addTag(id, newText);
+					} catch (PersistenceException pe) {
+						pe.printStackTrace();
+						out.print("update failed" + pe.getMessage());
+					} catch (WidgetUpdateException wue) {
+						out.print("update failed - widget already has this tag");
+					} catch (Exception e) {
+						e.printStackTrace();
+						out.print("update failed" + e.getMessage());
+					}
+					out.print("update done");
+				}
 
 			} else if (operation.equals("remove-tag")) {
 

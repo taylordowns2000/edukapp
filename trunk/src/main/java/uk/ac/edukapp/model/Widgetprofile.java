@@ -57,7 +57,7 @@ public class Widgetprofile implements Serializable {
 	private List<Tag> tags;
 
 	// bi-directional many-to-many association to Activity
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "widgetactivities", joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "activity_id", nullable = false) })
 	private List<Activity> activities;
 
@@ -138,6 +138,66 @@ public class Widgetprofile implements Serializable {
 		} else {
 			return "OpenSocial Gadget";
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((activities == null) ? 0 : activities.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + featured;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		result = prime * result + w3cOrOs;
+		result = prime * result + ((widId == null) ? 0 : widId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Widgetprofile other = (Widgetprofile) obj;
+		if (activities == null) {
+			if (other.activities != null)
+				return false;
+		} else if (!activities.equals(other.activities))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (featured != other.featured)
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		if (w3cOrOs != other.w3cOrOs)
+			return false;
+		if (widId == null) {
+			if (other.widId != null)
+				return false;
+		} else if (!widId.equals(other.widId))
+			return false;
+		return true;
 	}
 
 }

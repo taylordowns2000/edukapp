@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
 import uk.ac.edukapp.exceptions.EntityNotFound;
+import uk.ac.edukapp.exceptions.WidgetUpdateException;
 import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.WidgetDescription;
@@ -205,6 +206,62 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.persist(entityManager.merge(widget));
 
 		entityManager.getTransaction().commit();
+	}
 
+	public void addTag(String id, String newTag) throws PersistenceException,
+			EntityNotFound, WidgetUpdateException {
+		Widgetprofile widget = findWidgetProfileById(id);
+		if (widget == null) {
+			throw new EntityNotFound();
+		}
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+
+		entityManager.getTransaction().begin();
+
+		Query q = entityManager
+				.createQuery("SELECT t FROM Tag t WHERE t.tagtext=?1");
+		q.setParameter(1, newTag);
+
+		List<Tag> tags = (List<Tag>) q.getResultList();
+		Tag tag = null;
+		if (tags != null && tags.size() != 0) {
+			tag = (Tag) tags.get(0);
+		}
+
+		if (tag == null) {
+			tag = new Tag();
+			tag.setTagtext(newTag);
+			entityManager.persist(tag);
+		}
+
+		List<Tag> widget_tags = (List<Tag>) widget.getTags();
+
+		if (widget_tags == null) {
+			widget_tags = new ArrayList<Tag>();
+		}
+
+		// widget_tags contains fails - even after implementing equals() and
+		// hash_code() in Tag, WidgetProfile
+		// so use this primitive way
+		boolean contains = false;
+		for (Tag t : widget_tags) {
+			if (t.getTagtext().equals(tag.getTagtext())
+					&& t.getId() == tag.getId()) {
+				contains = true;
+			}
+		}
+
+		// if (widget_tags.contains(tag)) {
+		if (contains) {
+			throw new WidgetUpdateException("widget already has this tag");
+		} else {
+			widget_tags.add(tag);
+		}
+
+		entityManager.persist(entityManager.merge(widget));
+		// entityManager.merge(widget);
+
+		entityManager.getTransaction().commit();
 	}
 }
