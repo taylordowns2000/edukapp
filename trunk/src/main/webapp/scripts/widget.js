@@ -164,7 +164,13 @@ $(document)
 										if (data.widgetProfile.description.description) {
 											$('#widget-description').text(data.widgetProfile.description.description);											
 										}
-										
+                                        
+                                        //
+                                        // Show preview instance if available
+                                        //
+                                        if (data.renderInfo){
+                                            $('#widget-preview').html(data.renderInfo);
+                                        }
 										
 										//
 										// Show tags
