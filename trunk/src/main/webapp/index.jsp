@@ -13,19 +13,7 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/jquery.anythingslider.min.js"></script>
-<link rel="stylesheet" href="css/anythingslider.css" />
-<script>
-	// DOM Ready
-	$(function() {
-		$('#widget-slider').anythingSlider({
-			expand : false,
-			buildNavigation : false,
-			buildStartStop : false,
-
-		});
-	});
-</script>
+<script src="scripts/featured.js"></script>
 </head>
 <body>
 
@@ -74,133 +62,16 @@
 					<div class="clear" style="clear: both;"></div>
 
 				</div>
-				<div id="main">
+				<div id="main">	
+						<div id="myCarousel" class="carousel slide" style="background: gray; color:white;">
+                            <!-- Carousel items -->
+                            <div class="carousel-inner">
+                            </div>
+                            <!-- Carousel nav -->
+                            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                        </div>
 
-
-					<div id="widget-slider-wrapper">
-
-						<style>
-#slider {
-	width: 700px;
-	height: 690px;
-}
-
-.widget-wrapper {
-	float: left;
-}
-</style>
-
-
-						<%
-							List<Widgetprofile> featuredWidgets = null;
-
-							EntityManager em = emf.createEntityManager();
-							Query q = em.createQuery("SELECT u " + "FROM Widgetprofile u "
-									+ "WHERE u.featured=1");
-
-							Widgetprofile wid = null;
-
-							featuredWidgets = (List<Widgetprofile>) q.getResultList();
-							if (featuredWidgets != null) {
-						%>
-
-
-
-						<ul id="widget-slider">
-							<%
-							out.print("homw many:"+featuredWidgets.size());
-								for (int i = 0; i < featuredWidgets.size()/2; i++) {
-							%>
-							<li class="panel" style="height: 200px;">
-								<%
-									//show 2 widgets per page
-											for (int j = i*2; (j < i + 2) && (j < featuredWidgets.size()-1); j++) {
-
-												Widgetprofile w = (Widgetprofile) featuredWidgets
-														.get(j);
-												String iframe = Renderer.renderById(
-														session.getServletContext(), "" + w.getId());//,400,250);
-												out.print("<div class='widget-wrapper'>");
-												out.print(iframe);
-
-												out.print("<div class='widget-short-info'>");
-												out.print("<a href='widget.jsp?id=" + w.getId() + "'>"
-														+ w.getName() + "</a>");
-												out.print("widget name,rating,stats");
-												out.print("<div class='clear' style='clear:both;'></div>");
-												out.print("</div>");
-												out.print("</div>");
-
-											}
-								%>
-								<div class="clear" style="clear: both;"></div>
-
-
-							</li>
-							<%
-								}
-							%>
-						
-					</div>
-
-					<%
-						} else {
-							out.print("no featured widgets");
-						}
-					%>
-
-					<!-- 
-				<div id="widget-slider">
-				
-				
-				
-					<div id="widget-slider-left-btn">
-						&lt;
-						<div class="clear"></div>
-					</div>
-					<div id="widget-slider-container">
-						
-						<div class="widget-box">
-							widget a
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget b
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget c
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget d
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget e
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget g
-							<div class="clear"></div>
-						</div>
-						<div class="widget-box">
-							widget h
-							<div class="clear"></div>
-						</div>
-
-						<div class="clear"></div>
-						<div id="widget-slider-control-buttons">o o o o</div>
-					</div>
-
-					<div id="widget-slider-right-btn">
-						&gt;
-						<div class="clear"></div>
-					</div>
-				</div>
-			</div>
-			-->
-					<div class="clear"></div>
 				</div>
 				<%@ include file="components/footer.jsp"%>
 			</div>
