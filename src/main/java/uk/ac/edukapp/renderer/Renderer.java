@@ -8,7 +8,7 @@ import uk.ac.edukapp.model.Widgetprofile;
 
 public class Renderer {
 
-	public static String render(EntityManager em, Widgetprofile widgetprofile) {
+	public static String render(Widgetprofile widgetprofile) {
 
 		// deduce whether is w3c or open social
 		byte w3cOrOs = widgetprofile.getW3cOrOs();
@@ -20,7 +20,6 @@ public class Renderer {
 			return GadgetRenderer.getInstance()
 					.render(widgetprofile.getWidId());
 		}
-
 		return null;
 	}
 
