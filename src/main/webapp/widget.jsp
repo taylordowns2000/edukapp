@@ -67,7 +67,7 @@
 
 					</div>
 					<!--/span-->
-					<div class="span6">
+					<div class="span5" style="float:right;">
 						<h6>Descripiton:</h6>
 						<dl id="widget-description">Lorem Ipsum is simply dummy text of the printing and
 							typesetting industry. Lorem Ipsum has been the industry's
