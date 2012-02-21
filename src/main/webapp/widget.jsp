@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="uk.ac.edukapp.util.JspUtils,
-	uk.ac.edukapp.model.Useraccount,
-	javax.persistence.EntityManagerFactory"%>
+	import="uk.ac.edukapp.util.JspUtils,uk.ac.edukapp.model.Useraccount,javax.persistence.EntityManagerFactory"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,13 +13,14 @@
 
 <title>EDUKApp</title>
 <script src="scripts/widget.js"></script>
-
+<script src="scripts/bootstrap-modal.js"></script>
 </head>
 
 
 
 <body>
-<input id="widgetid" type="hidden" value="<%=request.getParameter("id")%>" />
+	<input id="widgetid" type="hidden"
+		value="<%=request.getParameter("id")%>" />
 	<%@ include file='components/header.jsp'%>
 
 
@@ -31,14 +30,34 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="#"><i class="icon-share-alt"></i>Embed</a>
+						<li>
+
+
+
+							<div class="modal hide" id="embedModal">
+								<div class="modal-header">
+									<a class="close" data-dismiss="modal">×</a>
+									<h3>Embed widget</h3>
+									<p>Use the following code</p>
+								</div>
+								<div class="modal-body">
+									<pre class="prettyprint linenums">
+
+								</pre>
+								</div>
+								<div class="modal-footer">
+									<!-- <a href="#" class="btn btn-primary">Save changes</a>--> 
+									<a href="#" class="btn" data-dismiss="modal">Close</a>
+								</div>
+							</div> 
+							
+							<a id="embedModal-link" data-toggle="modal" data-target="#embedModal" href="#embedModal"> <i
+								class="icon-share-alt"></i> Embed
+						</a>
 						</li>
-						<li><a href="#"><i class="icon-download"></i>Download</a>
-						</li>
-						<li><a href="#"><i class="icon-tag"></i>Tag</a>
-						</li>
-						<li><a href="#"><i class="icon-comment"></i>Review</a>
-						</li>
+						<li><a href="#"><i class="icon-download"></i>Download</a></li>
+						<li><a href="#"><i class="icon-tag"></i>Tag</a></li>
+						<li><a href="#"><i class="icon-comment"></i>Review</a></li>
 					</ul>
 				</div>
 				<!--/.well -->
@@ -53,70 +72,72 @@
 				<div class="row-fluid">
 					<div class="span6">
 
-						<div id="widget-preview">
-						</div>
-						
+						<div id="widget-preview"></div>
+
 						<p id="widget-stats-bar" class="label">
-							<span id="widget-usage">
-                                <i class="icon-download icon-white"></i> 3 downloads <br>
-                                <i class="icon-share-alt icon-white"></i>16 embeds<br>
-                            </span>
-							<span id="widget-rating">average rating <i class="icon-star icon-white"></i><i class="icon-star icon-white"></i><i class="icon-star icon-white"></i> (1 rating)</span>
+							<span id="widget-usage"> <i
+								class="icon-download icon-white"></i> 3 downloads <br> <i
+								class="icon-share-alt icon-white"></i>16 embeds<br>
+							</span> <span id="widget-rating">average rating <i
+								class="icon-star icon-white"></i><i class="icon-star icon-white"></i><i
+								class="icon-star icon-white"></i> (1 rating)
+							</span>
 						</p>
 
 
 					</div>
 					<!--/span-->
-					<div class="span5" style="float:right;">
+					<div class="span5" style="float: right;">
 						<h6>Descripiton:</h6>
-						<dl id="widget-description">Lorem Ipsum is simply dummy text of the printing and
-							typesetting industry. Lorem Ipsum has been the industry's
-							standard dummy text ever since the 1500s, when an unknown printer
-							took a galley of type and scrambled it to make a type specimen
-							book. It has survived not only five centuries, but also the leap
-							into electronic typesetting, remaining essentially unchanged. It
-							was popularised in the 1960s with the release of Letraset sheets
-							containing Lorem Ipsum passages, and more recently with desktop
-							publishing software like Aldus PageMaker including versions of
-							Lorem Ipsum.
+						<dl id="widget-description">Lorem Ipsum is simply dummy text
+							of the printing and typesetting industry. Lorem Ipsum has been
+							the industry's standard dummy text ever since the 1500s, when an
+							unknown printer took a galley of type and scrambled it to make a
+							type specimen book. It has survived not only five centuries, but
+							also the leap into electronic typesetting, remaining essentially
+							unchanged. It was popularised in the 1960s with the release of
+							Letraset sheets containing Lorem Ipsum passages, and more
+							recently with desktop publishing software like Aldus PageMaker
+							including versions of Lorem Ipsum.
 						</dl>
 						<a id="edit-widget-information" href="#">edit</a>
 						<h6>Tagged as:</h6>
-						<div id="widget-tags">
-							
-						</div>
+						<div id="widget-tags"></div>
 						<a id="add-tag" href="#">add tag</a>
 
 						<h6>Useful for:</h6>
 						<div id="widget-useful-for">
-							<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> collaboration</a> 
-                            <a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> learning</a> 
-                            <a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i> fun</a>
+							<a href="#" class="btn btn-warning"><i
+								class="icon-ok-circle icon-white"></i> collaboration</a> <a href="#"
+								class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>
+								learning</a> <a href="#" class="btn btn-warning"><i
+								class="icon-ok-circle icon-white"></i> fun</a>
 						</div>
-						
+
 						<h6>Related widgets</h6>
-                        <ul id="related-widgets" class="thumbnails"></ul>
+						<ul id="related-widgets" class="thumbnails"></ul>
 					</div>
 					<!--/span-->
 				</div>
 				<div class="row-fluid">
 					<div id="user-reviews" class="span6">
 						<h6>User reviews</h6>
-                        <p id="write-a-review-anchor"><a href="#write-a-review">Write a review</a></p>
-						<div id="user-reviews-list">
-                        </div>
+						<p id="write-a-review-anchor">
+							<a href="#write-a-review">Write a review</a>
+						</p>
+						<div id="user-reviews-list"></div>
 					</div>
-                    <div class="span4">&nbsp;</div>
+					<div class="span4">&nbsp;</div>
 				</div>
 				<!--/row-->
-				 <%@ include file='components/footer.jsp'%>
+				<%@ include file='components/footer.jsp'%>
 			</div>
-			<!--/span-->			
+			<!--/span-->
 		</div>
 		<!--/row-->
 		<hr>
 	</div>
-	
-  
+
+
 </body>
 </html>
