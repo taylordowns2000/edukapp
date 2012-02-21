@@ -65,17 +65,7 @@
 					<div class="clear" style="clear: both;"></div>
 
 				</div>
-				<div id="main">
-					<div id="myCarousel" class="carousel slide"
-						style="background: gray; color: white;">
-						<!-- Carousel items -->
-						<div class="carousel-inner"></div>
-						<!-- Carousel nav -->
-						<a class="carousel-control left" href="#myCarousel"
-							data-slide="prev">&lsaquo;</a> <a class="carousel-control right"
-							href="#myCarousel" data-slide="next">&rsaquo;</a>
-					</div>
-
+				<div id="main">	
 				</div>
 				<%@ include file="components/footer.jsp"%>
 			</div>
