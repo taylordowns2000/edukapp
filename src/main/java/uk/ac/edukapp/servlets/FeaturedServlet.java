@@ -17,6 +17,7 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -25,7 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.renderer.Renderer;
 import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
@@ -45,8 +48,24 @@ public class FeaturedServlet  extends HttpServlet{
 		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
 		List<Widgetprofile> widgetProfiles = widgetProfileService.findFeaturedWidgetProfiles();
 		
+		//
+		// Get extended profile info
+		//
+		List<ExtendedWidgetProfile> extendedWidgetProfiles = new ArrayList<ExtendedWidgetProfile>();
+		for (Widgetprofile widgetProfile: widgetProfiles){
+			ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
+			extendedWidgetProfile.setWidgetProfile(widgetProfile);
+			
+			//
+			// Get instance rendering
+			//
+			extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile));
+
+			extendedWidgetProfiles.add(extendedWidgetProfile);
+		}
+		
 		OutputStream out = resp.getOutputStream();
-		MetadataRenderer.render(out, widgetProfiles);
+		MetadataRenderer.render(out, extendedWidgetProfiles);
 		out.flush();
 		out.close();
 	}
