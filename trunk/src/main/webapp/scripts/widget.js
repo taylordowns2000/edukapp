@@ -4,6 +4,11 @@ $(document)
 
 					widget_id = $('#widgetid').val();
 					
+
+					
+					
+					
+					
 					$('#edit-widget-information').click(function(){
 						var current_desc = $('#widget-description').text();
 						console.log(current_desc);
@@ -143,6 +148,8 @@ $(document)
 									'/widget?id='+widget_id,
 									function(data) {
 										console.log(data);
+										
+										
 
 										widgetUri = data.widgetProfile.uri;
 
@@ -170,6 +177,14 @@ $(document)
                                         //
                                         if (data.renderInfo){
                                             $('#widget-preview').html(data.renderInfo);
+                                            $('#embedModal .modal-body pre').text((data.renderInfo));
+    										//show embed code as a modal
+    										$('#embedModal').modal({
+    											show:false
+    										});
+    										$('#embedModal-link').click(function(){
+    											$('#embedModal').modal('toggle');
+    										});
                                         }
 										
 										//
