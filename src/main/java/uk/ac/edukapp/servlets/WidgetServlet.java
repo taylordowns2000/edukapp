@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.renderer.Renderer;
 import uk.ac.edukapp.service.ActivityService;
 import uk.ac.edukapp.service.WidgetProfileService;
 
@@ -57,6 +58,7 @@ public class WidgetServlet extends HttpServlet{
 		if (id != null && id.trim().length() > 0) widgetProfile = widgetProfileService.findWidgetProfileById(id);
 		if (uri != null && uri.trim().length() > 0) widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 		if (widgetProfile != null) extendedWidgetProfile.setWidgetProfile(widgetProfile);
+		if (widgetProfile != null) extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile));
 		
 		//
 		// Uploaded By
