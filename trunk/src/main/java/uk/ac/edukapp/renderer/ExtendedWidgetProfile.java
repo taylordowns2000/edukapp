@@ -30,6 +30,8 @@ public class ExtendedWidgetProfile {
 	private Widgetprofile widgetProfile;
 	
 	private Useraccount uploadedBy;
+	
+	private String renderInfo;
 
 	/**
 	 * @return the widgetProfile
@@ -57,6 +59,20 @@ public class ExtendedWidgetProfile {
 	 */
 	public void setUploadedBy(Useraccount uploadedBy) {
 		this.uploadedBy = uploadedBy;
+	}
+
+	/**
+	 * @return the renderInfo
+	 */
+	public String getRenderInfo() {
+		return renderInfo;
+	}
+
+	/**
+	 * @param renderInfo the renderInfo to set
+	 */
+	public void setRenderInfo(String renderInfo) {
+		this.renderInfo = renderInfo;
 	}
 
 }
