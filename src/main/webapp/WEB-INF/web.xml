@@ -36,6 +36,35 @@
 		<servlet-name>SimilarServlet</servlet-name>
 		<url-pattern>/similar</url-pattern>
 	</servlet-mapping>
+	
+	
+	<!-- basic LTI -->
+		<!-- Use Authorization Filter for BLTI API  -->
+	<servlet>
+		<description>LTI servlet</description>
+		<display-name>lti</display-name>
+		<servlet-name>LtiServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.LtiServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LtiServlet</servlet-name>
+		<url-pattern>/lti/*</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+   	    <filter-name>OAuthAuthorizationFilter</filter-name>
+   	    <filter-class>uk.ac.edukapp.security.OAuthAuthorizationFilter</filter-class>
+   	    <init-param>
+      		<param-name>signed</param-name>
+      		<param-value>true</param-value>
+        </init-param>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>OAuthAuthorizationFilter</filter-name>
+		<servlet-name>LtiServlet</servlet-name>
+  	</filter-mapping>
+	
 	<!-- upload servlet -->
 	<servlet>
 		<description>Uplad servlet</description>
