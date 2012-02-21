@@ -25,8 +25,11 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="#"><i class="icon-question-sign"></i>Something
-								here...</a></li>
+						<li><a href="about.jsp"><i class="icon-question-sign"></i>About
+								EDUKApp</a></li>
+						<li><a href="upload.jsp"><i class="icon-upload"></i>Submit
+								a widget</a></li>
+
 					</ul>
 				</div>
 			</div>
@@ -34,7 +37,7 @@
 				<div class="hero-unit" style="position: relative;">
 					<h1>EDUKApp</h1>
 					<p>Education UK wide App store</p>
-					<div class="span8">
+					<div class="span6">
 						<span> Lorem ipsum dolor sit amet, consectetur adipiscing
 							elit. Nunc ac lacus dui, sit amet placerat enim. Integer euismod
 							pulvinar velit id porta. Fusce varius nisl sit amet velit
@@ -47,7 +50,7 @@
 							diam, at iaculis est mauris congue mauris. Mauris eget turpis nec
 							turpis tempor congue ac eget ligula. Phase </span>
 						<p style="margin-top: 10px;">
-							<a class="btn btn-primary btn-large">Learn more »</a>
+							<a class="btn btn-primary btn-large" href="about.jsp">Learn more »</a>
 						</p>
 					</div>
 
@@ -62,15 +65,16 @@
 					<div class="clear" style="clear: both;"></div>
 
 				</div>
-				<div id="main">	
-						<div id="myCarousel" class="carousel slide" style="background: gray; color:white;">
-                            <!-- Carousel items -->
-                            <div class="carousel-inner">
-                            </div>
-                            <!-- Carousel nav -->
-                            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-                        </div>
+				<div id="main">
+					<div id="myCarousel" class="carousel slide"
+						style="background: gray; color: white;">
+						<!-- Carousel items -->
+						<div class="carousel-inner"></div>
+						<!-- Carousel nav -->
+						<a class="carousel-control left" href="#myCarousel"
+							data-slide="prev">&lsaquo;</a> <a class="carousel-control right"
+							href="#myCarousel" data-slide="next">&rsaquo;</a>
+					</div>
 
 				</div>
 				<%@ include file="components/footer.jsp"%>
