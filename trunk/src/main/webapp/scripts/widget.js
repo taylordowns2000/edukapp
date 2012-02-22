@@ -168,7 +168,7 @@ $(document)
 										//
 										// Show description
 										//
-										if (data.widgetProfile.description.description) {
+										if (data.widgetProfile.description) {
 											$('#widget-description').text(data.widgetProfile.description.description);											
 										}
                                         
