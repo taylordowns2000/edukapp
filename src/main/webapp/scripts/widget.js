@@ -209,24 +209,14 @@ $(document)
 										//
 										// Load similar widget profiles
 										//
-										$
-												.getJSON(
-														'/similar?uri='
-																+ widgetUri,
-														function(similar) {
-															for ( var i = 0; i < similar.length; i++) {
-																$(
-																		"<div>"
-																				+ similar[i].name
-																				+ "</div>")
-																		.hide()
-																		.appendTo(
-																				"#related-widgets")
-																		.fadeIn(
-																				"slow");
-															}
-															;
-														});
+										$.getJSON('/similar?uri='+ widgetUri,function(similar) {
+                                            for ( var i = 0; i < similar.length; i++) {
+                                                $("<li><a href='widget.jsp?id="+similar[i].id+"'>"+ similar[i].name + "</a></li>")
+                                                    .hide()
+                                                    .appendTo("#related-widgets")
+                                                    .fadeIn("slow");
+                                                };
+                                        });
 
        //
        // Load reviews
