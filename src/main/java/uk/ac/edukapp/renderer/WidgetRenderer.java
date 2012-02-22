@@ -41,6 +41,7 @@ public class WidgetRenderer {
 			conn.setCurrentUser(new User("edukapp-front-page",
 					"edukapp-front-page"));
 			widgetInstance = conn.getOrCreateInstance(uri);
+			if (widgetInstance.getHeight() != null && widgetInstance.getHeight().trim().length() > 0) height = Integer.parseInt(widgetInstance.getHeight());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			return null;
