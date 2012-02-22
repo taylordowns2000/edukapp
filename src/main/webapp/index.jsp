@@ -36,19 +36,21 @@
 			<div class="span9">
 				<div class="hero-unit" style="position: relative;">
 					<h1>EDUKApp</h1>
-					<p>Education UK wide App store</p>
+					<p><u>Ed</u>ucational <u>UK</u>-wide <u>app</u> store</p>
 					<div class="span6">
-						<span> Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Nunc ac lacus dui, sit amet placerat enim. Integer euismod
-							pulvinar velit id porta. Fusce varius nisl sit amet velit
-							molestie nec commodo sem malesuada. Morbi orci mi, consequat ac
-							bibendum non, porttitor eget nisl. Donec sollicitudin metus sit
-							amet nibh sagittis dictum. Praesent porttitor bibendum quam a
-							auctor. Proin blandit dictum faucibus. Sed purus urna, cursus
-							quis blandit eget, consequat vitae nisl. Mauris id molestie
-							nulla. In feugiat, odio in porta volutpat, ante magna ultricies
-							diam, at iaculis est mauris congue mauris. Mauris eget turpis nec
-							turpis tempor congue ac eget ligula. Phase </span>
+						<span>
+						
+						Edukapp is a uk-wide, cross-university widget and app store. 
+						In other words, edukapp is a repository and community site, 
+						that focuses on collecting and promoting widgets and apps for learning and teaching. 
+						The store offers discovery services and one-click deployment of widgets into 
+						(personal) learning environments, while promoting their capabilities and features. 
+						It will offer to end users a sophisticated recommendation engine to advise on widget 
+						use according to user needs and interaction history. The widget store supports educators 
+						in selecting building blocks for personal learning environments. It supports developers 
+						with social requirements engineering and analytics.
+						
+						 </span>
 						<p style="margin-top: 10px;">
 							<a class="btn btn-primary btn-large" href="about.jsp">Learn more »</a>
 						</p>
