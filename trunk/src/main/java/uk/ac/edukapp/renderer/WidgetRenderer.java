@@ -1,7 +1,6 @@
 package uk.ac.edukapp.renderer;
 
 import java.io.IOException;
-
 import org.apache.wookie.connector.framework.User;
 import org.apache.wookie.connector.framework.WidgetInstance;
 import org.apache.wookie.connector.framework.WookieConnectorException;
@@ -16,6 +15,7 @@ public class WidgetRenderer {
 	private WidgetRenderer() {
 		try {
 			conn = new WookieConnectorService(
+					// "http://widgets.open.ac.uk:8080/wookie/", "TEST",
 					"http://widgets.open.ac.uk:8080/wookie/", "TEST",
 					"myshareddata");
 		} catch (WookieConnectorException wce) {

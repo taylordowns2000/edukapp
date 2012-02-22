@@ -1,15 +1,52 @@
 package uk.ac.edukapp.servlets;
 
+import uk.ac.edukapp.renderer.*;
+
+import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.repository.Widget;
+
+import javax.servlet.http.*;
+
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import uk.ac.edukapp.model.Accountinfo;
+import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Widgetprofile;
-import uk.ac.edukapp.repository.Widget;
+import uk.ac.edukapp.util.MD5Util;
+
+import org.apache.wookie.connector.framework.*;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -68,7 +105,7 @@ public class UploadServlet extends HttpServlet {
 				List<FileItem> listFileItems = (List<FileItem>) servletFileUpload
 						.parseRequest(request);
 				// Create a list to hold all of the parts
-				List<Part> listParts = new ArrayList<Part>();
+				List<org.apache.commons.httpclient.methods.multipart.Part> listParts = new ArrayList<org.apache.commons.httpclient.methods.multipart.Part>();
 				// Iterate the multipart items list
 				for (FileItem fileItemCurrent : listFileItems) {
 					// If the current item is a form field, then create a string
@@ -103,7 +140,8 @@ public class UploadServlet extends HttpServlet {
 				PostMethod postMethod = new PostMethod(
 						"http://localhost:8080/wookie/widgets");
 				MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(
-						listParts.toArray(new Part[] {}),
+						listParts
+								.toArray(new org.apache.commons.httpclient.methods.multipart.Part[] {}),
 						postMethod.getParams());
 
 				postMethod.setRequestEntity(multipartRequestEntity);
@@ -121,7 +159,7 @@ public class UploadServlet extends HttpServlet {
 
 				log.info("post execution return status:" + status);
 
-				if (status = HttpStatus.SC_OK) {// if succesful upload
+				if (status == HttpStatus.SC_OK) {// if succesful upload
 					WookieConnectorService conn = null;
 					try {
 						conn = new WookieConnectorService(
@@ -133,13 +171,13 @@ public class UploadServlet extends HttpServlet {
 
 					// get the latest entry - stupid way i know but i am in a
 					// hurry
-					HashMap<String, Widget> availableWookieWidgets = conn
+					HashMap<String, org.apache.wookie.connector.framework.Widget> availableWookieWidgets = conn
 							.getAvailableWidgets();
 					Iterator it = availableWookieWidgets.keySet().iterator();
-					org.apache.wookie.connector.Widget widget = null;
+					org.apache.wookie.connector.framework.Widget widget = null;
 					while (it.hasNext()) {
 						Map.Entry pairs = (Map.Entry) it.next();
-						widget = (org.apache.wookie.connector.Widget) pairs
+						widget = (org.apache.wookie.connector.framework.Widget) pairs
 								.getValue();
 					}
 
