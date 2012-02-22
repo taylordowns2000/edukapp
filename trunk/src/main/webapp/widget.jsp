@@ -41,9 +41,8 @@
 									<p>Use the following code</p>
 								</div>
 								<div class="modal-body">
-									<pre class="prettyprint linenums">
-
-								</pre>
+									<pre class="prettyprint linenums"></pre>
+									<p id="modal-body-lti"></p>
 								</div>
 								<div class="modal-footer">
 									<!-- <a href="#" class="btn btn-primary">Save changes</a>--> 

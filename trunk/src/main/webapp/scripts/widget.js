@@ -178,6 +178,7 @@ $(document)
                                         if (data.renderInfo){
                                             $('#widget-preview').html(data.renderInfo);
                                             $('#embedModal .modal-body pre').text((data.renderInfo));
+                                            $('#modal-body-lti').html("<p>For Basic LTI, copy the following information to your Basic LTI consumer:</p><p>URL: http://localhost:8080/lti/"+data.widgetProfile.id+"</p><p>Consumer Key: TEST</p><p>Consumer Secret: TEST</p>");
     										//show embed code as a modal
     										$('#embedModal').modal({
     											show:false
