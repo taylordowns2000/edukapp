@@ -45,7 +45,7 @@ public class FeaturedServlet  extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		List<Widgetprofile> widgetProfiles = widgetProfileService.findFeaturedWidgetProfiles();
 		
 		//

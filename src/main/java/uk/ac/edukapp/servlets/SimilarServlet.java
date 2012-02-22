@@ -51,7 +51,7 @@ public class SimilarServlet extends HttpServlet{
 			return;
 		}
 		
-		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 		
 		if(widgetProfile == null){

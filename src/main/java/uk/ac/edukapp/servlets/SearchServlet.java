@@ -55,7 +55,7 @@ public class SearchServlet extends HttpServlet{
 			offset = 0;
 		}
 		
-		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		SearchResults searchResults = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, offset);
 		
 		OutputStream out = resp.getOutputStream();
