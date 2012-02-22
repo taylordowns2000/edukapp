@@ -44,7 +44,7 @@ public class ReviewServlet extends HttpServlet {
 			//
 			// Get widgetProfile
 			//
-			WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
+			WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 			Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 			if (widgetProfile == null){
 				resp.sendError(404);
@@ -52,7 +52,7 @@ public class ReviewServlet extends HttpServlet {
 				//
 				// Get reviews
 				//
-				UserReviewService userReviewService = new UserReviewService(req.getServletContext());
+				UserReviewService userReviewService = new UserReviewService(getServletContext());
 				List<Userreview> reviews = userReviewService.getUserReviewsForWidgetProfile(widgetProfile); 
 				OutputStream out = resp.getOutputStream();
 				MetadataRenderer.render(out, reviews);

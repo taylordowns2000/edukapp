@@ -56,7 +56,7 @@ public class LtiServlet extends HttpServlet {
 		//
 		String widgetId = getResourceId(request); 
 
-		WidgetProfileService widgetProfileService = new WidgetProfileService(request.getServletContext());
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileById(widgetId);
 
 		//

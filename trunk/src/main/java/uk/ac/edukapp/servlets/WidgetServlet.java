@@ -54,7 +54,7 @@ public class WidgetServlet extends HttpServlet{
 		//
 		// Widget profile
 		//
-		WidgetProfileService widgetProfileService = new WidgetProfileService(req.getServletContext());
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		if (id != null && id.trim().length() > 0) widgetProfile = widgetProfileService.findWidgetProfileById(id);
 		if (uri != null && uri.trim().length() > 0) widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 		if (widgetProfile != null) extendedWidgetProfile.setWidgetProfile(widgetProfile);
@@ -64,7 +64,7 @@ public class WidgetServlet extends HttpServlet{
 		// Uploaded By
 		//
 		if (widgetProfile != null){
-			ActivityService activityService = new ActivityService(req.getServletContext());
+			ActivityService activityService = new ActivityService(getServletContext());
 			extendedWidgetProfile.setUploadedBy(activityService.getUploadedBy(widgetProfile));
 		}
 		
