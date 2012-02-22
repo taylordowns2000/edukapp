@@ -61,6 +61,7 @@
 				</div>
 				<!--/.well -->
 			</div>
+			
 			<!--/span-->
 			<div class="span9">
 				<div class="row-fluid">
@@ -68,9 +69,8 @@
 					<p id="upload-info" class="upload-info">no upload info
 						available</p>
 				</div>
+				
 				<div class="row-fluid">
-					<div class="span6">
-
 						<div id="widget-preview"></div>
 
 						<p id="widget-stats-bar" class="label">
@@ -82,11 +82,9 @@
 								class="icon-star icon-white"></i> (1 rating)
 							</span>
 						</p>
+				</div>
 
-
-					</div>
-					<!--/span-->
-					<div class="span5" style="float: right;">
+				<div class="row-fluid">
 						<h6>Descripiton:</h6>
 						<dl id="widget-description">Lorem Ipsum is simply dummy text
 							of the printing and typesetting industry. Lorem Ipsum has been
@@ -112,14 +110,15 @@
 								learning</a> <a href="#" class="btn btn-warning"><i
 								class="icon-ok-circle icon-white"></i> fun</a>
 						</div>
-
-						<h6>Related widgets</h6>
-						<ul id="related-widgets" class="thumbnails"></ul>
-					</div>
-					<!--/span-->
 				</div>
+				
+				<div class="row-fluid">				
+                    <h6>Related widgets</h6>
+					<ul id="related-widgets" class="thumbnails"></ul>
+				</div>
+
 				<div class="row-fluid">
-					<div id="user-reviews" class="span6">
+					<div id="user-reviews">
 						<h6>User reviews</h6>
 						<p id="write-a-review-anchor">
 							<a href="#write-a-review">Write a review</a>
@@ -128,10 +127,11 @@
 					</div>
 					<div class="span4">&nbsp;</div>
 				</div>
-				<!--/row-->
+			</div>				
+
+
 				<%@ include file='components/footer.jsp'%>
-			</div>
-			<!--/span-->
+
 		</div>
 		<!--/row-->
 		<hr>
