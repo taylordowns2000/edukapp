@@ -130,8 +130,13 @@ public class LoginServlet extends HttpServlet {
 e.printStackTrace();
         }
 
+        String from = request.getParameter("from");
         
-        doForward(request, response, "/index.jsp");
+        if (from.equals("/login.jsp")){
+          response.sendRedirect("/index.jsp");
+        }else {
+          response.sendRedirect(from);
+        }
 
       } else {// user wrong authentication
         em.getTransaction().commit();
