@@ -15,7 +15,7 @@
 					<ul class="unstyled">
 						<li><i class="icon-home"></i><a href="/">Home</a></li>
 						<li><i class="icon-upload"></i><a href="upload.jsp">Submit a widget</a></li>
-						<li>About</li>
+						<li><i class="icon-exclamation-sign"></i><a href="about.jsp">About</a></li>
 						<li>Contact</li>
 						<li>Blog</li>
 					</ul>
