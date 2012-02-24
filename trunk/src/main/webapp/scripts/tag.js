@@ -4,7 +4,7 @@
 $(document).ready(function() {
 	tagid = $('#tagid').val();
 	
-	$.getJSON('/api/tag?operation=getName&id=' + tagid, function(data) {		
+	$.getJSON('/api/tag/' + tagid, function(data) {		
 		$('.breadcrumb').append(''+
 		  '  <li class="active"> '+
 		  data.tagtext+
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	});
 	
 	
-	$.getJSON('/api/tag?operation=getWidgets&id=' + tagid, function(data) {
+	$.getJSON('/api/tag/' + tagid + "/widgets", function(data) {
 		console.log(data);
 		for ( var i = 0; i < data.length; i++) {
 			$('#widget-tagged-as-results').append(''+		
