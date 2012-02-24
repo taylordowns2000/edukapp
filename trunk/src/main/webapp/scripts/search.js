@@ -18,7 +18,7 @@ $(document).ready(function(){
   //
   // Execute query
   //
-  $.getJSON('/search?q='+q+"&start="+start, displaySearchResults);
+  $.getJSON('/api/search?q='+q+"&start="+start, displaySearchResults);
 
 });
 

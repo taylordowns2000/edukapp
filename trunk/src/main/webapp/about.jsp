@@ -9,15 +9,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ include file='components/imports.jsp'%>
-<%@ include file='components/login_check.jsp'%>
+<%@ include file='/components/imports.jsp'%>
+<%@ include file='/components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/featured.js"></script>
 </head>
 <body>
 
-	<%@ include file='components/header.jsp'%>
+	<%@ include file='/components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -69,7 +68,7 @@
 					While the widget store is not yet public, it is under full development
 					and you can checkout the backend code (or contribute) from the
 					public code <a href="http://code.google.com/p/edukapp">repository</a></p>
-				<%@ include file="components/footer.jsp"%>
+				<%@ include file="/components/footer.jsp"%>
 			</div>
 
 		</div>

@@ -8,12 +8,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<%@ include file='components/imports.jsp'%>
-<%@ include file='components/login_check.jsp'%>
+<%@ include file='/components/imports.jsp'%>
+<%@ include file='/components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/widget.js"></script>
-<script src="scripts/bootstrap-modal.js"></script>
+<script src="/scripts/widget.js"></script>
+<script src="/scripts/bootstrap-modal.js"></script>
 </head>
 
 

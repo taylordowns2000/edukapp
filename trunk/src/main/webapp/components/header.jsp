@@ -34,7 +34,7 @@
 					<%
 					  }
 					%>
-				    <form class="navbar-search pull-right" action="search_results.jsp" method="get"><input type="text" id="q" name="q" class="search-query" placeholder="Search"></form>
+				    <form class="navbar-search pull-right" action="/search_results.jsp" method="get"><input type="text" id="q" name="q" class="search-query" placeholder="Search"></form>
 				</div>
 			</div>
 		</div>

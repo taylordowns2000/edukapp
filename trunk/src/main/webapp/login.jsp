@@ -18,8 +18,7 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/jquery.anythingslider.min.js"></script>
-<link rel="stylesheet" href="css/anythingslider.css" />
+<link rel="stylesheet" href="/css/anythingslider.css" />
 <script>
 	// DOM Ready
 	$(function() {
@@ -34,7 +33,7 @@
 </head>
 <body>
 
-	<%@ include file='components/header.jsp'%>
+	<%@ include file='/components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -55,7 +54,7 @@ String wrong = request.getParameter("wrong");
 	<div id="formWrapper">
 		<h2>Login page</h2>
 
-		<form type="POST" action="login">
+		<form type="POST" action="/login">
 		
 		
 			<div>
@@ -85,7 +84,7 @@ String wrong = request.getParameter("wrong");
 
 	</div>
 			
-			<%@ include file="components/footer.jsp"%>
+			<%@ include file="/components/footer.jsp"%>
 			</div>
 
 		</div>

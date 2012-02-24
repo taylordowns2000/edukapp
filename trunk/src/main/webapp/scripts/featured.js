@@ -3,7 +3,7 @@ $(document).ready(function(){
   //
   // Get featured widgets
   //
-  $.getJSON('/featured', function(data){
+  $.getJSON('/api/featured', function(data){
     $("#main").hide();
   
     //

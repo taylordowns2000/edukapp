@@ -6,22 +6,20 @@
 	uk.ac.edukapp.model.Useraccount,java.util.*,
 	javax.persistence.*,
 	javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory,
-	org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory"%>
+	javax.persistence.EntityManagerFactory" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ include file='components/imports.jsp'%>
-<%@ include file='components/login_check.jsp'%>
+<%@ include file='/components/imports.jsp'%>
+<%@ include file='/components/login_check.jsp'%>
 
 <title>EDUKApp</title>
 </head>
 <body>
 		
-        <%@ include file='components/header.jsp'%>
+        <%@ include file='/components/header.jsp'%>
         
         <div class="container-fluid">
 		   <div class="row-fluid">
