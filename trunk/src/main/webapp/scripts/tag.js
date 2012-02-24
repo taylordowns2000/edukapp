@@ -21,7 +21,7 @@ $(document).ready(function() {
 		'		<img src="http://placehold.it/260x180" alt="">'+
 		'		<div class="caption">'+
 		'			<h5>'+data[i].name+'</h5>'+
-		'			<p>'+data[i].description.description+'</p>'+
+		'			<p>'+data[i].description+'</p>'+
 		'			<p>'+
 		'				<a href="/widget/'+data[i].id+'" class="btn btn-primary">Read more >>></a>'+
 		'			</p>'+

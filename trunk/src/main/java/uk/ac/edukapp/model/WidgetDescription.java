@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * The persistent class for the widget description database table. currently
  * only holds a text - kind of overkill have an extra persistent class just for
@@ -29,6 +31,7 @@ public class WidgetDescription implements Serializable {
 
 	}
 
+	@JsonIgnore
 	public int getWid_id() {
 		return wid_id;
 	}
