@@ -3,7 +3,11 @@
         "http://www.tuckey.org/res/dtds/urlrewrite3.2.dtd">
 <urlrewrite>
 
-		<rule>
+        <rule>
+            <from>/api/tag/popular</from>
+            <to>/api/tag?id=popular</to>
+        </rule>
+        <rule>
             <from>/tag/([0-9]+)</from>
             <to>/tag.jsp?id=$1</to>
         </rule>

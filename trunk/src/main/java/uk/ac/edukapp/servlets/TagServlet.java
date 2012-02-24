@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
@@ -62,7 +63,17 @@ public class TagServlet extends HttpServlet {
       resp.getWriter().append("id is empty").close();
       return;
     }
-    if (operation == null && operation.trim().length() == 0) {
+    
+    /*
+     * "Popular" is a "magic" tag name that returns the most popular tags
+     */
+    if (tagid.equalsIgnoreCase("popular")){
+    	TagService tagService = new TagService(getServletContext());
+    	MetadataRenderer.render(resp.getOutputStream(),tagService.getPopularTags());
+    	return;
+    }
+    
+    if (operation == null || operation.trim().length() == 0) {
       resp.getWriter().append("operation is empty").close();
       return;
     }
