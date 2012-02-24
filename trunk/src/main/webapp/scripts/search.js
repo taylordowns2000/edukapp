@@ -35,7 +35,7 @@ function displaySearchResults(data){
     $('.breadcrumb').last().append(searchResultsInfo);
     
     
-    if (isNaN(number_of_results)){
+    if (isNaN(number_of_results) || number_of_results==0){
       $("#search_results_info").text("No results found");
     } else {
       var end = start + data.widgets.length;
@@ -62,6 +62,33 @@ function displaySearchResults(data){
     	//showWidget(data.widgets[i]);
     }
 }
+/*
+ * <div class="pagination">
+                        <ul>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                        </ul>
+                      </div>
+                      
+                      <div class="pagination">
+  <ul>
+    <li><a href="#">Prev</a></li>
+    <li class="active">
+      <a href="#">1</a>
+    </li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">Next</a></li>
+  </ul>
+</div>
+                      
+                      
+ */
+
+
 
 //function showWidget(widget){
 //    var resultItem = document.createElement("li");
