@@ -36,7 +36,7 @@ Example:
 ]
 }}}
 
-= GET /search?q={search terms} =
+= GET /api/search?q={search terms} =
 
 Search for widgets matching the search terms.
 
@@ -46,14 +46,14 @@ Example:
 GET /api/search?q=chat
 }}}
 
-= GET /similar?uri={widget uri}=
+= GET /api/similar?uri={widget uri}=
 
 Search for similar widgets to the widget identified with the uri parameter.
 
 Example:
 
 {{{
-GET /similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+GET /api/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
 }}}
 
 Returns:
@@ -80,7 +80,7 @@ Get user reviews for the specified widget.
 Example:
 
 {{{
-GET /review?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
+GET /api/review?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
 }}}
 
 Returns:
