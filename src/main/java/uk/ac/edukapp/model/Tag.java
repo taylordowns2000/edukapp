@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -22,6 +24,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity
 @Table(name = "tags")
+@NamedQueries({
+	@NamedQuery(name = "Tag.popular", query = "SELECT t, SIZE(t.widgetprofiles) as freq FROM Tag t ORDER BY freq DESC")
+})
 public class Tag implements Serializable {
 	private static final long serialVersionUID = 1L;
 
