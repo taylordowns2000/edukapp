@@ -14,12 +14,10 @@ public class WidgetRenderer {
 
 	private WidgetRenderer() {
 		try {
-			conn = new WookieConnectorService(
-					// "http://widgets.open.ac.uk:8080/wookie/", "TEST",
-					"http://widgets.open.ac.uk:8080/wookie/", "TEST",
-					"myshareddata");
-		} catch (WookieConnectorException wce) {
-			wce.printStackTrace();
+			conn = WookieServerConfiguration.getInstance().getWookieConnector("myshareddata");
+		} catch (WookieConnectorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
