@@ -50,7 +50,7 @@ function displaySearchResults(data){
 		'		<img src="http://placehold.it/260x180" alt="">'+
 		'		<div class="caption">'+
 		'			<h5>'+data.widgets[i].name+'</h5>'+
-		'			<p>'+data.widgets[i].description.description+'</p>'+
+		'			<p>'+data.widgets[i].description+'</p>'+
 		'			<p>'+
 		'				<a href="/widget/'+data.widgets[i].id+'" class="btn btn-primary">Read more >>></a>'+
 		'			</p>'+

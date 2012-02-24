@@ -122,7 +122,7 @@ function () {
         // Show description
         //
         if (data.widgetProfile.description) {
-            $('#widget-description').text(data.widgetProfile.description.description);
+            $('#widget-description').text(data.widgetProfile.description);
         }
         
         //

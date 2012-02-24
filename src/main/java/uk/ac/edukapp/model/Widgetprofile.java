@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonUnwrapped;
 
 /**
  * The persistent class for the widgetprofiles database table.
@@ -61,6 +62,7 @@ public class Widgetprofile implements Serializable {
 	@JoinTable(name = "widgetactivities", joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "activity_id", nullable = false) })
 	private List<Activity> activities;
 
+	@JsonUnwrapped
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetDescription description;
