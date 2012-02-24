@@ -107,13 +107,13 @@ Get the specified widget profile
 Get the specified widget profile
 
 
-=GET /api/tag/[tag id]=
+=GET /api/tag/{tag id}=
 
-Get the tag specified by the id. 
+Get the tag specified by the id (this can be the actual tag id, or just the tag name). 
 
-=GET /api/tag/[tag id]/widgets=
+=GET /api/tag/{tag id}/widgets=
 
-Get the widgets matching the tag specified by the id
+Get the widgets matching the tag specified by the id (this can be the actual tag id, or just the tag name)
 
 =GET /api/tag/popular=
 
