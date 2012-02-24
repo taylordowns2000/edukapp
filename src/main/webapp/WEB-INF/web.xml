@@ -23,7 +23,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SearchServlet</servlet-name>
-		<url-pattern>/search</url-pattern>
+		<url-pattern>/api/search</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<description>Similar servlet</description>
@@ -34,7 +34,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SimilarServlet</servlet-name>
-		<url-pattern>/similar</url-pattern>
+		<url-pattern>/api/similar</url-pattern>
 	</servlet-mapping>
 	
 	
@@ -75,7 +75,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UploadServlet</servlet-name>
-		<url-pattern>/upload</url-pattern>
+		<url-pattern>/api/upload</url-pattern>
 	</servlet-mapping>
 	<!-- upload servlet end-->
 
@@ -102,7 +102,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FeaturedServlet</servlet-name>
-		<url-pattern>/featured</url-pattern>
+		<url-pattern>/api/featured</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<description>Review servlet</description>
@@ -113,7 +113,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ReviewServlet</servlet-name>
-		<url-pattern>/review</url-pattern>
+		<url-pattern>/api/review</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<description>Widget servlet</description>
@@ -124,7 +124,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WidgetServlet</servlet-name>
-		<url-pattern>/widget</url-pattern>
+		<url-pattern>/api/widget</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<description>User account servlet</description>
@@ -135,7 +135,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServlet</servlet-name>
-		<url-pattern>/user</url-pattern>
+		<url-pattern>/api/user</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<description>Login servlet</description>
@@ -170,4 +170,24 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
+	
+	<!-- rewrite servlet -->
+	<filter>
+    	<filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+        <init-param>
+        	<param-name>logLevel</param-name>
+            <param-value>WARN</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+    	<filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	<!-- rewrite servlet end -->
+	
+	
+	
+	
+	
 </web-app>

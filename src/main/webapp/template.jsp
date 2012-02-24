@@ -13,11 +13,10 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/featured.js"></script>
 </head>
 <body>
 
-	<%@ include file='components/header.jsp'%>
+	<%@ include file='/components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -31,7 +30,7 @@
 				</div>
 			</div>
 			<div class="span9">
-				<%@ include file="components/footer.jsp"%>
+				<%@ include file="/components/footer.jsp"%>
 			</div>
 
 		</div>

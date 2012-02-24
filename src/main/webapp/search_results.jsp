@@ -13,11 +13,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<%@ include file='components/imports.jsp'%>
-<%@ include file='components/login_check.jsp'%>
+<%@ include file='/components/imports.jsp'%>
+<%@ include file='/components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/search.js"></script>
+<script src="/scripts/search.js"></script>
 
 </head>
 
@@ -25,7 +25,7 @@
 
 <body>
 <input id="widgetid" type="hidden" value="<%=request.getParameter("id")%>" />
-	<%@ include file='components/header.jsp'%>
+	<%@ include file='/components/header.jsp'%>
 
 
 	<div class="container-fluid">
@@ -67,7 +67,7 @@
 					<!--/span-->
 				</div>
 				<!--/row-->
-				 <%@ include file='components/footer.jsp'%>
+				 <%@ include file='/components/footer.jsp'%>
 			</div>
 			<!--/span-->			
 		</div>

@@ -45,7 +45,7 @@ $(document)
 					
 					
 					$('#add-tag').click(function(){
-						$('#widget-tags').append('<form id="add-tag-form" action="javascript:return false;" class="well form-inline"><input type="text" class="input-small">'+
+						$('#widget-tags').append('<form id="add-tag-form" action="javascript:function(){return false;}" class="well form-inline"><input type="text" class="input-small">'+
 						'<button type="submit" class="btn">add</button>'+
 						'</form>');				
 						
@@ -145,7 +145,7 @@ $(document)
 					//
 					$
 							.getJSON(
-									'/widget?id='+widget_id,
+									'/api/widget?id='+widget_id,
 									function(data) {
 										console.log(data);
 										
@@ -230,7 +230,7 @@ $(document)
        //
        // Load reviews
        //
-       $.getJSON('/review?uri='+widgetUri, function(reviews){ 
+       $.getJSON('/api/review?uri='+widgetUri, function(reviews){ 
        for(var i=0;i<reviews.length;i++){ 
        
          var li = document.createElement("div");
