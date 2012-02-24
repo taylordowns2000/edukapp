@@ -4,7 +4,7 @@ Edukapp provides a JSON API that can be used to create the user interface.
 
 
 
-= GET /featured=
+= GET /api/featured=
 
 Gets the list of featured widgets.
 
@@ -43,7 +43,7 @@ Search for widgets matching the search terms.
 Example:
 
 {{{
-GET /search?q=chat
+GET /api/search?q=chat
 }}}
 
 = GET /similar?uri={widget uri}=
@@ -72,7 +72,7 @@ Returns:
 ]
 }}}
 
-= GET /review?uri={widget uri} =
+= GET /api/review?uri={widget uri} =
 
 Get user reviews for the specified widget.
 
@@ -97,11 +97,11 @@ Returns:
 ]
 }}}
 
-= GET /widget?id={widget id}=
+= GET /api/widget?id={widget id}=
 
 Get the specified widget profile
 
 
-= GET /widget?uri={widget uri}=
+= GET /api/widget?uri={widget uri}=
 
 Get the specified widget profile
