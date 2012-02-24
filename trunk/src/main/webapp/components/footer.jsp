@@ -1,4 +1,4 @@
-<script src="scripts/footer.js"></script>
+<script src="/scripts/footer.js"></script>
 		<footer>
 			<div class="row-fluid">
 				<div id="footer-logos" class="span3">
