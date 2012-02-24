@@ -105,3 +105,35 @@ Get the specified widget profile
 = GET /api/widget?uri={widget uri}=
 
 Get the specified widget profile
+
+=GET /api/tag/popular=
+
+Returns the most popular tags used for widgets, in descending order, along with the number of times used.
+
+Example:
+
+{{{
+[
+    [
+        {
+            "id": 1,
+            "tagtext": "fun"
+        },
+        29
+    ],
+    [
+        {
+            "id": 2,
+            "tagtext": "games"
+        },
+        17
+    ],
+    [
+        {
+            "id": 651,
+            "tagtext": "maths"
+        },
+        10
+    ]
+]
+}}}
