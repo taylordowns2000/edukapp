@@ -17,89 +17,100 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import uk.ac.edukapp.model.Tag;
-import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.service.TagService;
-import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
  * Tags api endpoint
  * 
  * @author anastluc
+ * @author scottw
  * 
  */
 public class TagServlet extends HttpServlet {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
-   * javax.servlet.http.HttpServletResponse)
-   */
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
+	 * , javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	throws ServletException, IOException {
 
-    String tagid = req.getParameter("id");
-    String operation = req.getParameter("operation");
+		String tagid = req.getParameter("id");
+		String operation = req.getParameter("operation");
 
-    if (tagid == null && tagid.trim().length() == 0) {
-      resp.getWriter().append("id is empty").close();
-      return;
-    }
-    
-    /*
-     * "Popular" is a "magic" tag name that returns the most popular tags
-     */
-    if (tagid.equalsIgnoreCase("popular")){
-    	TagService tagService = new TagService(getServletContext());
-    	MetadataRenderer.render(resp.getOutputStream(),tagService.getPopularTags());
-    	return;
-    }
-    
-    if (operation == null || operation.trim().length() == 0) {
-      resp.getWriter().append("operation is empty").close();
-      return;
-    }
+		//
+		// Check for required parameters
+		//
+		if (tagid == null || tagid.trim().length() == 0) {
+			resp.sendError(400, "id is empty");
+			return;
+		}
+		if (operation == null || operation.trim().length() == 0) {
+			resp.sendError(400,"operation is empty");
+			return;
+		}
 
-    EntityManagerFactory factory = (EntityManagerFactory) getServletContext()
-        .getAttribute("emf");
-    EntityManager em = factory.createEntityManager();
-    WidgetProfileService widgetProfileService = new WidgetProfileService(
-        getServletContext());
+		//
+		// Create a TagService instance
+		//
+		TagService tagService = new TagService(getServletContext());
 
-    Tag tag = null;
-    tag = em.find(Tag.class, Integer.parseInt(tagid));
+		//
+		// "Popular" is a "magic" tag name that returns the most popular tags
+		//
+		if (tagid.equalsIgnoreCase("popular")) {
+			MetadataRenderer.render(resp.getOutputStream(),
+					tagService.getPopularTags());
+			return;
+		}
 
-    if (tag != null) {
-      OutputStream out = resp.getOutputStream();
-      if (operation.equals("getName")) {
-        MetadataRenderer.render(out, tag);
-      } else if (operation.equals("getWidgets")) {
-        List<Widgetprofile> widgetsTaggedWith = widgetProfileService
-            .findWidgetProfilesForTag(tag);
-        MetadataRenderer.render(out, widgetsTaggedWith);
-      }
-      out.flush();
-      out.close();
-    }
+		//
+		// Get the tag
+		//
+		Tag tag = tagService.getTag(tagid);
 
-  }
+		//
+		// If it doesn't exist, return 404.
+		//
+		if (tag == null) {
+			resp.sendError(404);
+			return;
+		}
+		
+		System.out.println("tag:"+tag.getTagtext()+", operation:"+operation);
+
+		OutputStream out = resp.getOutputStream();
+		if (operation.equals("getName")) {
+
+			//
+			// Render metadata
+			//
+			MetadataRenderer.render(out, tag);
+			
+		} else if (operation.equals("getWidgets")) {
+
+			//
+			// Find and render matching widgets
+			//
+			MetadataRenderer.render(out, tag.getWidgetprofiles());
+		}
+		out.flush();
+		out.close();
+
+	}
 
 }

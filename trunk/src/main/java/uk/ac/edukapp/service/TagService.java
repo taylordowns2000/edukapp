@@ -25,6 +25,11 @@ import javax.servlet.ServletContext;
 
 import uk.ac.edukapp.model.Tag;
 
+/**
+ * Tag service
+ * @author scottw
+ *
+ */
 public class TagService extends AbstractService{
 	
 	public TagService(ServletContext servletContext) {
@@ -40,5 +45,41 @@ public class TagService extends AbstractService{
 		TypedQuery<Tag> query = entityManager.createNamedQuery("Tag.popular", Tag.class);
 		List<Tag> tags = query.setMaxResults(10).getResultList();
 		return tags;
+	}
+	
+	/**
+	 * Get a tag
+	 * @param tagid
+	 * @return
+	 */
+	public Tag getTag(String tagid){
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+	    Tag tag = null;
+	    
+	    try {
+	    	
+	    	//
+	    	// See if the id is an integer tag id
+	    	//
+			int id = Integer.parseInt(tagid);
+		    tag = entityManager.find(Tag.class, id);
+		} catch (NumberFormatException e) {
+			
+			//
+			// maybe the id is a tag name instead?
+			//
+			TypedQuery<Tag> query = entityManager.createNamedQuery("Tag.findByName", Tag.class);
+			query.setParameter("tagname", tagid);
+			tag = query.getSingleResult();
+		}
+		
+		//
+		// Fetch widgetProfiles so these are available
+		// in the detached entity
+		//
+		tag.getWidgetprofiles();
+		
+		entityManager.close();
+		return tag;
 	}
 }

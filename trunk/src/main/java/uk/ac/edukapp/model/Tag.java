@@ -25,7 +25,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name = "tags")
 @NamedQueries({
-	@NamedQuery(name = "Tag.popular", query = "SELECT t, SIZE(t.widgetprofiles) as freq FROM Tag t ORDER BY freq DESC")
+	@NamedQuery(name = "Tag.popular", query = "SELECT t, SIZE(t.widgetprofiles) as freq FROM Tag t ORDER BY freq DESC"),
+	@NamedQuery(name = "Tag.findByName", query = "SELECT t FROM Tag t WHERE t.tagtext = :tagname")
 })
 public class Tag implements Serializable {
 	private static final long serialVersionUID = 1L;

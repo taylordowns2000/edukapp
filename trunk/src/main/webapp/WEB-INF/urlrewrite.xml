@@ -5,18 +5,18 @@
 
         <rule>
             <from>^/api/tag/popular$</from>
-            <to>/api/tag?id=popular</to>
+            <to>/api/tag?id=popular&amp;operation=getName</to>
         </rule>
         <rule>
-            <from>^/api/tag/([0-9]+)$</from>
+            <from>^/api/tag/([0-9a-z]+)$</from>
             <to>/api/tag?id=$1&amp;operation=getName</to>
         </rule>
         <rule>
-            <from>^/api/tag/([0-9]+)/widgets$</from>
+            <from>^/api/tag/([0-9a-z]+)/widgets$</from>
             <to>/api/tag?id=$1&amp;operation=getWidgets</to>
         </rule>
         <rule>
-            <from>/tag/([0-9]+)</from>
+            <from>/tag/([0-9a-z]+)</from>
             <to>/tag.jsp?id=$1</to>
         </rule>
 		<rule>
