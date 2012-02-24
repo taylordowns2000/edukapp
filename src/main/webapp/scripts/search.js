@@ -13,7 +13,11 @@ $(document).ready(function(){
   //
   // Update page title
   //
-  $("h1").text("Results for '"+q+"'");
+  //$("h1").text("Results for '"+q+"'");
+  $('.breadcrumb').append(''+
+		  '  <li class="active"> '+
+		  '\''+q+'\''+
+		  '  </li>');
   
   //
   // Execute query
@@ -24,6 +28,13 @@ $(document).ready(function(){
 
 function displaySearchResults(data){
     var number_of_results = parseInt(data.number_of_results);
+    var searchResultsInfo = document.createElement("span");
+    $(searchResultsInfo).attr("id","search_results_info");
+    $(searchResultsInfo).addClass("pull-right");
+    $(searchResultsInfo).addClass("help-inline");
+    $('.breadcrumb').last().append(searchResultsInfo);
+    
+    
     if (isNaN(number_of_results)){
       $("#search_results_info").text("No results found");
     } else {
@@ -32,15 +43,31 @@ function displaySearchResults(data){
     }
     
     for (var i=0;i<data.widgets.length;i++){
-      showWidget(data.widgets[i]);
+    	//console.log(data.widgets[i]);
+			$('#search_results').append(''+		
+		'	<li class="span3">'+
+		'	<div class="thumbnail">'+
+		'		<img src="http://placehold.it/260x180" alt="">'+
+		'		<div class="caption">'+
+		'			<h5>'+data.widgets[i].name+'</h5>'+
+		'			<p>'+data.widgets[i].description.description+'</p>'+
+		'			<p>'+
+		'				<a href="/widget/'+data.widgets[i].id+'" class="btn btn-primary">Read more >>></a>'+
+		'			</p>'+
+		'		</div>'+
+		'	</div>'+
+		'</li>');
+		
+    	
+    	//showWidget(data.widgets[i]);
     }
 }
 
-function showWidget(widget){
-    var resultItem = document.createElement("li");
-    $(resultItem).html("<a href='widget.jsp?id="+widget.id+"'>"+widget.name+"</a>");
-    $(resultItem).appendTo('#search_results');
-}
+//function showWidget(widget){
+//    var resultItem = document.createElement("li");
+//    $(resultItem).html("<a href='widget.jsp?id="+widget.id+"'>"+widget.name+"</a>");
+//    $(resultItem).appendTo('#search_results');
+//}
 
 function createPaginationLinks(number_of_results, current_page){
 

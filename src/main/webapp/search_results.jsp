@@ -43,12 +43,19 @@
 			<!--/span-->
 			<div class="span9">
 				<div class="row-fluid">
-					<h1>Results</h1>
-					<p id="search_results_info"></p>
+				
+				<ul class="breadcrumb">
+  <li>
+    <a href="/index.jsp">Home</a> <span class="divider">/</span>
+  </li>
+  <li class="active">
+    Search<span class="divider">/</span>
+  </li>  
+</ul>				
 				</div>
 				<div class="row-fluid">
 					<div class="span6">
-					  <ol id="search_results">
+					  <ol id="search_results" class="thumbnails">
 					  
 					  </ol>
 					  
