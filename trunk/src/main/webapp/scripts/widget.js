@@ -1,10 +1,12 @@
 $(document).ready(
 
 function () {
+    "use strict";
+    
     //
     // Get the current widget id
     //
-    widget_id = $('#widgetid').val();
+    var widget_id = $('#widgetid').val();
     
     //
     // Add edit event handler
@@ -80,7 +82,7 @@ function () {
                 url: "ajaxHandlers/addReview.jsp?id=" + widget_id + "&userid=" + userid + "&reviewText=" + reviewText,
                 cache: false,
                 success: function (resp) {
-                    console.log("$" + resp.substring(0, 11) + "$")
+                    console.log("$" + resp.substring(0, 11) + "$");
                     if (resp.substring(0, 11) === "update done") {
                         $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '	<div class="span1">' + '		<img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '		<h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '	</div>' + '	<div class="span11">' + '		<div class="review-item-info-wrapper"></div>' + '		<p class="review-content-text">' + reviewText + '</p>' + '		<h6>just now</h6>' + '	</div>' + '</div>' + '</div>');
                         $('#write-a-review').remove();
@@ -162,7 +164,7 @@ function () {
         $.getJSON('/similar?uri=' + widgetUri, function (similar) {
             for (var i = 0; i < similar.length; i++) {
                 $("<li class='span2'>" + '<div class="thumbnail">' + '	<a href="widget.jsp?id=' + similar[i].id + '">' + similar[i].name + '</a>' + '	<div class="caption">' + '		<h5>' + similar[i].description.description + '</h5>' + '		<p></p>' + '		<p><a href="widget.jsp?id=' + similar[i].id + '" class="btn btn-primary">Read more >></a></p>' + '	</div>' + '</div>' + '</li>').hide().appendTo("#related-widgets").fadeIn("slow");
-            };
+            }
         });
         
         //
@@ -203,7 +205,7 @@ function () {
                 $(wrapper).append(item);
                 $(li).append(wrapper);
                 $(li).appendTo("#user-reviews").fadeIn("slow");
-            };
+            }
         });
     });
 });
