@@ -35,8 +35,14 @@
 				</div>
 			</div>
 			<div class="span9">
-				<h1>Tag</h1>
-
+<ul class="breadcrumb">
+  <li>
+    <a href="#">Home</a> <span class="divider">/</span>
+  </li>
+  <li class="active">
+    Tag<span class="divider">/</span>
+  </li>  
+</ul>
 
 				<ul id="widget-tagged-as-results" class="thumbnails">
 

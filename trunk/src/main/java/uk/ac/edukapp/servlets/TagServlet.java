@@ -56,21 +56,35 @@ public class TagServlet extends HttpServlet {
       throws ServletException, IOException {
 
     String tagid = req.getParameter("id");
+    String operation = req.getParameter("operation");
+
+    if (tagid == null && tagid.trim().length() == 0) {
+      resp.getWriter().append("id is empty").close();
+      return;
+    }
+    if (operation == null && operation.trim().length() == 0) {
+      resp.getWriter().append("operation is empty").close();
+      return;
+    }
 
     EntityManagerFactory factory = (EntityManagerFactory) getServletContext()
         .getAttribute("emf");
-
     EntityManager em = factory.createEntityManager();
     WidgetProfileService widgetProfileService = new WidgetProfileService(
         getServletContext());
-    Tag tag = null;
 
-    if (tagid != null && tagid.trim().length() > 0) {
-      tag = em.find(Tag.class, Integer.parseInt(tagid));
-      List<Widgetprofile> widgetsTaggedWith = widgetProfileService
-          .findWidgetProfilesForTag(tag);
+    Tag tag = null;
+    tag = em.find(Tag.class, Integer.parseInt(tagid));
+
+    if (tag != null) {
       OutputStream out = resp.getOutputStream();
-      MetadataRenderer.render(out, widgetsTaggedWith);
+      if (operation.equals("getName")) {
+        MetadataRenderer.render(out, tag);
+      } else if (operation.equals("getWidgets")) {
+        List<Widgetprofile> widgetsTaggedWith = widgetProfileService
+            .findWidgetProfilesForTag(tag);
+        MetadataRenderer.render(out, widgetsTaggedWith);
+      }
       out.flush();
       out.close();
     }
