@@ -186,8 +186,19 @@
     </filter-mapping>
 	<!-- rewrite servlet end -->
 	
-	
-	
+	<!-- tag servlet -->
+	<servlet>
+		<description>Tags api servlet</description>
+		<display-name>tags</display-name>
+		<servlet-name>TagServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.TagServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TagServlet</servlet-name>
+		<url-pattern>/api/tag</url-pattern>
+	</servlet-mapping>
+	<!-- tag servlet end -->
 	
 	
 </web-app>
