@@ -1,10 +1,10 @@
 $(document).ready(function(){
-	$.getJSON('/ajaxHandlers/getPopularTags.jsp', function(data){
+	$.getJSON('/api/tag/popular', function(data){
 		console.log(data);
 		for (var i=0;i<data.length;i++){
-			$('#footer-tags ul').append('<a class="btn btn-info" href="/tag/'+data[i].id+'">'+
+			$('#footer-tags ul').append('<a class="btn btn-info" href="/tag/'+data[i][0].id+'">'+
 					'<i class="icon-tag icon-white"></i>'+
-					data[i].tagtext+' ('+data[i].freq+')'+
+					data[i][0].tagtext+' ('+data[i][1]+')'+
 					'</a>');
 		}
 		
