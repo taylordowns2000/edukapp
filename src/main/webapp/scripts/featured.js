@@ -1,11 +1,18 @@
-$(document).ready(function(){
-
+$(document).ready(function () {
+  "use strict";
+    
   //
   // Get featured widgets
   //
-  $.getJSON('/api/featured', function(data){
-    $("#main").hide();
+  $.getJSON('/api/featured', function (data) {
+
+    //
+    // No featured widgets
+    //
+    if (!data || data.length === 0) { return true; }
   
+    $("#main").hide();
+
     //
     // Create carousel
     // 
@@ -25,7 +32,7 @@ $(document).ready(function(){
         
         var div = document.createElement("div");
         $(div).attr("class",itemClass);
-        $(div).append("<div class='pull-left' style='border:6px gray solid; margin-left:75px'>"+data[i].renderInfo)+"</div>";
+        $(div).append("<div class='pull-left' style='border:6px gray solid; margin-left:75px'>"+data[i].renderInfo+"</div>");
         $(div).append("<div class='pull-left' style='padding:10px'><h3>"+data[i].widgetProfile.name+"</h3><p>"+data[i].widgetProfile.description.description+"</p><p><a class='btn btn-inverse' href='widget.jsp?id="+data[i].widgetProfile.id+"'>Read more</a></p></div>");
         $(div).appendTo(innerCarousel);
         itemClass="item";
