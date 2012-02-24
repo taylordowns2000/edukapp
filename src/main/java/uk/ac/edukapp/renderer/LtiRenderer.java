@@ -34,9 +34,6 @@ import uk.ac.edukapp.model.Widgetprofile;
  * 
  */
 public class LtiRenderer {
-	
-	private static final String WOOKIE_URL = "http://widgets.open.ac.uk:8080/wookie/";
-	private static final String WOOKIE_API_KEY = "TEST";
 
 	private WookieConnectorService conn;
 	private static LtiRenderer renderer;
@@ -46,7 +43,7 @@ public class LtiRenderer {
 	
 	public WookieConnectorService getConnector(String sharedDataKey){
 		try {
-			conn = new WookieConnectorService(WOOKIE_URL, WOOKIE_API_KEY, sharedDataKey);
+			conn = WookieServerConfiguration.getInstance().getWookieConnector(sharedDataKey);
 		} catch (WookieConnectorException wce) {
 			wce.printStackTrace();
 		}
