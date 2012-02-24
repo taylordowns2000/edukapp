@@ -3,7 +3,16 @@
  */
 $(document).ready(function() {
 	tagid = $('#tagid').val();
-	$.getJSON('/api/tag?id=' + tagid, function(data) {
+	
+	$.getJSON('/api/tag?operation=getName&id=' + tagid, function(data) {		
+		$('.breadcrumb').append(''+
+		  '  <li class="active"> '+
+		  data.tagtext+
+		  '  </li>');
+	});
+	
+	
+	$.getJSON('/api/tag?operation=getWidgets&id=' + tagid, function(data) {
 		console.log(data);
 		for ( var i = 0; i < data.length; i++) {
 			$('#widget-tagged-as-results').append(''+		
@@ -22,4 +31,6 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	
 });
