@@ -152,7 +152,7 @@ function () {
                 $(tag_icon).attr("class", "icon-tag icon-white");
                 $(tag).attr("class", "btn btn-info");
                 $(tag).text(tags[i].tagtext);
-                $(tag).attr("href", "/tags/" + tags[i].id);
+                $(tag).attr("href", "/tag/" + tags[i].id);
                 $(tag).prepend(tag_icon);
                 $("#widget-tags").append(tag).append(" ");
             }
