@@ -161,9 +161,9 @@ function () {
         //
         // Load similar widget profiles
         //
-        $.getJSON('/similar?uri=' + widgetUri, function (similar) {
+        $.getJSON('/api/similar?uri=' + widgetUri, function (similar) {
             for (var i = 0; i < similar.length; i++) {
-                $("<li class='span2'>" + '<div class="thumbnail">' + '	<a href="widget.jsp?id=' + similar[i].id + '">' + similar[i].name + '</a>' + '	<div class="caption">' + '		<h5>' + similar[i].description.description + '</h5>' + '		<p></p>' + '		<p><a href="widget.jsp?id=' + similar[i].id + '" class="btn btn-primary">Read more >></a></p>' + '	</div>' + '</div>' + '</li>').hide().appendTo("#related-widgets").fadeIn("slow");
+                $("<li class='span2'>" + '<div class="thumbnail">' + '	<a href="/widget/' + similar[i].id + '">' + similar[i].name + '</a>' + '	<div class="caption">' + '		<h5>' + similar[i].description + '</h5>' + '		<p></p>' + '		<p><a href="widget.jsp?id=' + similar[i].id + '" class="btn btn-primary">Read more >></a></p>' + '	</div>' + '</div>' + '</li>').hide().appendTo("#related-widgets").fadeIn("slow");
             }
         });
         
