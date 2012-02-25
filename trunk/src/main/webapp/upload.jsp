@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page
-	import="org.apache.wookie.connector.framework.*,
-	uk.ac.edukapp.util.*,
-	uk.ac.edukapp.model.Useraccount,java.util.*,
-	javax.persistence.*,
-	javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +27,7 @@
             </div>
             <div class="span9">
 		
-                <% if (isAuthenticated) { %>
+                <shiro:authenticated>
 				
 				<div class="tabbable">
                   <ul class="nav nav-tabs">
@@ -72,17 +65,14 @@
                      </div>
                   </div>
                </div>
-        
+                </shiro:authenticated>
 
-			<%
-			  } else { //user not logged in
-			%>
+			<shiro:notAuthenticated>
 			<div class="alert alert-error">
 			  <p>You need to log in to upload a widget.</p>
 			</div>
-			<%
-			  }
-			%>
+            </shiro:notAuthenticated>
+            
 		</div>
       </div>
 	</div>

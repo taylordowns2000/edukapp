@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page
-	import="uk.ac.edukapp.util.JspUtils,uk.ac.edukapp.model.Useraccount,javax.persistence.EntityManagerFactory"%>
 <!DOCTYPE html>
 <html>
 <head>

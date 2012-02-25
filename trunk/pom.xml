@@ -228,6 +228,12 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+		<dependency>
+  			<groupId>org.apache.shiro</groupId>
+  			<artifactId>shiro-web</artifactId>
+  			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>

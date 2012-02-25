@@ -79,7 +79,7 @@ public class RegisterServlet extends HttpServlet {
 
     UUID token = UUID.randomUUID();
     String salt = token.toString();
-    String hashedPassword = MD5Util.md5Hex(password + salt);
+    String hashedPassword = MD5Util.md5Hex(salt + password);
     ua.setPassword(hashedPassword);
     ua.setSalt(salt);
     em.persist(ua);

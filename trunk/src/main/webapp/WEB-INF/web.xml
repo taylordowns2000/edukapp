@@ -14,6 +14,25 @@
 	<listener>
 		<listener-class>uk.ac.edukapp.listeners.ConnectionListener</listener-class>
 	</listener>
+	
+	<!-- Shiro security -->
+			<context-param>
+    		<param-name>shiroEnvironmentClass</param-name>
+    		<param-value>uk.ac.edukapp.security.WebSecurityEnvironment</param-value>
+		</context-param>
+	<listener>
+		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>ShiroFilter</filter-name>
+		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ShiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+
 	<servlet>
 		<description>Search servlet</description>
 		<display-name>seach</display-name>
@@ -141,7 +160,7 @@
 		<description>Login servlet</description>
 		<display-name>login</display-name>
 		<servlet-name>LoginServlet</servlet-name>
-		<servlet-class>uk.ac.edukapp.servlets.LoginServlet</servlet-class>
+		<servlet-class>uk.ac.edukapp.servlets.ShiroLoginServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet-mapping>
