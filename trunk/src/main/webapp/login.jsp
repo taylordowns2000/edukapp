@@ -25,53 +25,42 @@
 					</ul>
 				</div>
 			</div>
-			<div class="span9">
+			
+			<div class="span9" id="main">
 
-	<div id="formWrapper">
-		<h2>Login page</h2>
+		      <h2>Log in</h2>
 
-		<form type="POST" action="/login">
+		      <form method="POST" class="well" action="/login">
 		
-		
-			<div>
-				<label for="usr_name" >userID</label> <input autocomplete="off" id="name" name="username"
-					type="text" /> <span id="nameInfo">What's your name?</span>
-			</div>
-			<div>
-				<label for="usr_password">password</label> <input autocomplete="off" id="pass"
-					name="password" type="password" /> <span id="passInfo">Your
-					password</span>
-			</div>
-			
-			<div>				
-				<span>remember?<span><input style="width:20px;float:left;" type="checkbox" name="remember"/>
-			</div>
-			
-			<div>
-				<input id="login" name="login" type="submit" value="login" />
-			</div>
-		</form>
-		<script>
-		    var wrong = getParameterByName("wrong");
-		    if (wrong){
-		       var message = document.createElement("p");
-		       $(message).attr("class","alert alert-error");
-		       $(message).text("Wrong login or non-existing user. Please try again!");
-		       $(message).appendTo("#formWrapper").fadeIn();
-		    }
-		</script>
+                <label for="usr_name" >User name</label>
+                <input autocomplete="off" id="name" name="username" type="text" placeholder="user name">
 
-		<p>
-			Not a user yet? Go ahead and <a href="register.jsp">register</a>
-		</p>
-
-	</div>
+                <label for="usr_password">password</label> 
+                <input autocomplete="off" id="pass" name="password" type="password" placeholder="password">
 			
-			<%@ include file="/components/footer.jsp"%>
-			</div>
+                <label for="rememberMe" class="checkbox">remember me
+				    <input style="width:20px;float:left;" id="rememberMe" type="checkbox" name="rememberMe">
+			     </label>
+                <button class="btn" name="login" type="submit">Log in</button>
 
-		</div>
-		<!-- end of page-wrapper -->
+		      </form>
+
+		  <p>Not a user yet? Go ahead and <a href="register.jsp">register</a></p>
+
+        <%@ include file="/components/footer.jsp"%>
+        </div>
+
+    </div>
+    
+    <script>
+		  var wrong = getParameterByName("wrong");
+		  if (wrong){
+		      var message = document.createElement("p");
+		      $(message).attr("class","alert alert-error");
+		      $(message).text("Wrong login or non-existing user. Please try again!");
+		      $(message).appendTo("#main").fadeIn();
+		  }
+    </script>
 </body>
 </html>
 

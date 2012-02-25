@@ -27,7 +27,6 @@ public class LogoutServlet extends HttpServlet {
   public LogoutServlet() {
     super();
     log = LogFactory.getLog(LogoutServlet.class);
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -39,7 +38,7 @@ public class LogoutServlet extends HttpServlet {
 
 	  Subject currentUser = SecurityUtils.getSubject();
 	  currentUser.logout();
-	  doForward(request, response, "/index.jsp");
+	  response.sendRedirect("/index.jsp");
   }
 
   /**
@@ -49,16 +48,6 @@ public class LogoutServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 	  doGet(request, response);
-  }
-
-  
-  private void doForward(HttpServletRequest request,
-      HttpServletResponse response, String jsp) throws ServletException,
-      IOException {
-    // RequestDispatcher dispatcher = getServletContext()
-    // .getRequestDispatcher(jsp);
-    // dispatcher.forward(request, response);
-    response.sendRedirect(request.getContextPath() + jsp);
   }
 
 }
