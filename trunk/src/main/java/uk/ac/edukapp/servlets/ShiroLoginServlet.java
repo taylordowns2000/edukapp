@@ -60,7 +60,7 @@ public class ShiroLoginServlet extends HttpServlet{
 	    try {
 			currentUser.login(token);
 	        
-	        if (from.equals("/login.jsp")){
+	        if (from == null || from.equals("/login.jsp")){
 	          response.sendRedirect("/index.jsp");
 	        }else {
 	          response.sendRedirect(from);
