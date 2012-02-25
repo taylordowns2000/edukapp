@@ -1,5 +1,3 @@
-
-
 function getParameterByName(name)
 {
   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -10,4 +8,9 @@ function getParameterByName(name)
     return "";
   else
     return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getResource()
+{
+    return location.pathname.replace(/^.*[\\\/]/, '');
 }
