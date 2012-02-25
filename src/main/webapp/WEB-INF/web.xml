@@ -219,5 +219,19 @@
 	</servlet-mapping>
 	<!-- tag servlet end -->
 	
+	<!-- account info servlet -->
+	<servlet>
+		<description>AccountInfo api servlet</description>
+		<display-name>accountInfo</display-name>
+		<servlet-name>AccountInfoServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.AccountInfoServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AccountInfoServlet</servlet-name>
+		<url-pattern>/api/user</url-pattern>
+	</servlet-mapping>
+	<!-- account info servlet end -->
+	
 	
 </web-app>
