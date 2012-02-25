@@ -1,7 +1,4 @@
-<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
-<%@page import="uk.ac.edukapp.model.Widgetprofile"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,18 +8,7 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<link rel="stylesheet" href="/css/anythingslider.css" />
-<script>
-	// DOM Ready
-	$(function() {
-		$('#widget-slider').anythingSlider({
-			expand : false,
-			buildNavigation : false,
-			buildStartStop : false,
 
-		});
-	});
-</script>
 </head>
 <body>
 
@@ -40,9 +26,6 @@
 				</div>
 			</div>
 			<div class="span9">
-			<%
-String wrong = request.getParameter("wrong");
-%>
 
 	<div id="formWrapper">
 		<h2>Login page</h2>
@@ -68,9 +51,16 @@ String wrong = request.getParameter("wrong");
 				<input id="login" name="login" type="submit" value="login" />
 			</div>
 		</form>
-		<%if (wrong!=null && wrong.equals("true")){%>
-		<p class="error">Wrong login or non-existing user. Please try again!</p>
-		<%} %>
+		<script>
+		    var wrong = getParameterByName("wrong");
+		    if (wrong){
+		       var message = document.createElement("p");
+		       $(message).attr("class","alert alert-error");
+		       $(message).text("Wrong login or non-existing user. Please try again!");
+		       $(message).appendTo("#formWrapper").fadeIn();
+		    }
+		</script>
+
 		<p>
 			Not a user yet? Go ahead and <a href="register.jsp">register</a>
 		</p>
