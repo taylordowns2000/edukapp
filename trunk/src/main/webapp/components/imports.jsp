@@ -1,5 +1,7 @@
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="/scripts/bootstrap.js"></script>
+<script src="/scripts/util.js"></script>
+
 <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
 <style type="text/css">
 body {
