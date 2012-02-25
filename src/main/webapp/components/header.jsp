@@ -8,7 +8,7 @@
 				
 				    <shiro:authenticated>
 				        <ul class="nav">
-						  <li><a href="profile.jsp?userid=<shiro:principal property="id"/>"><i class="icon icon-user icon-white"></i><shiro:principal property="username"/></a></li>
+						  <li><a href="/user/<shiro:principal property="id"/>"><i class="icon icon-user icon-white"></i><shiro:principal property="username"/></a></li>
 						  <li><a style="margin-left:5px;" href="/logout">Log out</a></li>
 				        </ul>
 					</shiro:authenticated>

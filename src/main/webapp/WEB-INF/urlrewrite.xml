@@ -23,6 +23,14 @@
             <from>/widget/([0-9]+)</from>
             <to>/widget.jsp?id=$1</to>
         </rule>
+        <rule>
+            <from>^/api/user/([0-9a-z]+)$</from>
+            <to>/api/user?id=$1</to>
+        </rule>
+        <rule>
+            <from>^/user/([0-9a-z]+)$</from>
+            <to>/profile.jsp?id=$1</to>
+        </rule>
 <!--
     <rule>
         <note>
