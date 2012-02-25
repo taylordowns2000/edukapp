@@ -21,7 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -34,8 +33,6 @@ import org.apache.shiro.subject.Subject;
  *
  */
 public class ShiroLoginServlet extends HttpServlet{
-	
-	
 
 	/* (non-Javadoc)
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -44,20 +41,29 @@ public class ShiroLoginServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-
-		 // get parameters
-	    String username = null;
-	    String password = null;
-
-	    username = request.getParameter("username");
-	    password = request.getParameter("password");
+		// 
+		// Get auth parameters and construct credentials token
+		//
+	    String username = request.getParameter("username");
+	    String password = request.getParameter("password");
+	    String rememberMe = request.getParameter("rememberMe");
 	    
 	    UsernamePasswordToken token = new UsernamePasswordToken( username, password );
-	    token.setRememberMe(true);
+	    
+	    //
+	    // Get Shiro to turn on "remember me" if user selects it
+	    //
+	    if (rememberMe !=null && rememberMe.equalsIgnoreCase("true")){
+	    	token.setRememberMe(true);
+	    }
 	    
 	    Subject currentUser = SecurityUtils.getSubject();
+	    
         String from = request.getParameter("from");
 	    try {
+	    	//
+	    	// Try to log in with supplied credentials
+	    	//
 			currentUser.login(token);
 	        
 	        if (from == null || from.equals("/login.jsp")){
@@ -66,7 +72,10 @@ public class ShiroLoginServlet extends HttpServlet{
 	          response.sendRedirect(from);
 	        }
 		} catch (AuthenticationException e) {
-			response.sendRedirect("/login.jsp?from="+from+"&wrong=true");
+			//
+			// Log in attempt failed
+			//
+			response.sendRedirect("/login.jsp?wrong=true&from="+from);
 		}
 	    
 	}
