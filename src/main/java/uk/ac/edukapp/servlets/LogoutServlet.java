@@ -1,29 +1,17 @@
 package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import uk.ac.edukapp.model.Useraccount;
-import uk.ac.edukapp.util.MD5Util;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -49,25 +37,9 @@ public class LogoutServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    HttpSession session = request.getSession(false);
-
-    if (session == null) {
-      log.info("Session is null");
-    }
-
-    session.invalidate();
-
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (int i = 0; i < cookies.length; i++) {
-        cookies[i].setMaxAge(0);
-        response.addCookie(cookies[i]);
-      }
-    }
-
-    log.info("logout finished");
-    doForward(request, response, "/index.jsp");
-    
+	  Subject currentUser = SecurityUtils.getSubject();
+	  currentUser.logout();
+	  doForward(request, response, "/index.jsp");
   }
 
   /**
@@ -76,29 +48,9 @@ public class LogoutServlet extends HttpServlet {
    */
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-    HttpSession session = request.getSession(false);
-
-    if (session == null) {
-      log.info("Session is null");
-    }
-
-    session.invalidate();
-
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (int i = 0; i < cookies.length; i++) {
-        cookies[i].setMaxAge(0);
-        response.addCookie(cookies[i]);
-      }
-    }
-
-    log.info("logout finished");
-    doForward(request, response, "/index.jsp");
+	  doGet(request, response);
   }
 
-
-  
   
   private void doForward(HttpServletRequest request,
       HttpServletResponse response, String jsp) throws ServletException,

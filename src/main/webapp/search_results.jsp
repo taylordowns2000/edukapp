@@ -1,12 +1,5 @@
-<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
-<%@page import="uk.ac.edukapp.model.Widgetprofile"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page
-	import="uk.ac.edukapp.util.JspUtils,
-	uk.ac.edukapp.model.Useraccount,
-	uk.ac.edukapp.renderer.*,
-	javax.persistence.EntityManagerFactory"%>
 <!DOCTYPE html>
 <html>
 <head>

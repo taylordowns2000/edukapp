@@ -4,18 +4,6 @@
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page
-	import="org.apache.wookie.connector.framework.*,
-	uk.ac.edukapp.util.*,
-	uk.ac.edukapp.model.Useraccount,
-	uk.ac.edukapp.model.Accountinfo,
-	java.util.*,
-	java.sql.Timestamp,
-	javax.persistence.*,
-	javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory,
-	org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory"%>
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,14 +1,5 @@
-<%@page import="uk.ac.edukapp.renderer.WidgetRenderer"%>
-<%@page import="uk.ac.edukapp.model.Widgetprofile"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page
-	import="org.apache.wookie.connector.framework.*,
-	uk.ac.edukapp.util.*,uk.ac.edukapp.model.Useraccount,java.util.*,
-	javax.persistence.*,javax.persistence.EntityManager,
-	javax.persistence.EntityManagerFactory,org.apache.commons.logging.Log,
-	org.apache.commons.logging.LogFactory,
-	uk.ac.edukapp.renderer.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,19 +9,6 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="scripts/jquery.anythingslider.min.js"></script>
-<link rel="stylesheet" href="css/anythingslider.css" />
-<script>
-	// DOM Ready
-	$(function() {
-		$('#widget-slider').anythingSlider({
-			expand : false,
-			buildNavigation : false,
-			buildStartStop : false,
-
-		});
-	});
-</script>
 </head>
 <body>
 
