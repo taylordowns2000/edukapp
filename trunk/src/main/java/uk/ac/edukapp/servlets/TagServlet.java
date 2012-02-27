@@ -90,8 +90,6 @@ public class TagServlet extends HttpServlet {
 			resp.sendError(404);
 			return;
 		}
-		
-		System.out.println("tag:"+tag.getTagtext()+", operation:"+operation);
 
 		OutputStream out = resp.getOutputStream();
 		if (operation.equals("getName")) {
