@@ -23,6 +23,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Tag;
 
 /**
@@ -32,6 +35,8 @@ import uk.ac.edukapp.model.Tag;
  */
 public class TagService extends AbstractService{
 	
+	static Logger logger = Logger.getLogger(TagService.class.getName());	
+	
 	public TagService(ServletContext servletContext) {
 		super(servletContext);
 	}
@@ -40,10 +45,31 @@ public class TagService extends AbstractService{
 	 * Get the most popular tags
 	 * @return a List of tags
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Tag> getPopularTags(){
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-		TypedQuery<Tag> query = entityManager.createNamedQuery("Tag.popular", Tag.class);
-		List<Tag> tags = query.setMaxResults(10).getResultList();
+		
+		List<Tag> tags; 
+		
+		//
+		// By preference we load this from the cache rather
+		// than from JPA
+		//
+		tags = (List<Tag>) Cache.getInstance().get("PopularTags");
+		
+		if (tags == null){
+			EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+			TypedQuery<Tag> query = entityManager.createNamedQuery("Tag.popular", Tag.class);
+			tags = query.setMaxResults(10).getResultList();
+			entityManager.close();
+			
+			//
+			// Add to cache with a max lifetime of one hour
+			//
+			Cache.getInstance().put("PopularTags", tags, 3200);
+			logger.debug("Loaded popular tags from JPA");
+		} else {
+			logger.debug("loaded popular tags from cache");
+		}
 		return tags;
 	}
 	
