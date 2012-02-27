@@ -18,44 +18,11 @@ This will start the following web applications:
 2. An Apache Wookie widget server at localhost:8080/wookie
 3. An Apache Solr search engine server at localhost:8080/solr
 
-To add the widget metadata from Wookie into the Solr search engine:
+To index widget metadata from Wookie in the Solr search engine:
 
 http://localhost:8080/solr/en/dataimport?command=full-import
 
-To search widgets:
+To then get Edukapp to initialize all indexed widgets:
 
-http://localhost:8080/search?q=chat
-
-To find widgets that are similar to a specific widget:
-
-http://localhost:8080/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
-
-To get reviews for a widget:
-
-http://localhost:8080/review?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
-
-TODO
-
-1. Set up Shindig automatically 
-
-====
-
-Assumptions: 
-1. 	there is a wookie (http://incubator.apache.org/wookie/)
-2. 	and shindig (http://shindig.apache.org/) service running in parallel
-	need to declare their locations in build.properties
-	in future integrate distribution war files and deploy all three components together through the ant script 	
-
-3. 	application server: for now app is developed and tested in tomcat v.7
-	in future offer support for other popular application servers (jboss,glassfish,..)
-
-4. 	JPA: we use openJPA (http://openjpa.apache.org/) implementation of jpa
-	support hibernate,eclipselink,toplink?
-	
-5. 	database: for now app is dev and tested in mysql
-	shall be trivial to port in other dbms - 
-	in future use apache torque to offer multiple db engines
-	
-	todo: include database schema(connection URL),db user and pass in build.properties
-
+http://localhost:8080/api/search?q=%5B*TO%20*%5D
 
