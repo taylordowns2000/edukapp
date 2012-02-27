@@ -20,6 +20,9 @@
 
 		
     	<properties>	    
+    	
+    	    <property name="openjpa.Log" value="SQL=TRACE"/>
+    	    
     		<property name="openjpa.ConnectionDriverName"   value="com.mysql.jdbc.Driver"/>
     		<property name="openjpa.ConnectionURL"      	value="jdbc:mysql://localhost/edukapptests"/>
     		<property name="openjpa.ConnectionUserName"     value="edukapptests"/>
