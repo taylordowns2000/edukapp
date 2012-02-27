@@ -9,6 +9,9 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.exceptions.EntityNotFound;
 import uk.ac.edukapp.exceptions.WidgetUpdateException;
 import uk.ac.edukapp.model.Activity;
@@ -41,6 +44,8 @@ import uk.ac.edukapp.repository.Widget;
  * @author scott.bradley.wilson@gmail.com
  */
 public class WidgetProfileService extends AbstractService {
+	
+	static Logger logger = Logger.getLogger(WidgetProfileService.class.getName());	
 
 	public WidgetProfileService(ServletContext ctx) {
 		super(ctx);
@@ -54,15 +59,31 @@ public class WidgetProfileService extends AbstractService {
 		return activity.getWidgetprofiles();
 	}
 
+	/**
+	 * Get the list of featured widgets
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Widgetprofile> findFeaturedWidgetProfiles() {
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-		Query wpQuery = entityManager
-				.createNamedQuery("Widgetprofile.featured");
-		List<Widgetprofile> widgetProfiles = (List<Widgetprofile>) wpQuery
-				.getResultList();
-		entityManager.close();
+		
+		List<Widgetprofile> widgetProfiles;
+		
+		//
+		// Obtain cached version where available
+		//
+		widgetProfiles = (List<Widgetprofile>) Cache.getInstance().get("FeaturedWidgets");
+		
+		if (widgetProfiles == null){
+			EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+			Query wpQuery = entityManager.createNamedQuery("Widgetprofile.featured");
+			widgetProfiles = (List<Widgetprofile>) wpQuery.getResultList();
+			entityManager.close();
+			Cache.getInstance().put("FeaturedWidgets", widgetProfiles, 3200);
+			logger.debug("Loaded featured widgets from JPA");
+		} else {
+			logger.debug("Loaded featured widgets from cache");
+		}
+		
 		return widgetProfiles;
 	}
 
