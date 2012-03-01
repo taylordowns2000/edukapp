@@ -59,19 +59,24 @@ public class LtiRenderer {
 			Map<String, String[]> parameters) {
 
 
+		String sharedDataKey = "";	
+		
 		//
-		// We use the required field resource_link_id rather than the optional
-		// context_id
-		// as the basis of a shared data key
+		// If there is a context_id, append it to the shared data key
 		//
-		String sharedDataKey = null;
+		if(parameters.containsKey("context_id")){
+			sharedDataKey += ":" + parameters.get("context_id")[0]; //$NON-NLS-1$
+		}
+		
+		//
+		// If there is a resource_link_id, append it to the shared data key
+		//
 		if(parameters.containsKey("resource_link_id")){
-			sharedDataKey = parameters.get("resource_link_id")[0]; //$NON-NLS-1$
+			sharedDataKey += ":" + parameters.get("resource_link_id")[0]; //$NON-NLS-1$
 		}
 
 		//
 		// The user (viewer) information
-		//
 		//
 		String userId = null;
 		if(parameters.containsKey("user_id")){
@@ -92,7 +97,7 @@ public class LtiRenderer {
 
 
 		//
-		// Get the API key for the request
+		// Get the consumer key for the request
 		//
 		String consumerKey = null;
 		if(parameters.containsKey("user_id")){
@@ -110,6 +115,9 @@ public class LtiRenderer {
 		//
 		WidgetInstance widgetInstance = null;
 		try {
+			//
+			// The actual shared data key == consumerkey:contextid:resourcelinkid
+			//
 			this.conn = this.getConnector(consumerKey+":"+sharedDataKey);
 			conn.setCurrentUser(user);
 			widgetInstance = conn.getOrCreateInstance(widgetProfile.getWidId());
