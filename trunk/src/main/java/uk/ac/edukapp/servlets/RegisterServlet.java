@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import uk.ac.edukapp.model.Accountinfo;
+import uk.ac.edukapp.model.LtiProvider;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.util.MD5Util;
 
@@ -97,6 +98,12 @@ public class RegisterServlet extends HttpServlet {
       log.info("got an exception");      
       e.printStackTrace();
     }
+    
+    //
+    // Create an LTI Provider for this account
+    //
+    LtiProvider ltiProvider = new LtiProvider(ua);
+    em.persist(ltiProvider);
 
     em.getTransaction().commit();
     /*----------*/
