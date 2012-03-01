@@ -21,6 +21,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -35,6 +36,9 @@ import net.oauth.OAuthValidator;
 import net.oauth.SimpleOAuthValidator;
 
 import org.apache.log4j.Logger;
+
+import uk.ac.edukapp.model.LtiProvider;
+import uk.ac.edukapp.service.LtiProviderService;
 
 /**
  * OAuth Authorization Filter for API Requests
@@ -66,6 +70,7 @@ public class OAuthAuthorizationFilter implements Filter {
 
   private boolean useSignedMessaging = false;
   private OAuthValidator oAuthValidator;
+  private ServletContext servletContext;
 
   /*
    * (non-Javadoc)
@@ -75,6 +80,8 @@ public class OAuthAuthorizationFilter implements Filter {
   public void init(FilterConfig filterConfig) throws ServletException {
     useSignedMessaging = Boolean.parseBoolean(filterConfig.getInitParameter("signed"));
     oAuthValidator = new SimpleOAuthValidator();
+    servletContext = filterConfig.getServletContext();
+
   }
 
   /*
@@ -167,7 +174,14 @@ public class OAuthAuthorizationFilter implements Filter {
     //
     // Look up the key
     //
-    return isRegistered(key);
+    LtiProvider ltiProvider = getLtiProvider(key);
+    
+    if (ltiProvider == null){
+      return false;
+    } else {
+    	return true;
+    }
+
   }
 
   /**
@@ -191,18 +205,18 @@ public class OAuthAuthorizationFilter implements Filter {
       String consumerKey = message.getConsumerKey();
       
       //
-      // If the API Key isn't registered with Wookie, we can stop right
+      // If the API Key isn't registered, we can stop right
       // here
       //
-      if (!isRegistered(consumerKey)){
-        _logger.info("Invalid consumer key supplied:"+consumerKey);
+      LtiProvider ltiProvider = getLtiProvider(consumerKey);
+      if (ltiProvider == null){
         return false;
       }
       
       //
       // Obtain the secret associated with the key
       //
-      String apiSecret = getApiSecret(consumerKey);
+      String apiSecret = ltiProvider.getConsumerSecret();
       
       //
       // Create "blank" token providers. This is because we aren't using
@@ -233,42 +247,17 @@ public class OAuthAuthorizationFilter implements Filter {
     //
     return true;
   }
-
-  /**
-   * FIXME actually store a real API secret for each API key
-   * and issue it when requested.
-   * 
-   * @param apiKey the API key for the request
-   * @return the API secret associated the API key
-   */
-  private String getApiSecret(String consumerKey) {
-    // FIXME Implement this
-    return "TEST";
-  }
   
-  /**
-   * Looks up an API key
-   * @param apiKey
-   * @return true if the API key is registered, false otherwise
-   */
-  private boolean isRegistered(String consumerKey){
-	  //
-	  // FIXME implement properly
-	  //
-	  
-    //
-    // Key not found
-    //
-   //   if (consumerKey == null || consumerKey.length() == 0) {
-   //   _logger.info("No API consumer key supplied: " + consumerKey);
-   //   return false;
-   // }
-
-    //
-    // Key valid
-    //
-    return true;
-    
+  private LtiProvider getLtiProvider(String consumerKey){
+      LtiProviderService ltiProviderService = new LtiProviderService(servletContext);
+      LtiProvider ltiProvider = ltiProviderService.getLtiProviderForConsumerKey(consumerKey);
+      
+      if (ltiProvider == null){
+        _logger.info("Invalid consumer key supplied:"+consumerKey);
+        return null;
+      }
+      
+      return ltiProvider;
   }
 
   /**
