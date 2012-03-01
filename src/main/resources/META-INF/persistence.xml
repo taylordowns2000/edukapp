@@ -14,6 +14,7 @@
 	<class>uk.ac.edukapp.model.Widgetprofile</class>
 	<class>uk.ac.edukapp.model.Accountinfo</class>
 	<class>uk.ac.edukapp.model.WidgetDescription</class>
+	<class>uk.ac.edukapp.model.LtiProvider</class>
 		<!--
 		<class>put your classes here</class>
 		-->
