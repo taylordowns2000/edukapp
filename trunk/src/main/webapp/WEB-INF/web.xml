@@ -189,7 +189,18 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
-	
+	<servlet>
+		<description>Session servlet - checks for current auth session</description>
+		<display-name>session</display-name>
+		<servlet-name>SessionServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.SessionServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SessionServlet</servlet-name>
+		<url-pattern>/session</url-pattern>
+	</servlet-mapping>
+		
 	<!-- rewrite servlet -->
 	<filter>
     	<filter-name>UrlRewriteFilter</filter-name>
