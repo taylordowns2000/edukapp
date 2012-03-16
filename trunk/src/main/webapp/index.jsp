@@ -47,6 +47,8 @@
 						with social requirements engineering and analytics.
 						
 						 </span>
+						 <br/>
+						 <p>You can learn more about MUPPLEs by watching the <a href="http://www.teleurope.eu/pg/podcasts/channels/131661">MUPPLE lecture series</a></p>
 						<p style="margin-top: 10px;">
 							<a class="btn btn-primary btn-large" href="about.jsp">Learn more »</a>
 						</p>
@@ -54,10 +56,8 @@
 
 					<div class="span4" id="intro-screencast">
 
-						<iframe
-							src="http://player.vimeo.com/video/36818561?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff"
-							width="401" height="228" frameborder="0" webkitAllowFullScreen
-							mozallowfullscreen allowFullScreen></iframe>
+<iframe src="http://player.vimeo.com/video/25706885?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="401" height="228" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
 						<div class="clear" style="clear: both;"></div>
 					</div>
 					<div class="clear" style="clear: both;"></div>
