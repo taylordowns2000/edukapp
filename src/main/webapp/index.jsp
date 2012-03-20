@@ -47,8 +47,8 @@
 						with social requirements engineering and analytics.
 						
 						 </span>
-						 <br/>
-						 <p>You can learn more about MUPPLEs by watching the <a href="http://www.teleurope.eu/pg/podcasts/channels/131661">MUPPLE lecture series</a></p>
+						 <p>&nbsp;</p>
+						 <span>You can learn more about MUPPLEs by watching the <a href="http://www.teleurope.eu/pg/podcasts/channels/131661">MUPPLE lecture series</a></span>
 						<p style="margin-top: 10px;">
 							<a class="btn btn-primary btn-large" href="about.jsp">Learn more »</a>
 						</p>
