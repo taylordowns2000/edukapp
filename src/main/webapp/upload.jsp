@@ -37,7 +37,7 @@
                   <div class="tab-content">
                     <div class="tab-pane active" id="1">
 						  <form method="post"
-							action="/upload"
+							action="/api/upload"
 							name="upform" enctype="multipart/form-data"
 							class="well">
 							
@@ -50,7 +50,7 @@
                     <div class="tab-pane" id="2">
 						  <form 
 						   method="post" 
-						   action="/upload" 
+						   action="/api/upload" 
 						   name="gadgetupform"
 						   class="well">
 						   
