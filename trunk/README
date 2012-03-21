@@ -26,3 +26,28 @@ To then get Edukapp to initialize all indexed widgets:
 
 http://localhost:8080/api/search?q=%5B*TO%20*%5D
 
+
+Deploy in tomcat (localhost/remote host)
+------------------------------------------
+1. (after you build locally as standalone) copy .war files (of target/tomcat6x/webapps folder) in webapps folder
+1.1 solr.war might be faulty - copy instead the latest solr release war file
+
+2. Copy solr folder outside your webapps folder
+2.1 if not localhost edit solr/en/conf/data-config.xml and set url to your hostname
+2.2 edit webapps/solr/WEB-INF/web.xml and uncomment
+    <env-entry>
+       <env-entry-name>solr/home</env-entry-name>
+       <env-entry-value>/put/your/solr/home/here</env-entry-value>
+       <env-entry-type>java.lang.String</env-entry-type>
+    </env-entry>
+setting the env-entry-calue to your solr home folder path
+
+3.if tomcat 7 you may encounter a "session error" each time a wookie widget is rendered
+	to overcome add in /wookie/WEB-INF/web.xml 
+	in dwr-invoker servlet declaration:
+	                <init-param>
+                        <param-name>crossDomainSessionSecurity</param-name>
+                        <param-value>false</param-value>
+                	</init-param>
+	
+
