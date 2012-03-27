@@ -51,3 +51,7 @@ setting the env-entry-calue to your solr home folder path
                 	</init-param>
 	
 
+4. star JVM with the following flags (typically create a var JAVA_OPTS in {TOMCAT_HOME}/bin/catalina.sh)
+JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms1536m
+-Xmx1536m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256m
+-XX:MaxPermSize=256m -XX:+DisableExplicitGC"
