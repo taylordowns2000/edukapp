@@ -28,10 +28,8 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
+						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
 						<li>
-
-
-
 							<div class="modal hide" id="embedModal">
 								<div class="modal-header">
 									<a class="close" data-dismiss="modal">×</a>

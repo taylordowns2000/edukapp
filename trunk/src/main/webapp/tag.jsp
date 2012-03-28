@@ -24,8 +24,8 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="#"><i class="icon-question-sign"></i>Something
-								here...</a>
+						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>
+						
 						</li>
 					</ul>
 				</div>

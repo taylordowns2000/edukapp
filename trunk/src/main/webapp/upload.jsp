@@ -20,6 +20,7 @@
 				<div class="well sidebar-nav">
 				   <ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
+						 <li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
 						<li><a href="#"><i class="icon-question-sign"></i>Help topic: uploading</a>
 						</li>
 					</ul>
