@@ -21,9 +21,10 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="about.jsp"><i class="icon-question-sign"></i>About
+						 <li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
+						<li><a href="/about.jsp"><i class="icon-question-sign"></i>About
 								EDUKApp</a></li>
-						<li><a href="upload.jsp"><i class="icon-upload"></i>Submit
+						<li><a href="/upload.jsp"><i class="icon-upload"></i>Submit
 								a widget</a></li>
 
 					</ul>
