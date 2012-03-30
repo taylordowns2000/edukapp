@@ -7,30 +7,32 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the activities database table.
  * 
  */
 @Entity
-@Table(name="activities")
+@Table(name = "activities")
+@NamedQueries({
+		@NamedQuery(name = "Activity.findByName", query = "SELECT a FROM Activity a WHERE a.activitytext = :activityname"),
+		@NamedQuery(name = "Activity.popular", query = "SELECT a, SIZE(a.widgetprofiles) as freq FROM Activity a ORDER BY freq DESC") })
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(nullable=false, length=64)
+	@Column(nullable = false, length = 64)
 	private String activitytext;
 
-	//bi-directional many-to-many association to Widgetprofile
-	@ManyToMany(mappedBy="activities")
+	// bi-directional many-to-many association to Widgetprofile
+	@ManyToMany(mappedBy = "activities")
 	private List<Widgetprofile> widgetprofiles;
 
-    public Activity() {
-    }
+	public Activity() {
+	}
 
 	public int getId() {
 		return this.id;
@@ -56,5 +58,5 @@ public class Activity implements Serializable {
 	public void setWidgetprofiles(List<Widgetprofile> widgetprofiles) {
 		this.widgetprofiles = widgetprofiles;
 	}
-	
+
 }

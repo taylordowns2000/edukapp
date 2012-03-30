@@ -1,0 +1,40 @@
+/* to update code repository's wiki with */
+GET /api/featured
+GET /api/search?q={search terms}
+GET /api/similar?uri={widget uri}
+GET /api/review?uri={widget uri}
+GET /api/widget?id={widget id}
+GET /api/widget?uri={widget uri}
+
+** Tag
+GET /api/tag/{tag id}
+GET /api/tag/{tag id}/widgets
+GET /api/tag/popular
+
+** Activity
+GET /api/activity?id=popular&operation=getName
+GET /api/activity?id=all&operation=getName
+GET /api/activity?id={tag id}&operation=getName
+
+PUT /api/activity?text={activity text}
+
+POST /api/activity?id={activity id}&newText={new text}
+POST /api/activity?oldText={old text}&newText={new text}
+
+DELETE /api/activity?id={activity id}
+DELETE /api/activity?text={text}
+------------------------------------------------
+real														|	clean
+															|
+GET /api/activity?method=GET&operation=popular				|	/api/activity/GET/popular
+GET /api/activity?method=GET&operation=all					|	/api/activity/GET/all
+GET /api/activity?method=GET&id={$id}&operation=getName		|	/api/activity/GET/name/{$id}
+GET /api/activity?method=GET&id={$id}&operation=getWidgets	|	/api/activity/GET/widgets/{$id}
+
+PUT /api/activity/PUT?text={activity text}
+
+POST /api/activity/POST?id={activity id}&newText={new text}
+POST /api/activity/POST?oldText={old text}&newText={new text}
+
+DELETE /api/activity/DELETE?id={activity id}
+DELETE /api/activity/DELETE?text={text}
