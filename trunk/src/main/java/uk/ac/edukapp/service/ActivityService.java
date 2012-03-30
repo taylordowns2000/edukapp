@@ -1,4 +1,3 @@
-
 /*
  *  (c) 2012 University of Bolton
  *  
@@ -28,18 +27,21 @@ import uk.ac.edukapp.model.Useractivity;
 
 /**
  * Service for user activity
+ * 
+ * DO NOT CONFUSE with widget activity (affordance)
+ * 
  * @author scottw
- *
+ * 
  */
 public class ActivityService extends AbstractService {
-	
 
 	public ActivityService(ServletContext servletContext) {
 		super(servletContext);
 	}
 
-	public List<Useractivity> getUploaded(Widgetprofile widgetProfile){
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+	public List<Useractivity> getUploaded(Widgetprofile widgetProfile) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
 		Query query = entityManager.createNamedQuery("Useractivity.uploaded");
 		query.setParameter("objectId", widgetProfile.getId());
 		@SuppressWarnings("unchecked")
@@ -47,13 +49,16 @@ public class ActivityService extends AbstractService {
 		entityManager.close();
 		return results;
 	}
-	
-	public Useraccount getUploadedBy(Widgetprofile widgetProfile){
+
+	public Useraccount getUploadedBy(Widgetprofile widgetProfile) {
 		List<Useractivity> activities = getUploaded(widgetProfile);
-		if (activities.size() == 0) return null;
+		if (activities.size() == 0)
+			return null;
 		Useractivity userActivity = activities.get(0);
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-		Useraccount userAccount = entityManager.find(Useraccount.class, userActivity.getSubjectId());
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		Useraccount userAccount = entityManager.find(Useraccount.class,
+				userActivity.getSubjectId());
 		entityManager.close();
 		return userAccount;
 	}

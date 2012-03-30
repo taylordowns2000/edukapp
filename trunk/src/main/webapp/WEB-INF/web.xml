@@ -230,6 +230,21 @@
 	</servlet-mapping>
 	<!-- tag servlet end -->
 	
+	<!-- activity servlet -->
+	<servlet>
+		<description>Activities api servlet</description>
+		<display-name>activities</display-name>
+		<servlet-name>ActivityServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.ActivityServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ActivityServlet</servlet-name>
+		<url-pattern>/api/activity</url-pattern>
+	</servlet-mapping>
+	<!-- activity servlet end -->
+	
+	
 	<!-- account info servlet -->
 	<servlet>
 		<description>AccountInfo api servlet</description>
