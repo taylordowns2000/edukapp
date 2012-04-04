@@ -44,7 +44,7 @@
 
 		      </form>
 
-		  <p>Not a user yet? Go ahead and <a href="register.jsp">register</a></p>
+		  <p>Not a user yet? Go ahead and <a href="/register.jsp">register</a></p>
 
         <%@ include file="/components/footer.jsp"%>
         </div>
@@ -57,7 +57,8 @@
 		      var message = document.createElement("p");
 		      $(message).attr("class","alert alert-error");
 		      $(message).text("Wrong login or non-existing user. Please try again!");
-		      $(message).appendTo("#main").fadeIn();
+		      $('#main').prepend(message).fadeIn();
+		      //$(message).appendTo("#main").fadeIn();
 		  }
     </script>
 </body>

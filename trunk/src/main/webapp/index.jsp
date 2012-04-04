@@ -57,7 +57,7 @@
 
 
                             <p style="margin-top: 10px;">
-                                <a class="btn btn-primary btn-large" href="about.jsp">Learn more »</a>
+                                <a class="btn btn-primary btn-large" href="/about.jsp">Learn more »</a>
                             </p>
                         </div>
 
