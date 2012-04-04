@@ -61,7 +61,8 @@
 						<zipUrlInstaller>
 							<downloadDir>${settings.localRepository}/org/codehaus/cargo/cargo-container-archives</downloadDir>
 							<url>
-								http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.tar.gz
+								<!--http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35.tar.gz -->
+								http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.35/bin/apache-tomcat-6.0.35-windows-x64.zip
 							</url>
 						</zipUrlInstaller>
 					</container>
@@ -84,42 +85,51 @@
 					</execution>
 				</executions>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId> -->
-<!--                     com.googlecode.mavenfilesync -->
-<!--                 </groupId> -->
-<!-- 				<artifactId> -->
-<!--                     maven-filesync-plugin -->
-<!--                 </artifactId> -->
-<!-- 				<version> -->
-<!--                     1.0.0 -->
-<!--                 </version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<goals> -->
-<!-- 							<goal> -->
-<!--                                 generate -->
-<!--                             </goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<override>false</override> -->
-<!-- 							<mappings> -->
-<!-- 								<mapping> -->
-<!-- 									<sourceFolder> -->
-<!-- 										\:edukapp/target/tomcat7x/webapps/ROOT -->
-<!-- 									</sourceFolder> -->
-<!-- 									<destinationFolder> -->
-<!-- 										\:edukapp/src/main/webapp -->
-<!-- 									</destinationFolder> -->
-<!-- 								</mapping> -->
-<!-- 							</mappings> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId> -->
+			<!-- com.googlecode.mavenfilesync -->
+			<!-- </groupId> -->
+			<!-- <artifactId> -->
+			<!-- maven-filesync-plugin -->
+			<!-- </artifactId> -->
+			<!-- <version> -->
+			<!-- 1.0.0 -->
+			<!-- </version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <goals> -->
+			<!-- <goal> -->
+			<!-- generate -->
+			<!-- </goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <override>false</override> -->
+			<!-- <mappings> -->
+			<!-- <mapping> -->
+			<!-- <sourceFolder> -->
+			<!-- \:edukapp/target/tomcat7x/webapps/ROOT -->
+			<!-- </sourceFolder> -->
+			<!-- <destinationFolder> -->
+			<!-- \:edukapp/src/main/webapp -->
+			<!-- </destinationFolder> -->
+			<!-- </mapping> -->
+			<!-- </mappings> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 		</plugins>
 	</build>
 	<dependencies>
+<!-- for xml parsing -->
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+<!-- for xml parsing end-->
+
+
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa-all</artifactId>
@@ -214,13 +224,13 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
-	        <groupId>org.tuckey</groupId>
-	        <artifactId>urlrewrite</artifactId>
-	        <version>2.5.2</version>
-        </dependency>
-            
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewrite</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
@@ -228,13 +238,13 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
-  			<groupId>org.apache.shiro</groupId>
-  			<artifactId>shiro-web</artifactId>
-  			<version>1.2.0</version>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.2.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>jcs</groupId>
 			<artifactId>jcs</artifactId>
