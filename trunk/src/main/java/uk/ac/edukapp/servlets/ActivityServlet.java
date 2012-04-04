@@ -17,18 +17,14 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import uk.ac.edukapp.model.Activity;
-import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.renderer.MetadataRenderer;
-import uk.ac.edukapp.service.ActivityService;
 import uk.ac.edukapp.service.AffordanceService;
-import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.util.Message;
 
 /**
@@ -54,6 +50,10 @@ public class ActivityServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String method = req.getParameter("method");
+		if (method == null || method.trim().length() == 0) {
+			resp.sendError(400, "method is empty");
+			return;
+		}
 
 		//
 		// Create a AffordanceService instance

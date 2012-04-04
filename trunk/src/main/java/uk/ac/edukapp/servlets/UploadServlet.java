@@ -1,14 +1,12 @@
 package uk.ac.edukapp.servlets;
 
-import uk.ac.edukapp.renderer.*;
-
-import uk.ac.edukapp.model.Widgetprofile;
-import uk.ac.edukapp.repository.Widget;
-
 import javax.servlet.http.*;
+
+import uk.ac.edukapp.model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +29,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -41,12 +36,12 @@ import org.apache.commons.httpclient.methods.multipart.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import uk.ac.edukapp.model.Accountinfo;
-import uk.ac.edukapp.model.Useraccount;
-import uk.ac.edukapp.model.Widgetprofile;
-import uk.ac.edukapp.util.MD5Util;
-
 import org.apache.wookie.connector.framework.*;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -84,14 +79,10 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		log.info("upload servlet");
-
 		if (ServletFileUpload.isMultipartContent(request)) {// file attached
 															// =>widget invoke
 															// wookie/widgets
 															// rest service
-
-			log.info("request having a file attached - post it to /wookie/widgets");
 
 			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 			// Set factory constraints
@@ -138,7 +129,7 @@ public class UploadServlet extends HttpServlet {
 					}
 				}
 				PostMethod postMethod = new PostMethod(
-						"http://localhost:8080/wookie/widgets");
+						"http://widgets.open.ac.uk:8080/wookie/widgets");
 				MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(
 						listParts
 								.toArray(new org.apache.commons.httpclient.methods.multipart.Part[] {}),
@@ -152,34 +143,52 @@ public class UploadServlet extends HttpServlet {
 				Credentials defaultcreds = new UsernamePasswordCredentials(
 						"java", "java");
 				client.getState().setCredentials(
-						new AuthScope("localhost", 8080, AuthScope.ANY_REALM),
-						defaultcreds);
+						new AuthScope("widgets.open.ac.uk", 8080,
+								AuthScope.ANY_REALM), defaultcreds);
 
 				int status = client.executeMethod(postMethod);
 
+				System.out.println("returns status:" + status);
 				log.info("post execution return status:" + status);
 
-				if (status == HttpStatus.SC_OK) {// if succesful upload
-					WookieConnectorService conn = null;
-					try {
-						conn = new WookieConnectorService(
-								"http://localhost:8080/wookie/", "TEST",
-								"myshareddata");
-					} catch (WookieConnectorException wce) {
-						wce.printStackTrace();
-					}
+				byte[] responseBody = postMethod.getResponseBody();
+				System.out.println("RESPONSE follows");
+				System.out.println(new String(responseBody));
+				log.info("RESPONSE follows");
+				log.info(new String(responseBody));
 
-					// get the latest entry - stupid way i know but i am in a
-					// hurry
-					HashMap<String, org.apache.wookie.connector.framework.Widget> availableWookieWidgets = conn
-							.getAvailableWidgets();
-					Iterator it = availableWookieWidgets.keySet().iterator();
-					org.apache.wookie.connector.framework.Widget widget = null;
-					while (it.hasNext()) {
-						Map.Entry pairs = (Map.Entry) it.next();
-						widget = (org.apache.wookie.connector.framework.Widget) pairs
-								.getValue();
-					}
+				InputStream istream = postMethod.getResponseBodyAsStream();
+
+				// if (status == HttpStatus.SC_OK) {
+				// // HTTP 200 succesful upload
+				// // widget updated
+				//
+				// } else if (status == HttpStatus.SC_CREATED) {
+				// // HTTP 201 succesful upload
+				// // - new widget created
+				if (status == HttpStatus.SC_OK
+						|| status == HttpStatus.SC_CREATED) {
+
+					SAXBuilder builder = new SAXBuilder();
+					Document document = (Document) builder.build(istream);
+					Element rootNode = document.getRootElement();
+					Namespace XML_NS = Namespace.getNamespace("",
+							"http://www.w3.org/ns/widgets");
+
+					String widget_id = rootNode.getAttributeValue("id");
+					String version = rootNode.getAttributeValue("version");
+					String recomended_height = rootNode
+							.getAttributeValue("height");
+					String recomended_width = rootNode
+							.getAttributeValue("width");
+					String name = rootNode.getChildText("name", XML_NS);
+					String icon = rootNode.getChildText("icon", XML_NS);
+					String description = rootNode.getChildText("description",
+							XML_NS);
+					String author = rootNode.getChildText("author", XML_NS);
+
+					System.out.println("\n\nname:" + name + "\n\n");
+					log.info("\n\nname:" + name + "\n\n");
 
 					EntityManagerFactory factory = Persistence
 							.createEntityManagerFactory("edukapp");
@@ -189,13 +198,17 @@ public class UploadServlet extends HttpServlet {
 					Widgetprofile widgetprofile = null;
 					try {
 						em.getTransaction().begin();
-
 						widgetprofile = new Widgetprofile();
-						widgetprofile.setName(widget.getTitle());
+						widgetprofile.setName(name);
 						byte zero = 0;
 						widgetprofile.setW3cOrOs(zero);
-						widgetprofile.setWidId(widget.getIdentifier());
+						widgetprofile.setWidId(widget_id);
 						em.persist(widgetprofile);
+
+						WidgetDescription wd = new WidgetDescription();
+						wd.setDescription(description);
+						wd.setWid_id(widgetprofile.getId());
+						em.persist(wd);
 
 						log.info("Widget created with id:"
 								+ widgetprofile.getId());
@@ -215,15 +228,31 @@ public class UploadServlet extends HttpServlet {
 						doForward(request, response, "/widget.jsp?id="
 								+ widgetprofile.getId());
 					} else {
-						doForward(request, response, "/upload.jsp?error=1");
+						doForward(request, response, "/upload.jsp?error=2");
 					}
 
+				} else {
+					// any other HTTP status than 200/201
+					doForward(request, response, "/upload.jsp?error=3");
 				}
 
+			} catch (HttpException hte) {
+				log.error("Fatal protocol violation: " + hte.getMessage());
+				hte.printStackTrace();
+				doForward(request, response, "/upload.jsp?error=4");
+			} catch (IOException ioe) {
+				log.error("Fatal transport error: " + ioe.getMessage());
+				ioe.printStackTrace();
+				doForward(request, response, "/upload.jsp?error=5");
 			} catch (FileUploadException fue) {
 				fue.printStackTrace();
+				doForward(request, response, "/upload.jsp?error=6");
+			} catch (JDOMException jdomex) {
+				jdomex.printStackTrace();
+				doForward(request, response, "/upload.jsp?error=7");
 			} catch (Exception e) {
 				e.printStackTrace();
+				doForward(request, response, "/upload.jsp?error=9");
 			}
 
 		} else {
@@ -276,9 +305,14 @@ public class UploadServlet extends HttpServlet {
 	private void doForward(HttpServletRequest request,
 			HttpServletResponse response, String jsp) throws ServletException,
 			IOException {
-		RequestDispatcher dispatcher = getServletContext()
-				.getRequestDispatcher(jsp);
-		dispatcher.forward(request, response);
+		/*
+		 * if we redirect using the dispatcher then the url in address bar does
+		 * not update
+		 */
+		// RequestDispatcher dispatcher = getServletContext()
+		// .getRequestDispatcher(jsp);
+		// dispatcher.forward(request, response);
+		response.sendRedirect(jsp);
 	}
 
 }

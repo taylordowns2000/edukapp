@@ -23,9 +23,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.service.AffordanceService;
 import uk.ac.edukapp.service.TagService;
+import uk.ac.edukapp.util.Message;
 
 /**
  * Tags api endpoint
@@ -47,20 +50,11 @@ public class TagServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	throws ServletException, IOException {
+			throws ServletException, IOException {
 
-		String tagid = req.getParameter("id");
-		String operation = req.getParameter("operation");
-
-		//
-		// Check for required parameters
-		//
-		if (tagid == null || tagid.trim().length() == 0) {
-			resp.sendError(400, "id is empty");
-			return;
-		}
-		if (operation == null || operation.trim().length() == 0) {
-			resp.sendError(400,"operation is empty");
+		String method = req.getParameter("method");
+		if (method == null || method.trim().length() == 0) {
+			resp.sendError(400, "method is empty");
 			return;
 		}
 
@@ -69,43 +63,76 @@ public class TagServlet extends HttpServlet {
 		//
 		TagService tagService = new TagService(getServletContext());
 
-		//
-		// "Popular" is a "magic" tag name that returns the most popular tags
-		//
-		if (tagid.equalsIgnoreCase("popular")) {
-			MetadataRenderer.render(resp.getOutputStream(),
-					tagService.getPopularTags());
-			return;
-		}
-
-		//
-		// Get the tag
-		//
-		Tag tag = tagService.getTag(tagid);
-
-		//
-		// If it doesn't exist, return 404.
-		//
-		if (tag == null) {
-			resp.sendError(404);
-			return;
-		}
-
 		OutputStream out = resp.getOutputStream();
-		if (operation.equals("getName")) {
+
+		if (method.equals("GET")) {
+
+			String operation = req.getParameter("operation");
+			if (operation == null || operation.trim().length() == 0) {
+				resp.sendError(400, "operation is empty");
+				return;
+			}
+
+			if (operation.equals("all")) {
+				// TODO - to implemet in TAgService
+				// MetadataRenderer.render(resp.getOutputStream(),
+				// tagService.getAllTags());
+				Message msg = new Message();
+				msg.setMessage("not yet implemeted");
+				MetadataRenderer.render(out, msg);
+				return;
+			} else if (operation.equals("popular")) {
+				MetadataRenderer.render(out, tagService.getPopularTags());
+				return;
+			} else if (operation.equals("getName")
+					|| operation.equals("getWidgets")) {
+				String tagid = req.getParameter("id");
+
+				//
+				// Check for required parameters
+				//
+				if (tagid == null || tagid.trim().length() == 0) {
+					resp.sendError(400, "id is empty");
+					return;
+				}
+				Tag tag = tagService.getTag(tagid);
+
+				if (operation.equals("getName")) {
+					//
+					// Render metadata
+					//
+					MetadataRenderer.render(out, tag);
+				} else if (operation.equals("getWidgets")) {
+					//
+					// Find and render matching widgets
+					//
+					MetadataRenderer.render(out, tag.getWidgetprofiles());
+				}
+
+			}
+
+		} else if (method.equals("POST")) {
+
+		} else if (method.equals("PUT")) {
+
+			String text = req.getParameter("text");
 
 			//
-			// Render metadata
+			// Check for required parameters
 			//
-			MetadataRenderer.render(out, tag);
-			
-		} else if (operation.equals("getWidgets")) {
+			if (text == null || text.trim().length() == 0) {
+				resp.sendError(400, "text is empty");
+				return;
+			}
 
-			//
-			// Find and render matching widgets
-			//
-			MetadataRenderer.render(out, tag.getWidgetprofiles());
+			Message msg = tagService.insertTag(text);
+			// Message msg = new Message();
+			// msg.setMessage("not yet implemeted");
+
+		} else if (method.equals("DELETE")) {
+
 		}
+
 		out.flush();
 		out.close();
 
