@@ -1,6 +1,4 @@
-/*
- *  (c) 2012 University of Bolton
- *  
+/*  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -31,7 +29,7 @@ import uk.ac.edukapp.util.Message;
 /**
  * Tag service
  * 
- * @author scottw
+ * @author anastluc
  * 
  */
 public class AffordanceService extends AbstractService {
@@ -154,6 +152,7 @@ public class AffordanceService extends AbstractService {
 			if (result.size() > 0) {
 				Message msg = new Message();
 				msg.setMessage("exists");
+				msg.setId("-1");
 				return msg;
 			}
 		} catch (Exception e) {
