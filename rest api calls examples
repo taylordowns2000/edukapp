@@ -1,4 +1,6 @@
 /* to update code repository's wiki with */
+real url														|	clean url							| implemented?
+------------------------------------------------------------------------------------------------------------------------------
 GET /api/featured
 GET /api/search?q={search terms}
 GET /api/similar?uri={widget uri}
@@ -6,35 +8,135 @@ GET /api/review?uri={widget uri}
 GET /api/widget?id={widget id}
 GET /api/widget?uri={widget uri}
 
+** Widget
+-------------------------------------------------
+CLEAN URL 												urlrewriteRule  implementation
+
+/* get full info */										
+/api/widget/GET/{$id}									yes
+/api/widget/GET/{$uri}									yes
+/* or just the field you want */
+/api/widget/GET/{$id}/getName 							yes
+/api/widget/GET/{$uri}/name
+/api/widget/GET/{$id}/render /*return instance url*/    yes
+/api/widget/GET/{$uri}/render
+/api/widget/GET/{$id}/tags 								yes
+/api/widget/GET/{$uri}/tags
+/api/widget/GET/{$id}/activities 						yes
+/api/widget/GET/{$uri}/activities
+/api/widget/GET/{$id}/description 						yes
+/api/widget/GET/{$uri}/description
+/api/widget/GET/{$id}/comments 							yes
+/api/widget/GET/{$uri}/comments
+/api/widget/GET/{$id}/ratings   /*full list*/  			yes
+/api/widget/GET/{$uri}/ratings
+/api/widget/GET/{$id}/rating    /*average rating*/ 		yes
+/api/widget/GET/{$uri}/rating
+/api/widget/GET/{$id}/stats     /*instantiation stats*/ yes
+/api/widget/GET/{$uri}/stats
+/*chronological list of commenting/rating/updating/...  */
+/api/widget/GET/{$id}/activity 							yes                         
+/api/widget/GET/{$uri}/activity
+
+/api/widget/POST/${id}/update-description/${text}
+/api/widget/POST/{$id}/add-tag/{$id} 					yes
+/api/widget/POST/{$id}/add-tag/{$text} 					yes
+/api/widget/POST/{$id}/remove-tag/{$id} 				yes
+/api/widget/POST/{$id}/remove-tag/{$text}     			yes
+/api/widget/POST/{$id}/add-activity/{$id} 				yes
+/api/widget/POST/{$id}/add-activity/{$text} 			yes
+/api/widget/POST/{$id}/remove-activity/{$id} 			yes
+/api/widget/POST/{$id}/remove-activity/{$text} 			yes
+/api/widget/POST/{$id}/add-comment/{$text}/user/{$userid} yes
+/api/widget/POST/{$id}/remove-comment/{$id} 			yes	
+/api/widget/POST/{$id}/add-rating/{$value}/user/{$userid} yes
+/api/widget/POST/{$id}/remove-rating/{$id} 				yes
+
+
+/api/widget/PUT/w3c/{$.wgt file}
+/api/widget/PUT/gadget/{$.xml file}
+/api/widget/PUT/gadget/{$uri}
+
+/api/widget/DELETE/${id} 								yes
+
+
 ** Tag
+--------------------------------------------------
 GET /api/tag/{tag id}
 GET /api/tag/{tag id}/widgets
 GET /api/tag/popular
 
+GET /api/tag?method=GET&operation=popular						|	/api/tag/GET/popular				| yes
+GET /api/tag?method=GET&operation=all							|	/api/tag/GET/all					| no
+GET /api/tag?method=GET&id={$id}&operation=getName				|	/api/tag/GET/name/{$id}				| yes
+GET /api/tag?method=GET&id={$id}&operation=getWidgets			|	/api/tag/GET/widgets/{$id}			| yes
+
+PUT /api/tag/PUT?text={tag text}								|   /api/tag/PUT/{text}					| yes
+
+POST /api/tag/POST?id={tag id}&newText={new text}				|	/api/tag/POST/{id}/{text}
+POST /api/tag/POST?oldText={old text}&newText={new text}		|	/api/tag/POST/{text}/{text}
+
+DELETE /api/tag/DELETE?id={tag id}								|	/api/tag/DELETE/{id}
+DELETE /api/tag/DELETE?text={text}								|	/api/tag/DELETE/{text}
+
+	
 ** Activity
-GET /api/activity?id=popular&operation=getName
-GET /api/activity?id=all&operation=getName
-GET /api/activity?id={tag id}&operation=getName
+------------------------------------------------				|
+GET /api/activity?method=GET&operation=popular					|	/api/activity/GET/popular			| yes
+GET /api/activity?method=GET&operation=all						|	/api/activity/GET/all				| yes
+GET /api/activity?method=GET&id={$id}&operation=getName			|	/api/activity/GET/name/{$id}		| yes
+GET /api/activity?method=GET&id={$id}&operation=getWidgets		|	/api/activity/GET/widgets/{$id}		| yes
 
-PUT /api/activity?text={activity text}
+PUT /api/activity/PUT?text={activity text}						|   /api/activity/PUT/{text}			| yes
 
-POST /api/activity?id={activity id}&newText={new text}
-POST /api/activity?oldText={old text}&newText={new text}
+POST /api/activity/POST?id={activity id}&newText={new text}		|	/api/activity/POST/{id}/{text}		| no
+POST /api/activity/POST?oldText={old text}&newText={new text}	|	/api/activity/POST/{text}/{text}	| no	
 
-DELETE /api/activity?id={activity id}
-DELETE /api/activity?text={text}
+DELETE /api/activity/DELETE?id={activity id}					|	/api/activity/DELETE/{id}			| no
+DELETE /api/activity/DELETE?text={text}							|	/api/activity/DELETE/{text}			| no
+
+
+** Comment
 ------------------------------------------------
-real														|	clean
-															|
-GET /api/activity?method=GET&operation=popular				|	/api/activity/GET/popular
-GET /api/activity?method=GET&operation=all					|	/api/activity/GET/all
-GET /api/activity?method=GET&id={$id}&operation=getName		|	/api/activity/GET/name/{$id}
-GET /api/activity?method=GET&id={$id}&operation=getWidgets	|	/api/activity/GET/widgets/{$id}
+GET
+/api/comment/GET/all
+/api/comment/GET/{$com-id}
+/api/comment/GET/widget/{$widget-id}
+POST
+/api/comment/POST/{$com-id}/update/{$new-text}
+PUT
+/api/comment/PUT/{$widget-id}/{$user-id}/{$text}
+DELETE
+/api/comment/DELETE/{$id}
 
-PUT /api/activity/PUT?text={activity text}
+** Rating
+------------------------------------------------
+GET
+/api/rating/GET/{$id}
+/api/rating/GET/widget/{$id}      /*returns average rating of widget*/
+/api/rating/GET/widget/{$id}/all  /*returns all ratings of widget*/
+POST
+/api/rating/POST/{$id}/update/{$new-value}
+PUT
+/api/rating/PUT/{$wid-id}/{$user-id}/{$value}
+DELETE
+/api/rating/DELETE/{$id}
+/api/rating/DELETE/widget/{$widget-id}/user/{$user-id}
 
-POST /api/activity/POST?id={activity id}&newText={new text}
-POST /api/activity/POST?oldText={old text}&newText={new text}
 
-DELETE /api/activity/DELETE?id={activity id}
-DELETE /api/activity/DELETE?text={text}
+** USER
+----------------------------------------------
+GET
+/api/user/GET/{$id}
+POST
+PUT
+DELETE
+
+
+** UserActivity
+----------------------------------------------
+GET
+POST
+PUT
+DELETE
+
