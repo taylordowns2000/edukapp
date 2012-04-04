@@ -14,7 +14,7 @@ public class GadgetRenderer {
 	public String render(String uri, int width, int height) {
 
 		String html = "";
-		html += "<iframe src=\"http://widgets.open.ac.uk:8080/gadgets/ifr?url="
+		html += "<iframe src=\"http://widgets.open.ac.uk:8080/shindig/gadgets/ifr?url="
 				+ uri + "\"";
 		html += " width=\"" + "500" + "\"";
 		html += " height=\"" + "300" + "\"";
