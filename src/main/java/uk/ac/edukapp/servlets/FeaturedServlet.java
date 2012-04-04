@@ -33,29 +33,36 @@ import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
  * Featured Widgets API endpoint
+ * 
  * @author scottw
- *
+ * 
  */
-public class FeaturedServlet  extends HttpServlet{
-	
-	/* (non-Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+public class FeaturedServlet extends HttpServlet {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
+	 * , javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
-		List<Widgetprofile> widgetProfiles = widgetProfileService.findFeaturedWidgetProfiles();
-		
+
+		WidgetProfileService widgetProfileService = new WidgetProfileService(
+				getServletContext());
+		List<Widgetprofile> widgetProfiles = widgetProfileService
+				.findFeaturedWidgetProfiles();
+
 		//
 		// Get extended profile info
 		//
 		List<ExtendedWidgetProfile> extendedWidgetProfiles = new ArrayList<ExtendedWidgetProfile>();
-		for (Widgetprofile widgetProfile: widgetProfiles){
+		for (Widgetprofile widgetProfile : widgetProfiles) {
 			ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
 			extendedWidgetProfile.setWidgetProfile(widgetProfile);
-			
+
 			//
 			// Get instance rendering
 			//
@@ -63,7 +70,7 @@ public class FeaturedServlet  extends HttpServlet{
 
 			extendedWidgetProfiles.add(extendedWidgetProfile);
 		}
-		
+
 		OutputStream out = resp.getOutputStream();
 		MetadataRenderer.render(out, extendedWidgetProfiles);
 		out.flush();

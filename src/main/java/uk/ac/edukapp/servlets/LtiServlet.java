@@ -23,14 +23,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.LtiRenderer;
 import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
- *  Servlet for basic LTI embed requests
- *  
+ * Servlet for basic LTI embed requests
+ * 
  * @author scottw
  * 
  */
@@ -54,15 +53,18 @@ public class LtiServlet extends HttpServlet {
 		// endpoint URL
 		// We map the value onto the actual widget id (IRI)
 		//
-		String widgetId = getResourceId(request); 
+		String widgetId = getResourceId(request);
 
-		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
-		Widgetprofile widgetProfile = widgetProfileService.findWidgetProfileById(widgetId);
+		WidgetProfileService widgetProfileService = new WidgetProfileService(
+				getServletContext());
+		Widgetprofile widgetProfile = widgetProfileService
+				.findWidgetProfileById(widgetId);
 
 		//
 		// Get the instance url
 		//
-		String widgetUrl = LtiRenderer.getInstance().render(widgetProfile, parameters);
+		String widgetUrl = LtiRenderer.getInstance().render(widgetProfile,
+				parameters);
 
 		//
 		// Redirect to the instance URL
@@ -70,15 +72,18 @@ public class LtiServlet extends HttpServlet {
 		response.sendRedirect(widgetUrl);
 
 	}
-	
+
 	/**
-	 * Utility method for identifying the resource part of the URL
-	 * note that pathinfo starts with a / for some reason
-	 * @param the request
+	 * Utility method for identifying the resource part of the URL note that
+	 * pathinfo starts with a / for some reason
+	 * 
+	 * @param the
+	 *            request
 	 * @return the resource name
 	 */
 	private static String getResourceId(HttpServletRequest request) {
-		String path = request.getPathInfo(); // may be null, plain name or name plus
+		String path = request.getPathInfo(); // may be null, plain name or name
+												// plus
 		// params
 		if (path == null) {
 			return null;
