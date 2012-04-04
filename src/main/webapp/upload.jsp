@@ -12,6 +12,10 @@
 </head>
 <body>
 		
+		
+		
+		
+		
         <%@ include file='/components/header.jsp'%>
         
         <div class="container-fluid">
@@ -29,6 +33,19 @@
             <div class="span9">
 		
                 <shiro:authenticated>
+				
+				<%
+		
+		String error = request.getParameter("error");
+		if (error!=null && error.trim().length()>0){
+			%>
+			<div class="alert alert-error">
+			  <p>There was an error while uploading widget:error code <%=error %></p>
+			</div>
+			<%
+		}
+		%>
+				
 				
 				<div class="tabbable">
                   <ul class="nav nav-tabs">

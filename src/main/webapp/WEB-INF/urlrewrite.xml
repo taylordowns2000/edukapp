@@ -3,121 +3,186 @@
 "http://www.tuckey.org/res/dtds/urlrewrite3.2.dtd">
 <urlrewrite>
 
-	<rule>
-		<from>^/api/tag/popular$</from>
-		<to>/api/tag?id=popular&amp;operation=getName</to>
-	</rule>
-	<rule>
-		<from>^/api/tag/([0-9a-z]+)$</from>
-		<to>/api/tag?id=$1&amp;operation=getName</to>
-	</rule>
-	<rule>
-		<from>^/api/tag/([0-9a-z]+)/widgets$</from>
-		<to>/api/tag?id=$1&amp;operation=getWidgets</to>
-	</rule>
-	<rule>
-		<from>/tag/([0-9a-z]+)</from>
-		<to>/tag.jsp?id=$1</to>
-	</rule>
-	<rule>
-		<from>/widget/([0-9]+)</from>
-		<to>/widget.jsp?id=$1</to>
-	</rule>
-	<rule>
-		<from>^/api/user/([0-9a-z]+)$</from>
-		<to>/api/user?id=$1</to>
-	</rule>
+	<!--
+	***  rewrite rules for PAGES widget/tag/activity/user ***
+	-->
 	<rule>
 		<from>^/user/([0-9a-z]+)$</from>
 		<to>/profile.jsp?id=$1</to>
 	</rule>
-	<!--GET /api/activity?method=GET&id={$id}&operation=getName		|	/api/activity/GET/name/{$id} -->
 	<rule>
-		<from>^/api/activity/GET/name/([0-9a-z]+)$</from>
-		<to>/api/activity?method=GET&id=$1&operation=getName</to>
+		<from>^/widget/([0-9]+)</from>
+		<to>/widget.jsp?id=$1</to>
 	</rule>
-	
-	
-	
+	<rule>
+		<from>^/tag/([0-9a-z]+)</from>
+		<to>/tag.jsp?id=$1</to>
+	</rule>
 	<!--
-	<rule>
-	<note>
-	The rule means that requests to /test/status/ will be redirected to /rewrite-status
-	the url will be rewritten.
-	</note>
-	<from>/test/status/</from>
-	<to type="redirect">%{context-path}/rewrite-status</to>
-	</rule11>
-
-	<outbound-rule>
-	<note>
-	The outbound-rule specifies that when response.encodeURL is called (if you are using JSTL c:url)
-	the url /rewrite-status will be rewritten to /test/status/.
-
-	The above rule and this outbound-rule means that end users should never see the
-	url /rewrite-status only /test/status/ both in thier location bar and in hyperlinks
-	in your pages.
-	</note>
-	<from>/rewrite-status</from>
-	<to>/test/status/</to>
-	</outbound-rule>
-
-	INSTALLATION
-
-	in your web.xml add...
-
-	<filter>
-	<filter-name>UrlRewriteFilter</filter-name>
-	<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-	<init-param>
-	<param-name>logLevel</param-name>
-	<param-value>WARN</param-value>
-	</init-param>
-	</filter>
-	<filter-mapping>
-	<filter-name>UrlRewriteFilter</filter-name>
-	<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	EXAMPLES
-
-	Redirect one url
-	<rule>
-	<from>/some/old/page.html</from>
-	<to type="redirect">/very/new/page.html</to>
-	</rule>
-
-	Redirect a directory
-	<rule>
-	<from>/some/olddir/(.*)</from>
-	<to type="redirect">/very/newdir/$1</to>
-	</rule>
-
-	Clean a url
-	<rule>
-	<from>/products/([0-9]+)</from>
-	<to>/products/index.jsp?product_id=$1</to>
-	</rule>
-	eg, /products/1234 will be passed on to /products/index.jsp?product_id=1234 without the user noticing.
-
-	Browser detection
-	<rule>
-	<condition name="user-agent">Mozilla/[1-4]</condition>
-	<from>/some/page.html</from>
-	<to>/some/page-for-old-browsers.html</to>
-	</rule>
-	eg, will pass the request for /some/page.html on to /some/page-for-old-browsers.html only for older
-	browsers whose user agent srtings match Mozilla/1, Mozilla/2, Mozilla/3 or Mozilla/4.
-
-	Centralised browser detection
-	<rule>
-	<condition name="user-agent">Mozilla/[1-4]</condition>
-	<set type="request" name="browser">moz</set>
-	</rule>
-	eg, all requests will be checked against the condition and if matched
-	request.setAttribute("browser", "moz") will be called.
-
+	***  rewrite rules for rest API  ***
 	-->
+	<!--
+		entity WIDGET
+	-->
+	<rule>
+		<from>/api/widget/GET/([0-9]+)$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getWidget</to>
+	</rule>
+	<rule>
+		<!-- 
+		not so sure about the regex below to match a uri
+		so for the following rules (for now) only implement get by id rules
+	-->
+		<from>/api/widget/GET/([a-zA-z0-9:\/\.]+)$</from>
+		<to>/api/widget?method=GET&amp;uri=$1&amp;operation=getWidget</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/name$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getName</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/render$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRender</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/tags$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getTags</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/activities$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getActivities</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/description$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getDescription</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/comments$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getComments</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/ratings$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRatings</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/rating$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRating</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/stats$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getStats</to>
+	</rule>
+	<rule>
+		<from>/api/widget/GET/([0-9]+)/activity$</from>
+		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getActivity</to>
+	</rule>
+	
 
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/update-description/(.+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=update-description&amp;text=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/add-tag/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addTag&amp;tagid=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/add-tag/([a-zA-Z0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addTag&amp;tagtext=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-tag/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeTag&amp;tagid=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-tag/([a-zA-Z0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeTag&amp;tagtext=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/add-activity/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addActivity&amp;activityid=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/add-activity/([a-zA-Z0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addActivity&amp;activitytext=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-activity/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeActivity&amp;activityid=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-activity/([a-zA-Z0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeActivity&amp;activitytext=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/add-comment/(.)+/user/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addComment&amp;text=$2&amp;userid=$3</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-comment/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeComment&amp;comid=$2</to>
+	</rule>
+		<rule>
+		<from>/api/widget/POST/([0-9]+)/add-rating/([0-5])+/user/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addRating&amp;value=$2&amp;userid=$3</to>
+	</rule>
+	<rule>
+		<from>/api/widget/POST/([0-9]+)/remove-rating/([0-9]+)$</from>
+		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeRating&amp;rateid=$2</to>
+	</rule>
+
+	<rule>
+		<from>/api/widget/DELETE/([0-9]+)</from>
+		<to>/api/widget?method=DELETE&amp;id=$1</to>
+	</rule>
+	
+	
+
+
+	<!--
+	entity TAG
+	-->
+	<rule>
+		<from>/api/tag/GET/popular$</from>
+		<to>/api/tag?method=GET&amp;operation=popular</to>
+	</rule>
+	<rule>
+		<from>/api/tag/GET/all$</from>
+		<to>/api/tag?method=GET&amp;operation=all</to>
+	</rule>
+	<rule>
+		<from>/api/tag/GET/name/([0-9]+)$</from>
+		<to>/api/tag?method=GET&amp;id=$1&amp;operation=getName</to>
+	</rule>
+	<rule>
+		<from>/api/tag/GET/widgets/([0-9]+)$</from>
+		<to>/api/tag?method=GET&amp;id=$1&amp;operation=getWidgets</to>
+	</rule>
+	<!--
+	entity ACTIVITY  (affordance)
+	-->
+	<rule>
+		<from>/api/activity/GET/name/([0-9]+)$</from>
+		<to>/api/activity?method=GET&amp;id=$1&amp;operation=getName</to>
+	</rule>
+	<rule>
+		<from>/api/activity/GET/widgets/([0-9]+)$</from>
+		<to>/api/activity?method=GET&amp;id=$1&amp;operation=getWidgets</to>
+	</rule>
+	<rule>
+		<from>/api/activity/GET/([a-z]+)$</from>
+		<to>/api/activity?method=GET&amp;operation=$1</to>
+	</rule>
+	<rule>
+		<from>/api/activity/PUT/([0-9a-z]+)$</from>
+		<to>/api/activity?method=PUT&amp;text=$1</to>
+	</rule>
+	<!--
+	entity USER
+	-->
+	<rule>
+		<from>^/api/user/([0-9a-z]+)$</from>
+		<to>/api/user?id=$1</to>
+	</rule>
 </urlrewrite>
 

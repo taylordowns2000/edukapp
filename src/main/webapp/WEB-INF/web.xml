@@ -86,7 +86,7 @@
 	
 	<!-- upload servlet -->
 	<servlet>
-		<description>Uplad servlet</description>
+		<description>Upload servlet</description>
 		<display-name>upload</display-name>
 		<servlet-name>UploadServlet</servlet-name>
 		<servlet-class>uk.ac.edukapp.servlets.UploadServlet</servlet-class>

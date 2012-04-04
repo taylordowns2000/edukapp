@@ -18,11 +18,12 @@ function () {
         $('#widget-description button[type="submit"]').click(function () {
             var newText = $('#widget-description textarea').val();
             $.ajax({
-                url: "updateWidget?id=" + widget_id + "&operation=description&newText=" + newText,
+            	dataType: 'json',
+                url: "/api/widget/POST/" + widget_id + "/update-description/" + newText,
                 cache: false,
                 success: function (resp) {
-                    console.log("s" + resp + "s");
-                    if (resp === "update done") {
+                    //console.log(resp);
+                    if (resp['message'] === "OK update description done") {
                         $('#widget-description').replaceWith('<dl id="widget-description">' + newText + '</dl>');
                     } else {
                         $('#widget-description').append("1there was an error in your update");
@@ -46,11 +47,12 @@ function () {
         $('#add-tag-form').submit(function () {
             var newTag = $('#add-tag-form input[type="text"]').val();
             $.ajax({
-                url: "ajaxHandlers/addTag.jsp?id=" + widget_id + "&newTag=" + newTag,
+            	dataType: 'json',
+                url: "/api/tag/POST/" + widget_id +"/add-tag/"+newTag,
                 cache: false,
                 success: function (resp) {
-                    console.log("s" + resp + "s");
-                    if (resp.substring(0, 13) === "addition done") {
+                    //console.log(resp);
+                    if (resp['message']=="OK") {
                         var tag_db_id = resp.substring(13);
                         console.log(resp.substring(13));
                         $('#add-tag-form').remove();
@@ -79,11 +81,13 @@ function () {
             var gravatarImg = $('#logged-in-user-gravatar-img').val();
             var username = $('#logged-in-user-name').val();
             $.ajax({
-                url: "ajaxHandlers/addReview.jsp?id=" + widget_id + "&userid=" + userid + "&reviewText=" + reviewText,
+            	dataType: 'json',
+            	url:"/api/widget/POST/"+widget_id+"/add-comment/"+reviewText+"/user/"+userid;
+                //url: "ajaxHandlers/addReview.jsp?id=" + widget_id + "&userid=" + userid + "&reviewText=" + reviewText,
                 cache: false,
                 success: function (resp) {
                     console.log("$" + resp.substring(0, 11) + "$");
-                    if (resp.substring(0, 11) === "update done") {
+                    if (resp['message'] === "OK") {
                         $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '	<div class="span1">' + '		<img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '		<h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '	</div>' + '	<div class="span11">' + '		<div class="review-item-info-wrapper"></div>' + '		<p class="review-content-text">' + reviewText + '</p>' + '		<h6>just now</h6>' + '	</div>' + '</div>' + '</div>');
                         $('#write-a-review').remove();
                     } else {
@@ -105,7 +109,7 @@ function () {
     //
     // Load the widget profile
     //
-    $.getJSON('/api/widget?id=' + widget_id, function (data) {
+    $.getJSON('/api/widget?id=' + widget_id+'&method=GET&operation=getWidget', function (data) {
         console.log(data);
         widgetUri = data.widgetProfile.uri;
         
@@ -131,7 +135,7 @@ function () {
         if (data.renderInfo) {
             $('#widget-preview').html(data.renderInfo);
             $('#embedModal .modal-body pre').text((data.renderInfo));
-            $('#modal-body-lti').html("<p>For Basic LTI, copy the following information to your Basic LTI consumer:</p><p>URL: http://localhost:8080/lti/" + data.widgetProfile.id + "</p><p>Consumer Key: TEST</p><p>Consumer Secret: TEST</p>");
+            $('#modal-body-lti').html("<p>For Basic LTI, copy the following information to your Basic LTI consumer:</p><p>URL: http://widgets.open.ac.uk:8080/lti/" + data.widgetProfile.id + "</p><p>Consumer Key: TEST</p><p>Consumer Secret: TEST</p>");
             //show embed code as a modal
             $('#embedModal').modal({
                 show: false

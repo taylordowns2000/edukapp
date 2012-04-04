@@ -17,7 +17,7 @@
 				        <%@ include file="login_form.jsp"%>
 					    <ul class="nav">
 				         <li id="login_link"><a href="#" onclick="$('#login_form').css('display','inline');$('#login_link').hide();">Log in</a></li>
-                         <li><a href="register.jsp">Register</a></li>
+                         <li><a href="/register.jsp">Register</a></li>
                         </ul>
                     </shiro:notAuthenticated>
                     
