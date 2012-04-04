@@ -31,6 +31,17 @@ Deploy in tomcat (localhost/remote host)
 ------------------------------------------
 1. (after you build locally as standalone) copy .war files (of target/tomcat6x/webapps folder) in webapps folder
 1.1 solr.war might be faulty - copy instead the latest solr release war file
+1.2 instead of wookie 0.9.2 - get the latest wookie build by subversion
+		$> svn co http://svn.apache.org/repos/asf/incubator/wookie/trunk ./wookie-latest
+
+	and build it using
+		$> ant build-release-all
+
+	unzip file:
+	wookie-latest/release/0.10.0-incubating-SNAPSHOT/binary/war/apache-wookie-0.10.0-incubating-SNAPSHOT-war.zip
+
+	and follow instructions of how to install wookie enclosed in:
+	WAR_BUILD_NOTES
 
 2. Copy solr folder outside your webapps folder
 2.1 if not localhost edit solr/en/conf/data-config.xml and set url to your hostname
