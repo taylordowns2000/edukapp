@@ -26,43 +26,41 @@
 			</div>
 			<div class="span9">
 				<h2>About EDUKApp</h2>
-				<p>This project is about a cross-university widget store, i.e. a
-					repository and community site that focuses on collecting and
-					promoting widgets for learning and teaching. The store will be
-					accompanied with discovery services and will offer easy integration
-					of widgets to personal learning environments while promoting widget
-					capabilities and features. It will offer to end users a
-					sophisticated recommendation engine will promote widgets according
-					to each users needs and interaction history. Widget store shall be
-					used by educators as a (centralized) point to focus on any of their
-					initiatives for creating a personal learning environment while for
-					developers a socially-driver platform for widget development.
-					Widget developers will benefit from a framework in place that will
-					be able to monitor widget usage; valuable to detect patterns of
-					activity in a personal learning environment. 
-					</p>
-					<p>
-					The functional
-					requirements of this project include: Social annotation: Each
-					widget shares its own profile page and user generated meta-data
-					(comments/tags/rating). Functionality to annotate widgets with
-					learning activities they afford will be needed. (annotating
-					affordances, tagging, rating, comments) Socially-driven
-					development: Widget store allows its community of users to submit
-					and vote on requirements for the further or new development of
-					widgets (requirements voting, feedback, management) age tracking:
-					widget store tracks how widgets are utilized, in which context and
-					which functionalities are used. Widget Bundles: widgets are grouped
-					in collections which support specific tasks; bundles of
-					arrangements supporting a particular work flow are required.
-					Recommendation engine: an integrated information filtering system
-					to provide suggestions both content based (similar widgets) and
-					user social circle based (what other users have selected). 
-					</p>
-					<p>
-					While the widget store is not yet public, it is under full development
-					and you can checkout the backend code (or contribute) from the
-					public code <a href="http://code.google.com/p/edukapp">repository</a></p>
+				<p>This project is about creating a cross-university widget
+					store, i.e. a repository and community site that focuses on
+					collecting and promoting widgets for learning and teaching.</p>
+				<p>The store will be accompanied with discovery services and
+					will offer easy integration of widgets to personal learning
+					environments while promoting widget capabilities and features. For
+					end users, it will offer a sophisticated recommendation engine
+					which will promote widgets based on user’ needs and interaction
+					history.</p>
+				<p>The main audience for the store is anticipated to be from the
+					HE teaching and learning community. It is envisioned that the store
+					will be both place to share developing initiatives and widgets, and
+					also a place to gather learning analytics around widget usage.</p>
+				<p>Functional requirements:</p>
+				<p>Social annotation: Each widget shares its own profile page
+					and user generated meta-data (comments/tags/rating). Functionality
+					to annotate widgets with learning activities they afford will be
+					needed. (annotating affordances, tagging, rating, comments)</p>
+				<p>Socially-driven development: The store allows its community
+					of users to submit and vote on requirements for the further or new
+					development of widgets (requirements voting, feedback, management)
+					: the store tracks how widgets are utilized, in which context and
+					which functionalities are used.</p>
+				<p>Widget Bundles: widgets are grouped in ‘collections’ which
+					support specific tasks</p>
+				Recommendation engine: an integrated information filtering system to
+				provide suggestions for both content based (similar widgets) and
+				user social circle based (i.e..what other users have selected).
+				</p>
+
+				<p>
+					While the widget store is not yet public, it is under full
+					development and you can checkout the back-end code (or contribute)
+					from the public code <a href="http://code.google.com/p/edukapp">repository</a>
+				</p>
 				<%@ include file="/components/footer.jsp"%>
 			</div>
 
