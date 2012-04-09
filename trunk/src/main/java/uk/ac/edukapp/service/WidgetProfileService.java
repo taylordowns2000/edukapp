@@ -189,7 +189,6 @@ public class WidgetProfileService extends AbstractService {
 
 			//
 			// Find matching profile
-			// TODO replace with a named query
 			//
 			try {
 				Query wpQuery = entityManager
@@ -210,40 +209,28 @@ public class WidgetProfileService extends AbstractService {
 				widgetProfile = new Widgetprofile();
 				widgetProfile.setName(widget.getTitle());
 				widgetProfile.setWidId(widget.getUri());
-				entityManager.persist(widgetProfile);
+				entityManager.persist(widgetProfile);				
+				
+				//
+				// Create the widget description
+				//
+				WidgetDescription widgetDescription = new WidgetDescription();
+				widgetDescription.setWid_id(widgetProfile.getId());
+				widgetDescription.setDescription(widget.getDescription());
+				widgetProfile.setDescription(widgetDescription);
+				
 			}
 
 			widgetProfiles.add(widgetProfile);
 		}
+		
+		
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
 
 		return widgetProfiles;
 	}
-
-	// public void updateWidgetprofileDescription(String id, String newText)
-	// throws PersistenceException, EntityNotFound {
-	// Widgetprofile widget = findWidgetProfileById(id);
-	// if (widget == null) {
-	// throw new EntityNotFound();
-	// }
-	// WidgetDescription widget_desc = widget.getDescription();
-	// if (widget_desc == null) {
-	// widget_desc = new WidgetDescription();
-	// widget_desc.setWid_id(Integer.parseInt(id));
-	// }
-	// widget_desc.setDescription(newText);
-	// widget.setDescription(widget_desc);
-	//
-	// EntityManager entityManager = getEntityManagerFactory()
-	// .createEntityManager();
-	// entityManager.getTransaction().begin();
-	//
-	// entityManager.persist(entityManager.merge(widget));
-	//
-	// entityManager.getTransaction().commit();
-	// }
 
 	private Message addTagToWidget(Widgetprofile widget, String newTag) {
 		EntityManager entityManager = getEntityManagerFactory()
@@ -337,7 +324,7 @@ public class WidgetProfileService extends AbstractService {
 	}
 
 	public Message updateDescription(String id, String text) {
-
+		
 		Widgetprofile widget = null;
 
 		// check whether id is numeric
@@ -347,28 +334,36 @@ public class WidgetProfileService extends AbstractService {
 			widget = findWidgetProfileByUri(id);
 		}
 
-		WidgetDescription widget_desc = widget.getDescription();
-		if (widget_desc == null) {
-			widget_desc = new WidgetDescription();
-			widget_desc.setWid_id(Integer.parseInt(id));
-		}
-		widget_desc.setDescription(text);
-		widget.setDescription(widget_desc);
-
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
 		try {
-			entityManager.getTransaction().begin();
-			entityManager.persist(entityManager.merge(widget));
-			entityManager.getTransaction().commit();
+			updateDescription(widget, text);
 		} catch (Exception e) {
 			Message msg = new Message();
-			msg.setMessage("eroor:" + e.getMessage());
+			msg.setMessage("error:" + e.getMessage());
 		}
 		Message msg = new Message();
 		msg.setMessage("OK update description done");
 		msg.setId("" + widget.getId());
 		return msg;
+	}
+	
+	/**
+	 * Update the description associated with a widget profile
+	 * @param widgetProfile
+	 * @param text
+	 */
+	private void updateDescription(Widgetprofile widgetProfile, String text){
+		WidgetDescription widget_desc = widgetProfile.getDescription();
+		if (widget_desc == null) {
+			widget_desc = new WidgetDescription();
+			widget_desc.setWid_id(widgetProfile.getId());
+		}
+		widget_desc.setDescription(text);
+		widgetProfile.setDescription(widget_desc);
+
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.persist(entityManager.merge(widgetProfile));
+		entityManager.getTransaction().commit();	
 	}
 
 	public Message addComment(String id, String text, String userid) {
