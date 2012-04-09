@@ -29,6 +29,7 @@
 									<context>/</context>
 								</properties>
 							</deployable>
+							
 							<deployable>
 								<groupId>org.apache.wookie</groupId>
 								<artifactId>wookie</artifactId>
@@ -53,6 +54,7 @@
 									<context>/shindig</context>
 								</properties>
 							</deployable>
+							
 						</deployables>
 					</configuration>
 					<container>
@@ -147,7 +149,7 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie</artifactId>
-			<version>0.9.2-incubating-SNAPSHOT</version>
+			<version>0.10.0-incubating-SNAPSHOT</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>
