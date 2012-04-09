@@ -82,7 +82,7 @@ function () {
             var username = $('#logged-in-user-name').val();
             $.ajax({
             	dataType: 'json',
-            	url:"/api/widget/POST/"+widget_id+"/add-comment/"+reviewText+"/user/"+userid;
+            	url:"/api/widget/POST/"+widget_id+"/add-comment/"+reviewText+"/user/"+userid,
                 //url: "ajaxHandlers/addReview.jsp?id=" + widget_id + "&userid=" + userid + "&reviewText=" + reviewText,
                 cache: false,
                 success: function (resp) {
