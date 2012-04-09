@@ -287,6 +287,7 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.getTransaction().commit();
 		Message msg = new Message();
 		msg.setMessage("OK");
+		msg.setId("" + tag.getId());
 		return msg;
 
 	}
@@ -298,6 +299,14 @@ public class WidgetProfileService extends AbstractService {
 
 	private boolean isNumeric(String str) {
 		return str.matches("-?\\d+(.\\d+)?");
+	}
+	
+	public Message addTag(Widgetprofile widgetProfile, String newTag){
+		if (isNumeric(newTag)) {
+			return addTagIdToWidget(widgetProfile, newTag);
+		} else {
+			return addTagToWidget(widgetProfile, newTag);
+		}
 	}
 
 	public Message addTag(String id, String newTag) {
@@ -315,12 +324,8 @@ public class WidgetProfileService extends AbstractService {
 			msg.setMessage("no widget found with id:" + id);
 			return msg;
 		}
-
-		if (isNumeric(newTag)) {
-			return addTagIdToWidget(widget, newTag);
-		} else {
-			return addTagToWidget(widget, newTag);
-		}
+		
+		return addTag(widget, newTag);
 	}
 
 	public Message updateDescription(String id, String text) {

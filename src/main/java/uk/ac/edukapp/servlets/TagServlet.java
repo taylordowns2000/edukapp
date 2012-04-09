@@ -23,10 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.renderer.MetadataRenderer;
-import uk.ac.edukapp.service.AffordanceService;
 import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.util.Message;
 
@@ -52,11 +50,58 @@ public class TagServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String method = req.getParameter("method");
-		if (method == null || method.trim().length() == 0) {
-			resp.sendError(400, "method is empty");
+		//
+		// Create a TagService instance
+		//
+		TagService tagService = new TagService(getServletContext());
+
+		OutputStream out = resp.getOutputStream();
+
+		String id = req.getParameter("id");
+		
+		if (id == null){
+			
+		} 
+		
+		else if (id.equals("all")){
+			// TODO - to implemet in TAgService
+			// MetadataRenderer.render(resp.getOutputStream(),
+			// tagService.getAllTags());
+			Message msg = new Message();
+			msg.setMessage("not yet implemeted");
+			MetadataRenderer.render(out, msg);
 			return;
+		} 
+		
+		else if (id.equals("popular")){
+			MetadataRenderer.render(out, tagService.getPopularTags());
+			return;			
 		}
+		else {
+			Tag tag = tagService.getTag(id);
+			
+			if (req.getParameter("namesonly") != null){
+				//
+				// Render metadata
+				//
+				MetadataRenderer.render(out, tag);				
+			} else {
+				//
+				// Find and render matching widgets
+				//
+				MetadataRenderer.render(out, tag.getWidgetprofiles());				
+			}
+		}
+		out.flush();
+		out.close();
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	throws ServletException, IOException {
 
 		//
 		// Create a TagService instance
@@ -65,73 +110,19 @@ public class TagServlet extends HttpServlet {
 
 		OutputStream out = resp.getOutputStream();
 
-		if (method.equals("GET")) {
+		String text = req.getParameter("text");
 
-			String operation = req.getParameter("operation");
-			if (operation == null || operation.trim().length() == 0) {
-				resp.sendError(400, "operation is empty");
-				return;
-			}
-
-			if (operation.equals("all")) {
-				// TODO - to implemet in TAgService
-				// MetadataRenderer.render(resp.getOutputStream(),
-				// tagService.getAllTags());
-				Message msg = new Message();
-				msg.setMessage("not yet implemeted");
-				MetadataRenderer.render(out, msg);
-				return;
-			} else if (operation.equals("popular")) {
-				MetadataRenderer.render(out, tagService.getPopularTags());
-				return;
-			} else if (operation.equals("getName")
-					|| operation.equals("getWidgets")) {
-				String tagid = req.getParameter("id");
-
-				//
-				// Check for required parameters
-				//
-				if (tagid == null || tagid.trim().length() == 0) {
-					resp.sendError(400, "id is empty");
-					return;
-				}
-				Tag tag = tagService.getTag(tagid);
-
-				if (operation.equals("getName")) {
-					//
-					// Render metadata
-					//
-					MetadataRenderer.render(out, tag);
-				} else if (operation.equals("getWidgets")) {
-					//
-					// Find and render matching widgets
-					//
-					MetadataRenderer.render(out, tag.getWidgetprofiles());
-				}
-
-			}
-
-		} else if (method.equals("POST")) {
-
-		} else if (method.equals("PUT")) {
-
-			String text = req.getParameter("text");
-
-			//
-			// Check for required parameters
-			//
-			if (text == null || text.trim().length() == 0) {
-				resp.sendError(400, "text is empty");
-				return;
-			}
-
-			Message msg = tagService.insertTag(text);
-			// Message msg = new Message();
-			// msg.setMessage("not yet implemeted");
-
-		} else if (method.equals("DELETE")) {
-
+		//
+		// Check for required parameters
+		//
+		if (text == null || text.trim().length() == 0) {
+			resp.sendError(400, "text is empty");
+			return;
 		}
+
+		Message msg = tagService.insertTag(text);
+		// Message msg = new Message();
+		// msg.setMessage("not yet implemeted");
 
 		out.flush();
 		out.close();

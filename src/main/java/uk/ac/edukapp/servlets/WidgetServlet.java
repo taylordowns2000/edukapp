@@ -24,6 +24,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
@@ -51,175 +55,182 @@ public class WidgetServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String method = req.getParameter("method");
-		if (method == null || method.trim().length() == 0) {
-			resp.sendError(400, "method is empty");
+		String part = req.getParameter("part");
+		OutputStream out = resp.getOutputStream();
+		
+		//
+		// Get widget resource
+		//
+		Widgetprofile widgetProfile = getWidgetProfile(req);
+		if (widgetProfile == null) resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+		//
+		// Return full metadata
+		//
+		if (part == null|| part.isEmpty()) {
+			ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
+			extendedWidgetProfile.setWidgetProfile(widgetProfile);
+			extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile));
+			ActivityService activityService = new ActivityService(getServletContext());
+			extendedWidgetProfile.setUploadedBy(activityService.getUploadedBy(widgetProfile));
+			MetadataRenderer.render(out, extendedWidgetProfile);
+		}
+		
+		// Get parts
+		
+		else if (part.equals("name")){
+			
+		} 
+		else if (part.equals("render")){
+			
+		}
+		else if (part.equals("tags")){
+			
+		}
+		else if (part.equals("activities")){
+			
+		}
+		else if (part.equals("description")){
+			
+		}
+		else if (part.equals("comments")){
+			
+		}
+		else if (part.equals("ratings")){
+			
+		}
+		else if (part.equals("rating")){
+			
+		}
+		else if (part.equals("stats")){
+			
+		}
+		else if (part.equals("activity")){
+			
+		}
+		out.flush();
+		out.close();
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		String body = IOUtils.toString(req.getInputStream());
+		if (body == null || body.trim().length() == 0){
+			resp.sendError(400, "no tag specified");
 			return;
 		}
-
-		String id = req.getParameter("id");
-		String uri = req.getParameter("uri");
-
-		if ((id == null || id.trim().length() == 0)
-				&& (uri == null || uri.trim().length() == 0)) {
-			resp.sendError(400, "id/uri is empty");
-			return;
-		}
-
-		WidgetProfileService widgetProfileService = new WidgetProfileService(
-				getServletContext());
+		
+		System.out.println("Message body ="+body);
+		
+		String part = req.getParameter("part");
+		
+		//
+		// Get widget resource
+		//
+		Widgetprofile widgetProfile = getWidgetProfile(req);
+		if (widgetProfile == null) resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+		
 		OutputStream out = resp.getOutputStream();
 
-		if (method.equals("GET")) {
-
-			String operation = req.getParameter("operation");
-			if (operation == null || operation.trim().length() == 0) {
-				resp.sendError(400, "operation is empty");
-				return;
-			}
-
-			if (operation.equals("getWidget")) {
-
-				Widgetprofile widgetProfile = null;
-
-				ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
-				if (id != null && id.trim().length() > 0)
-					widgetProfile = widgetProfileService
-							.findWidgetProfileById(id);
-				if (uri != null && uri.trim().length() > 0)
-					widgetProfile = widgetProfileService
-							.findWidgetProfileByUri(uri);
-
-				if (widgetProfile != null)
-					extendedWidgetProfile.setWidgetProfile(widgetProfile);
-				if (widgetProfile != null)
-					extendedWidgetProfile.setRenderInfo(Renderer
-							.render(widgetProfile));
-				if (widgetProfile != null) {
-					ActivityService activityService = new ActivityService(
-							getServletContext());
-					extendedWidgetProfile.setUploadedBy(activityService
-							.getUploadedBy(widgetProfile));
-				}
-				MetadataRenderer.render(out, extendedWidgetProfile);
-			} else if (operation.equals("getName")) {
-
-			} else if (operation.equals("getRender")) {
-
-			} else if (operation.equals("getTags")) {
-
-			} else if (operation.equals("getActivities")) {
-
-			} else if (operation.equals("getDescription")) {
-
-			} else if (operation.equals("getComments")) {
-
-			} else if (operation.equals("getRatings")) {
-
-			} else if (operation.equals("getRating")) {
-
-			} else if (operation.equals("getStats")) {
-
-			} else if (operation.equals("getActivity")) {
-
-			}
-
-		} else if (method.equals("POST")) {
-			String operation = req.getParameter("operation");
-			if (operation == null || operation.trim().length() == 0) {
-				resp.sendError(400, "operation is empty");
-				return;
-			}
-			if (operation.equals("update-description")) {
-				String text = req.getParameter("text");
-				if (text == null || text.trim().length() == 0) {
-					resp.sendError(400, "text is empty");
-					return;
-				}
-
-				Message msg = null;
-
-				if (id != null && id.trim().length() > 0) {
-					msg = widgetProfileService.updateDescription(id, text);
-				}
-				if (uri != null && uri.trim().length() > 0) {
-					msg = widgetProfileService.updateDescription(uri, text);
-				}
-				MetadataRenderer.render(out, msg);
-
-			} else if (operation.equals("add-tag")) {
-				String tagtext = req.getParameter("tagtext");
-				String tagid = req.getParameter("tagid");
-				if ((tagtext == null || tagtext.trim().length() == 0)
-						&& (tagid == null || tagid.trim().length() == 0)) {
-					resp.sendError(400, "tagid/tagtext is empty");
-					return;
-				}
-
-				Message msg = null;
-
-				if (id != null && id.trim().length() > 0) {
-					if (tagtext != null && tagtext.trim().length() > 0) {
-						msg = widgetProfileService.addTag(id, tagtext);
-					}
-					if (tagid != null && tagid.trim().length() > 0) {
-						msg = widgetProfileService.addTag(id, tagid);
-					}
-				}
-				if (uri != null && uri.trim().length() > 0) {
-					if (tagtext != null && tagtext.trim().length() > 0) {
-						msg = widgetProfileService.addTag(uri, tagtext);
-					}
-					if (tagid != null && tagid.trim().length() > 0) {
-						msg = widgetProfileService.addTag(uri, tagid);
-					}
-				}
-				MetadataRenderer.render(out, msg);
-
-			} else if (operation.equals("remove-tag")) {
-
-			} else if (operation.equals("add-activity")) {
-
-			} else if (operation.equals("remove-activity")) {
-
-			} else if (operation.equals("add-comment")) {
-
-			} else if (operation.equals("remove-comment")) {
-
-			} else if (operation.equals("add-rating")) {
-
-			} else if (operation.equals("remove-rating")) {
-
-			} else if (operation.equals("add-comment")) {
-
-				String userid = req.getParameter("userid");
-				String text = req.getParameter("text");
-
-				if (userid == null || userid.trim().length() == 0) {
-					resp.sendError(400, "userid is empty");
-					return;
-				}
-				if (text == null || text.trim().length() == 0) {
-					resp.sendError(400, "text is empty");
-					return;
-				}
-
-				Message msg = null;
-
-				msg = widgetProfileService.addComment(id, text, userid);
-				MetadataRenderer.render(out, msg);
-
-			} else if (operation.equals("remove-comment")) {
-
-			}
-		} else if (method.equals("PUT")) {
-
-		} else if (method.equals("DELETE")) {
-
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
+	
+		if (part.equals("tag")){
+			Message msg = null;
+			msg = widgetProfileService.addTag(widgetProfile, body);
+			MetadataRenderer.render(out, msg);
 		}
+		else if (part.equals("comment")){
+			//
+			// TODO
+			//
+			// 1. validate the userId
+			// 2. check that the current shiro principal matches the user id
+			// 3. Map the JSON onto an actual Comment bean or DTO
+			Message msg = null;
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode json = mapper.readTree(body);
+			String userId = json.findValue("userId").asText();
+			String text = json.findValue("comment").asText();
+			
+			//
+			// TODO Create a direct method using the profile and a new comment object
+			//
+			msg = widgetProfileService.addComment(String.valueOf(widgetProfile.getId()), text, userId);
+			MetadataRenderer.render(out, msg);
+		}
+		out.flush();
+		out.close();
+	}				
 
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doPut(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		String part = req.getParameter("part");
+		
+		//
+		// Get widget resource
+		//
+		Widgetprofile widgetProfile = getWidgetProfile(req);
+		if (widgetProfile == null) resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+		
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
+		
+		OutputStream out = resp.getOutputStream();
+		
+		if (part.equals("description")){
+			// Update description
+			
+			String body = IOUtils.toString(req.getInputStream());
+			if (body == null || body.trim().length() == 0){
+				resp.sendError(400, "no tag specified");
+				return;
+			}
+
+			Message msg = null;
+
+			msg = widgetProfileService.updateDescription(widgetProfile.getWidId(), body);
+			
+			MetadataRenderer.render(out, msg);
+			
+		}
 		out.flush();
 		out.close();
 	}
 
+
+	private Widgetprofile getWidgetProfile(HttpServletRequest request){
+		String id = request.getParameter("id");
+		String uri = request.getParameter("uri");
+		
+		//
+		// Validate
+		//
+		if ((id == null || id.trim().length() == 0)
+				&& (uri == null || uri.trim().length() == 0)) {
+			return null;
+		}
+
+		WidgetProfileService widgetProfileService = new WidgetProfileService(
+				getServletContext());
+
+		//
+		// Get widget resource
+		//
+		Widgetprofile widgetProfile = null;
+		if (id != null && id.trim().length() > 0)
+			widgetProfile = widgetProfileService.findWidgetProfileById(id);
+		if (uri != null && uri.trim().length() > 0)
+			widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
+		
+		return widgetProfile;
+	}
 }

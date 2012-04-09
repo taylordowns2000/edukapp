@@ -12,53 +12,46 @@ GET /api/widget?uri={widget uri}
 -------------------------------------------------
 CLEAN URL 												urlrewriteRule  implementation
 
+GET
+
 /* get full info */										
-/api/widget/GET/{$id}									yes
-/api/widget/GET/{$uri}									yes
+/api/widget/{$id}																	
 /* or just the field you want */
-/api/widget/GET/{$id}/getName 							yes
-/api/widget/GET/{$uri}/name
-/api/widget/GET/{$id}/render /*return instance url*/    yes
-/api/widget/GET/{$uri}/render
-/api/widget/GET/{$id}/tags 								yes
-/api/widget/GET/{$uri}/tags
-/api/widget/GET/{$id}/activities 						yes
-/api/widget/GET/{$uri}/activities
-/api/widget/GET/{$id}/description 						yes
-/api/widget/GET/{$uri}/description
-/api/widget/GET/{$id}/comments 							yes
-/api/widget/GET/{$uri}/comments
-/api/widget/GET/{$id}/ratings   /*full list*/  			yes
-/api/widget/GET/{$uri}/ratings
-/api/widget/GET/{$id}/rating    /*average rating*/ 		yes
-/api/widget/GET/{$uri}/rating
-/api/widget/GET/{$id}/stats     /*instantiation stats*/ yes
-/api/widget/GET/{$uri}/stats
+/api/widget/{$id}/name 							
+/api/widget/{$id}/render /*return instance url*/    
+/api/widget/{$id}/tags								
+/api/widget/{$id}/activities					
+/api/widget/{$id}/description 						
+/api/widget/{$id}/comments						
+/api/widget/{$id}/ratings   /*full list*/  			
+/api/widget/{$id}/rating    /*average rating*/ 		
+/api/widget/{$id}/stats     /*instantiation stats*/ 
 /*chronological list of commenting/rating/updating/...  */
-/api/widget/GET/{$id}/activity 							yes                         
-/api/widget/GET/{$uri}/activity
+/api/widget/{$id}/activity                          
 
-/api/widget/POST/${id}/update-description/${text}
-/api/widget/POST/{$id}/add-tag/{$id} 					yes
-/api/widget/POST/{$id}/add-tag/{$text} 					yes
-/api/widget/POST/{$id}/remove-tag/{$id} 				yes
-/api/widget/POST/{$id}/remove-tag/{$text}     			yes
-/api/widget/POST/{$id}/add-activity/{$id} 				yes
-/api/widget/POST/{$id}/add-activity/{$text} 			yes
-/api/widget/POST/{$id}/remove-activity/{$id} 			yes
-/api/widget/POST/{$id}/remove-activity/{$text} 			yes
-/api/widget/POST/{$id}/add-comment/{$text}/user/{$userid} yes
-/api/widget/POST/{$id}/remove-comment/{$id} 			yes	
-/api/widget/POST/{$id}/add-rating/{$value}/user/{$userid} yes
-/api/widget/POST/{$id}/remove-rating/{$id} 				yes
+POST
 
+/api/widget/{$id}/tag  (tag id or tag text in request body) 					
+/api/widget/{$id}/activity (activity id or activity text in request body) 						
+/api/widget/{$id}/comment ({$text} and {$userid} in request body)
+/api/widget/{$id}/rating  ({$value} and {$userid} in request body) 
 
-/api/widget/PUT/w3c/{$.wgt file}
-/api/widget/PUT/gadget/{$.xml file}
-/api/widget/PUT/gadget/{$uri}
+PUT
 
-/api/widget/DELETE/${id} 								yes
+/api/widget/${id}/description/ (${text} in request body)
+/api/widget/w3c/              {$.wgt file} attached
+/api/widget/gadget/           {$.xml file} attached
+/api/widget/gadget/           ({$uri} in request body)
 
+DELETE
+
+/api/widget/${id} 								
+/api/widget/{$id}/tag/{$id} 				
+/api/widget/{$id}/tag/{$text}  
+/api/widget/{$id}/comment/{$id} 
+/api/widget/{$id}/activity/{$id}		
+/api/widget/{$id}/activity/{$text}	  
+/api/widget/{$id}/rating/{$id}  			
 
 ** Tag
 --------------------------------------------------
@@ -66,68 +59,68 @@ GET /api/tag/{tag id}
 GET /api/tag/{tag id}/widgets
 GET /api/tag/popular
 
-GET /api/tag?method=GET&operation=popular						|	/api/tag/GET/popular				| yes
-GET /api/tag?method=GET&operation=all							|	/api/tag/GET/all					| no
-GET /api/tag?method=GET&id={$id}&operation=getName				|	/api/tag/GET/name/{$id}				| yes
-GET /api/tag?method=GET&id={$id}&operation=getWidgets			|	/api/tag/GET/widgets/{$id}			| yes
+GET /api/tag/popular						|	/api/tag/?id=popular				| yes
+GET /api/tag/all							|	/api/tag/?id=all					| no
+GET /api/tag/{$id}?namesonly				|	/api/tag/?id={$id}				| yes
+GET /api/tag/{$id}			                |	/api/tag/{$id}			| yes
 
-PUT /api/tag/PUT?text={tag text}								|   /api/tag/PUT/{text}					| yes
+POST /api/tag/{tag text}								|   /api/tag/{text}					| yes
 
-POST /api/tag/POST?id={tag id}&newText={new text}				|	/api/tag/POST/{id}/{text}
-POST /api/tag/POST?oldText={old text}&newText={new text}		|	/api/tag/POST/{text}/{text}
+PUT /api/tag/{tag id} {new text}				|	/api/tag/{id}/{text}
+PUT /api/tag/{oldText}{new text}		|	/api/tag/{text}/{text}
 
-DELETE /api/tag/DELETE?id={tag id}								|	/api/tag/DELETE/{id}
-DELETE /api/tag/DELETE?text={text}								|	/api/tag/DELETE/{text}
+DELETE /api/tag?id={tag id}								|	/api/tag/{id}
+DELETE /api/tag?text={text}								|	/api/tag/{text}
 
 	
 ** Activity
 ------------------------------------------------				|
-GET /api/activity?method=GET&operation=popular					|	/api/activity/GET/popular			| yes
-GET /api/activity?method=GET&operation=all						|	/api/activity/GET/all				| yes
-GET /api/activity?method=GET&id={$id}&operation=getName			|	/api/activity/GET/name/{$id}		| yes
-GET /api/activity?method=GET&id={$id}&operation=getWidgets		|	/api/activity/GET/widgets/{$id}		| yes
+GET /api/activity?operation=popular					|	/api/activity/popular			| yes
+GET /api/activity?operation=all						|	/api/activity/all				| yes
+GET /api/activity?id={$id}&operation=getName			|	/api/activity/name/{$id}		| yes
+GET /api/activity?id={$id}&operation=getWidgets		|	/api/activity/widgets/{$id}		| yes
 
-PUT /api/activity/PUT?text={activity text}						|   /api/activity/PUT/{text}			| yes
+PUT /api/activity?text={activity text}						|   /api/activity/{text}			| yes
 
-POST /api/activity/POST?id={activity id}&newText={new text}		|	/api/activity/POST/{id}/{text}		| no
-POST /api/activity/POST?oldText={old text}&newText={new text}	|	/api/activity/POST/{text}/{text}	| no	
+POST /api/activity?id={activity id}&newText={new text}		|	/api/activity/{id}/{text}		| no
+POST /api/activity?oldText={old text}&newText={new text}	|	/api/activity/{text}/{text}	| no	
 
-DELETE /api/activity/DELETE?id={activity id}					|	/api/activity/DELETE/{id}			| no
-DELETE /api/activity/DELETE?text={text}							|	/api/activity/DELETE/{text}			| no
+DELETE /api/activity?id={activity id}					|	/api/activity/{id}			| no
+DELETE /api/activity?text={text}							|	/api/activity/{text}			| no
 
 
 ** Comment
 ------------------------------------------------
 GET
-/api/comment/GET/all
-/api/comment/GET/{$com-id}
-/api/comment/GET/widget/{$widget-id}
+/api/comment/all
+/api/comment/{$com-id}
+/api/comment/widget/{$widget-id}
 POST
-/api/comment/POST/{$com-id}/update/{$new-text}
+/api/comment/{$com-id}/update/{$new-text}
 PUT
-/api/comment/PUT/{$widget-id}/{$user-id}/{$text}
+/api/comment/{$widget-id}/{$user-id}/{$text}
 DELETE
-/api/comment/DELETE/{$id}
+/api/comment/{$id}
 
 ** Rating
 ------------------------------------------------
 GET
-/api/rating/GET/{$id}
-/api/rating/GET/widget/{$id}      /*returns average rating of widget*/
-/api/rating/GET/widget/{$id}/all  /*returns all ratings of widget*/
+/api/rating/{$id}
+/api/rating/widget/{$id}      /*returns average rating of widget*/
+/api/rating/widget/{$id}/all  /*returns all ratings of widget*/
 POST
-/api/rating/POST/{$id}/update/{$new-value}
+/api/rating/{$id}/update/{$new-value}
 PUT
-/api/rating/PUT/{$wid-id}/{$user-id}/{$value}
+/api/rating/{$wid-id}/{$user-id}/{$value}
 DELETE
-/api/rating/DELETE/{$id}
-/api/rating/DELETE/widget/{$widget-id}/user/{$user-id}
+/api/rating/{$id}
+/api/rating/widget/{$widget-id}/user/{$user-id}
 
 
 ** USER
 ----------------------------------------------
 GET
-/api/user/GET/{$id}
+/api/user/{$id}
 POST
 PUT
 DELETE
