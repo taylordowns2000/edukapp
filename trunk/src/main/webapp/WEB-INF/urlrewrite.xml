@@ -25,157 +25,60 @@
 		entity WIDGET
 	-->
 	<rule>
-		<from>/api/widget/GET/([0-9]+)$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getWidget</to>
+		<from>/api/widget/([0-9]+)/([a-z]+)$</from>
+		<to>/api/widget?id=$1&amp;part=$2</to>
 	</rule>
 	<rule>
-		<!-- 
-		not so sure about the regex below to match a uri
-		so for the following rules (for now) only implement get by id rules
-	-->
-		<from>/api/widget/GET/([a-zA-z0-9:\/\.]+)$</from>
-		<to>/api/widget?method=GET&amp;uri=$1&amp;operation=getWidget</to>
+		<from>/api/widget/([0-9]+)$</from>
+		<to>/api/widget?id=$1</to>
 	</rule>
 	<rule>
-		<from>/api/widget/GET/([0-9]+)/name$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getName</to>
+		<from>/api/widget/([a-zA-z0-9:\/\.]+)/([a-z]+)$</from>
+		<to>/api/widget?uri=$1&amp;part=$2</to>
 	</rule>
 	<rule>
-		<from>/api/widget/GET/([0-9]+)/render$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRender</to>
+		<from>/api/widget/([a-zA-z0-9:\/\.]+)$</from>
+		<to>/api/widget?uri=$1</to>
 	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/tags$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getTags</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/activities$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getActivities</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/description$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getDescription</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/comments$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getComments</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/ratings$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRatings</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/rating$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getRating</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/stats$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getStats</to>
-	</rule>
-	<rule>
-		<from>/api/widget/GET/([0-9]+)/activity$</from>
-		<to>/api/widget?method=GET&amp;id=$1&amp;operation=getActivity</to>
-	</rule>
-	
-
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/update-description/(.+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=update-description&amp;text=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/add-tag/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addTag&amp;tagid=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/add-tag/([a-zA-Z0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addTag&amp;tagtext=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-tag/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeTag&amp;tagid=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-tag/([a-zA-Z0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeTag&amp;tagtext=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/add-activity/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addActivity&amp;activityid=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/add-activity/([a-zA-Z0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addActivity&amp;activitytext=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-activity/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeActivity&amp;activityid=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-activity/([a-zA-Z0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeActivity&amp;activitytext=$2</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/add-comment/(.)+/user/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addComment&amp;text=$2&amp;userid=$3</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-comment/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeComment&amp;comid=$2</to>
-	</rule>
-		<rule>
-		<from>/api/widget/POST/([0-9]+)/add-rating/([0-5])+/user/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=addRating&amp;value=$2&amp;userid=$3</to>
-	</rule>
-	<rule>
-		<from>/api/widget/POST/([0-9]+)/remove-rating/([0-9]+)$</from>
-		<to>/api/widget?method=POST&amp;id=$1&amp;operation=removeRating&amp;rateid=$2</to>
-	</rule>
-
-	<rule>
-		<from>/api/widget/DELETE/([0-9]+)</from>
-		<to>/api/widget?method=DELETE&amp;id=$1</to>
-	</rule>
-	
-	
-
 
 	<!--
 	entity TAG
 	-->
 	<rule>
-		<from>/api/tag/GET/popular$</from>
-		<to>/api/tag?method=GET&amp;operation=popular</to>
+		<from>/api/tag/popular$</from>
+		<to>/api/tag?id=popular</to>
 	</rule>
 	<rule>
-		<from>/api/tag/GET/all$</from>
-		<to>/api/tag?method=GET&amp;operation=all</to>
+		<from>/api/tag/all$</from>
+		<to>/api/tag</to>
 	</rule>
 	<rule>
-		<from>/api/tag/GET/name/([0-9]+)$</from>
-		<to>/api/tag?method=GET&amp;id=$1&amp;operation=getName</to>
+		<from>/api/tag/([0-9]+)$</from>
+		<to>/api/tag?id=$1&amp;namesonly=true</to>
 	</rule>
 	<rule>
-		<from>/api/tag/GET/widgets/([0-9]+)$</from>
-		<to>/api/tag?method=GET&amp;id=$1&amp;operation=getWidgets</to>
+		<from>/api/tag/([0-9]+)/widgets$</from>
+		<to>/api/tag?id=$1</to>
 	</rule>
+	
 	<!--
 	entity ACTIVITY  (affordance)
 	-->
 	<rule>
-		<from>/api/activity/GET/name/([0-9]+)$</from>
-		<to>/api/activity?method=GET&amp;id=$1&amp;operation=getName</to>
+		<from>/api/activity/name/([0-9]+)$</from>
+		<to>/api/activity?id=$1&amp;operation=getName</to>
 	</rule>
 	<rule>
-		<from>/api/activity/GET/widgets/([0-9]+)$</from>
-		<to>/api/activity?method=GET&amp;id=$1&amp;operation=getWidgets</to>
+		<from>/api/activity/widgets/([0-9]+)$</from>
+		<to>/api/activity?id=$1&amp;operation=getWidgets</to>
 	</rule>
 	<rule>
-		<from>/api/activity/GET/([a-z]+)$</from>
-		<to>/api/activity?method=GET&amp;operation=$1</to>
+		<from>/api/activity/([a-z]+)$</from>
+		<to>/api/activity?operation=$1</to>
 	</rule>
 	<rule>
-		<from>/api/activity/PUT/([0-9a-z]+)$</from>
-		<to>/api/activity?method=PUT&amp;text=$1</to>
+		<from>/api/activity/([0-9a-z]+)$</from>
+		<to>/api/activity?text=$1</to>
 	</rule>
 	<!--
 	entity USER

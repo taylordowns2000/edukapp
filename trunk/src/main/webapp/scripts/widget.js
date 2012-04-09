@@ -18,8 +18,10 @@ function () {
         $('#widget-description button[type="submit"]').click(function () {
             var newText = $('#widget-description textarea').val();
             $.ajax({
+                type: 'PUT',
             	dataType: 'json',
-                url: "/api/widget/POST/" + widget_id + "/update-description/" + newText,
+                url: "/api/widget/" + widget_id + "/description",
+                data: newText,
                 cache: false,
                 success: function (resp) {
                     //console.log(resp);
@@ -47,14 +49,15 @@ function () {
         $('#add-tag-form').submit(function () {
             var newTag = $('#add-tag-form input[type="text"]').val();
             $.ajax({
+                type: 'POST',
             	dataType: 'json',
-                url: "/api/tag/POST/" + widget_id +"/add-tag/"+newTag,
+                url: "/api/widget/" + widget_id +"/tag",
+                data: newTag,
                 cache: false,
                 success: function (resp) {
                     //console.log(resp);
                     if (resp['message']=="OK") {
-                        var tag_db_id = resp.substring(13);
-                        console.log(resp.substring(13));
+                        var tag_db_id = resp['id'];
                         $('#add-tag-form').remove();
                         $('#widget-tags').append('<a class="btn btn-info" href="/tags/' + tag_db_id + '"><i class="icon-tag icon-white"></i>' + newTag + '</a>');
                     } else {
@@ -80,13 +83,23 @@ function () {
             var userid = $('#logged-in-user-id').val();
             var gravatarImg = $('#logged-in-user-gravatar-img').val();
             var username = $('#logged-in-user-name').val();
+            
+            var review  = {};
+            review.comment = $('#review-textarea').val();
+            review.userId = $('#logged-in-user-id').text();
+            
             $.ajax({
+                type: 'POST',
             	dataType: 'json',
-            	url:"/api/widget/POST/"+widget_id+"/add-comment/"+reviewText+"/user/"+userid,
-                //url: "ajaxHandlers/addReview.jsp?id=" + widget_id + "&userid=" + userid + "&reviewText=" + reviewText,
+            	url:"/api/widget/"+widget_id+"/comment",
+                data: JSON.stringify(review),
                 cache: false,
+                beforeSend: function(x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    }
+                },
                 success: function (resp) {
-                    console.log("$" + resp.substring(0, 11) + "$");
                     if (resp['message'] === "OK") {
                         $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '	<div class="span1">' + '		<img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '		<h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '	</div>' + '	<div class="span11">' + '		<div class="review-item-info-wrapper"></div>' + '		<p class="review-content-text">' + reviewText + '</p>' + '		<h6>just now</h6>' + '	</div>' + '</div>' + '</div>');
                         $('#write-a-review').remove();
@@ -95,6 +108,7 @@ function () {
                         //$('#widget-description').append("1there was an error in your update");
                     }
                 },
+                
                 error: function () {
                     console.log('error');
                 }
@@ -109,7 +123,7 @@ function () {
     //
     // Load the widget profile
     //
-    $.getJSON('/api/widget?id=' + widget_id+'&method=GET&operation=getWidget', function (data) {
+    $.getJSON('/api/widget/' + widget_id, function (data) {
         console.log(data);
         widgetUri = data.widgetProfile.uri;
         
