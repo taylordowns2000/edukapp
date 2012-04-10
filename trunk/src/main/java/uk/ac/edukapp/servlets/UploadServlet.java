@@ -1,24 +1,16 @@
 package uk.ac.edukapp.servlets;
 
-import javax.servlet.http.*;
-
 import uk.ac.edukapp.model.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +22,11 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.MultipartPostMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.wookie.connector.framework.*;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
