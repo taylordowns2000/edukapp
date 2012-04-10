@@ -49,86 +49,53 @@ public class ActivityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String method = req.getParameter("method");
-		if (method == null || method.trim().length() == 0) {
-			resp.sendError(400, "method is empty");
-			return;
-		}
-
 		//
 		// Create a AffordanceService instance
 		//
 		AffordanceService affordanceService = new AffordanceService(
 				getServletContext());
 
-		if (method.equals("GET")) {
+		String operation = req.getParameter("operation");
+		if (operation == null || operation.trim().length() == 0) {
+			resp.sendError(400, "operation is empty");
+			return;
+		}
 
-			String operation = req.getParameter("operation");
-			if (operation == null || operation.trim().length() == 0) {
-				resp.sendError(400, "operation is empty");
-				return;
-			}
-
-			if (operation.equals("all")) {
-				MetadataRenderer.render(resp.getOutputStream(),
-						affordanceService.getAllActivities());
-				return;
-			} else if (operation.equals("popular")) {
-				MetadataRenderer.render(resp.getOutputStream(),
-						affordanceService.getPopularActivities());
-				return;
-			} else if (operation.equals("getName")
-					|| operation.equals("getWidgets")) {
-				String activityid = req.getParameter("id");
-
-				//
-				// Check for required parameters
-				//
-				if (activityid == null || activityid.trim().length() == 0) {
-					resp.sendError(400, "id is empty");
-					return;
-				}
-				Activity activity = affordanceService.getActivity(activityid);
-				OutputStream out = resp.getOutputStream();
-				if (operation.equals("getName")) {
-					//
-					// Render metadata
-					//
-					MetadataRenderer.render(out, activity);
-				} else if (operation.equals("getWidgets")) {
-					//
-					// Find and render matching widgets
-					//
-					MetadataRenderer.render(out, activity.getWidgetprofiles());
-				}
-
-				out.flush();
-				out.close();
-			}
-
-		} else if (method.equals("POST")) {
-
-		} else if (method.equals("PUT")) {
-
-			String text = req.getParameter("text");
+		if (operation.equals("all")) {
+			MetadataRenderer.render(resp.getOutputStream(),
+					affordanceService.getAllActivities());
+			return;
+		} else if (operation.equals("popular")) {
+			MetadataRenderer.render(resp.getOutputStream(),
+					affordanceService.getPopularActivities());
+			return;
+		} else if (operation.equals("getName")
+				|| operation.equals("getWidgets")) {
+			String activityid = req.getParameter("id");
 
 			//
 			// Check for required parameters
 			//
-			if (text == null || text.trim().length() == 0) {
-				resp.sendError(400, "text is empty");
+			if (activityid == null || activityid.trim().length() == 0) {
+				resp.sendError(400, "id is empty");
 				return;
 			}
+			Activity activity = affordanceService.getActivity(activityid);
 			OutputStream out = resp.getOutputStream();
+			if (operation.equals("getName")) {
+				//
+				// Render metadata
+				//
+				MetadataRenderer.render(out, activity);
+			} else if (operation.equals("getWidgets")) {
+				//
+				// Find and render matching widgets
+				//
+				MetadataRenderer.render(out, activity.getWidgetprofiles());
+			}
 
-			Message msg = affordanceService.insertActivity(text);
-
-			MetadataRenderer.render(out, msg);
 			out.flush();
 			out.close();
-
-		} else if (method.equals("DELETE")) {
-
 		}
 
 	}
@@ -136,6 +103,32 @@ public class ActivityServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		doGet(req, resp);
+		// TODO
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String text = req.getParameter("text");
+
+		//
+		// Check for required parameters
+		//
+		if (text == null || text.trim().length() == 0) {
+			resp.sendError(400, "text is empty");
+			return;
+		}
+		OutputStream out = resp.getOutputStream();
+
+		//
+		// Create a AffordanceService instance
+		//
+		AffordanceService affordanceService = new AffordanceService(
+				getServletContext());
+		Message msg = affordanceService.insertActivity(text);
+
+		MetadataRenderer.render(out, msg);
+		out.flush();
+		out.close();
 	}
 }
