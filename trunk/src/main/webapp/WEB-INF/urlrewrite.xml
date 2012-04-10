@@ -72,14 +72,32 @@
 		<from>/api/activity/widgets/([0-9]+)$</from>
 		<to>/api/activity?id=$1&amp;operation=getWidgets</to>
 	</rule>
+	<!--
+		generic rule that matches /api/activity/popular and /api/activity/all
+		splitting it to avoid conflict with get activity by text (3rd rule below)
 	<rule>
 		<from>/api/activity/([a-z]+)$</from>
 		<to>/api/activity?operation=$1</to>
 	</rule>
+-->
+	<rule>
+		<from>/api/activity/popular$</from>
+		<to>/api/activity?operation=popular</to>
+	</rule>
+	<rule>
+		<from>/api/activity/all$</from>
+		<to>/api/activity?operation=all</to>
+	</rule>
+	<rule>
+		<from>/api/activity/widgets/([0-9a-z]+)$</from>
+		<to>/api/activity?text=$1&amp;operation=getWidgets</to>
+	</rule>
+	<!-- PUT method-->
 	<rule>
 		<from>/api/activity/([0-9a-z]+)$</from>
 		<to>/api/activity?text=$1</to>
 	</rule>
+
 	<!--
 	entity USER
 	-->
