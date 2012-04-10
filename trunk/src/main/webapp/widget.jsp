@@ -53,6 +53,9 @@
 						<li><a href="#"><i class="icon-download"></i>Download</a></li>
 						<li><a href="#"><i class="icon-tag"></i>Tag</a></li>
 						<li><a href="#"><i class="icon-comment"></i>Review</a></li>
+						<shiro:hasRole name="admin">
+							<li><a href="#"><i class="icon-remove"></i>Delete widget</a></li>
+						</shiro:hasRole>
 					</ul>
 				</div>
 				<!--/.well -->

@@ -16,6 +16,9 @@
 
 package uk.ac.edukapp.security;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -29,19 +32,24 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.model.Userrole;
+import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.service.UserAccountService;
 
 /**
  * Edukapp security realm implementation
+ * 
  * @author scottw
- *
+ * 
  */
 public class SecurityRealm extends AuthorizingRealm {
-	
+
 	private UserAccountService userAccountService;
-	
+	static Logger logger = Logger.getLogger(SecurityRealm.class.getName());
+
 	public SecurityRealm() {
-		setName("SecurityRealm"); // This name must match the name in the User class's getPrincipals() method
+		setName("SecurityRealm"); // This name must match the name in the User
+									// class's getPrincipals() method
 		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
 		matcher.setHashAlgorithmName("MD5");
 		this.setCredentialsMatcher(matcher);
@@ -50,10 +58,12 @@ public class SecurityRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		Useraccount user = userAccountService.getUserAccount(token.getUsername());
+		Useraccount user = userAccountService.getUserAccount(token
+				.getUsername());
 		if (user != null) {
 			ByteSource salt = ByteSource.Util.bytes(user.getSalt());
-			return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
+			return new SimpleAuthenticationInfo(user, user.getPassword(), salt,
+					getName());
 		} else {
 			return null;
 		}
@@ -61,8 +71,10 @@ public class SecurityRealm extends AuthorizingRealm {
 
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
-		Long userId = (Long) principals.fromRealm(getName()).iterator().next();
-		Useraccount user = userAccountService.getUserAccount(userId);
+		// Long userId = (Long)
+		// principals.fromRealm(getName()).iterator().next();
+		// Useraccount user = userAccountService.getUserAccount(userId);
+		Useraccount user = (Useraccount) principals.iterator().next();
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			// FIXME add roles
@@ -70,6 +82,21 @@ public class SecurityRealm extends AuthorizingRealm {
 			// info.addRole(role.getName());
 			// info.addStringPermissions(role.getPermissions());
 			// }
+			List<Userrole> roles = user.getRoles();
+			logger.info("id:" + user.getId());
+			logger.info("uname:" + user.getUsername());
+			logger.info("email:" + user.getEmail());
+			if (roles == null) {
+				logger.info("roles is null");
+			} else if (roles.size() == 0) {
+				logger.info("has no roles");
+			} else {
+				for (Userrole role : roles) {
+					logger.info("role:" + role.getRolename());
+					info.addRole(role.getRolename());
+					// info.addStringPermissions(role.getPermissions());
+				}
+			}
 			return info;
 		} else {
 			return null;
@@ -85,7 +112,8 @@ public class SecurityRealm extends AuthorizingRealm {
 	}
 
 	/**
-	 * @param userAccountService the userAccountService to set
+	 * @param userAccountService
+	 *            the userAccountService to set
 	 */
 	public void setUserAccountService(UserAccountService userAccountService) {
 		this.userAccountService = userAccountService;

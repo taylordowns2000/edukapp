@@ -15,6 +15,7 @@
 	<class>uk.ac.edukapp.model.Accountinfo</class>
 	<class>uk.ac.edukapp.model.WidgetDescription</class>
 	<class>uk.ac.edukapp.model.LtiProvider</class>
+	<class>uk.ac.edukapp.model.Userrole</class>
 		<!--
 		<class>put your classes here</class>
 		-->
