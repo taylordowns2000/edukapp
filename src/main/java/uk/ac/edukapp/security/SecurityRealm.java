@@ -74,7 +74,19 @@ public class SecurityRealm extends AuthorizingRealm {
 		// Long userId = (Long)
 		// principals.fromRealm(getName()).iterator().next();
 		// Useraccount user = userAccountService.getUserAccount(userId);
-		Useraccount user = (Useraccount) principals.iterator().next();
+		Object u = principals.iterator().next();
+		Useraccount user = null;
+		if (u instanceof Useraccount) {
+			// re-retrieve the useraccount instance as the one enclosed in
+			// principal
+			// does not carry roles in it
+			logger.info("user is a user");
+			int userid = ((Useraccount) u).getId();
+			user = userAccountService.getUserAccount(userid);
+		} else {
+			logger.info("user is not user");
+		}
+
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			// FIXME add roles

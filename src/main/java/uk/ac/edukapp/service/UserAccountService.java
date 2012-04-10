@@ -23,33 +23,44 @@ import uk.ac.edukapp.model.Useraccount;
 
 /**
  * Service for obtaining user accounts
+ * 
  * @author scottw
- *
+ * 
  */
 public class UserAccountService extends AbstractService {
-	
-	public UserAccountService(ServletContext servletContext){
+
+	public UserAccountService(ServletContext servletContext) {
 		super(servletContext);
 	}
 
-	public Useraccount getUserAccount(String username){
+	public Useraccount getUserAccount(String username) {
 		Useraccount userAccount = null;
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-	    Query q = entityManager.createQuery("SELECT u " + "FROM Useraccount u WHERE u.username=?1");
-	    q.setParameter(1, username);
-	    try {
-	    	userAccount = (Useraccount) q.getSingleResult();
-	      } catch (javax.persistence.NoResultException e) {
-	        return null;
-	      }
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		Query q = entityManager.createQuery("SELECT u "
+				+ "FROM Useraccount u WHERE u.username=?1");
+		q.setParameter(1, username);
+		try {
+			userAccount = (Useraccount) q.getSingleResult();
+		} catch (javax.persistence.NoResultException e) {
+			return null;
+		}
 		entityManager.close();
 		return userAccount;
 	}
-	
 
-	public Useraccount getUserAccount(Long userId){
+	public Useraccount getUserAccount(Long userId) {
 		Useraccount userAccount = null;
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		userAccount = entityManager.find(Useraccount.class, userId);
+		return userAccount;
+	}
+
+	public Useraccount getUserAccount(int userId) {
+		Useraccount userAccount = null;
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
 		userAccount = entityManager.find(Useraccount.class, userId);
 		return userAccount;
 	}
