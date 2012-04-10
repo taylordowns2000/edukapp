@@ -55,22 +55,27 @@ DELETE
 
 ** Tag
 --------------------------------------------------
-GET /api/tag/{tag id}
-GET /api/tag/{tag id}/widgets
-GET /api/tag/popular
 
-GET /api/tag/popular						|	/api/tag/?id=popular				| yes
-GET /api/tag/all							|	/api/tag/?id=all					| no
-GET /api/tag/{$id}?namesonly				|	/api/tag/?id={$id}				| yes
-GET /api/tag/{$id}			                |	/api/tag/{$id}			| yes
+GET
 
-POST /api/tag/{tag text}								|   /api/tag/{text}					| yes
+/api/tag/{tag id}  /*tag metadata only */
+/api/tag/{tag id}/widgets  /* widgets matching tag */
+/api/tag/popular /*popular tags - metadata only */
+/api/tag/all /* all tags - metadata only */		 
 
-PUT /api/tag/{tag id} {new text}				|	/api/tag/{id}/{text}
-PUT /api/tag/{oldText}{new text}		|	/api/tag/{text}/{text}
+POST
 
-DELETE /api/tag?id={tag id}								|	/api/tag/{id}
-DELETE /api/tag?text={text}								|	/api/tag/{text}
+/api/tag/  (tag label in request body)
+
+PUT
+
+/api/tag/{tag id}  ({new label} in request body)		
+/api/tag/{tag label} ({new label} in request body)
+
+DELETE
+
+/api/tag/{tag id}
+/api/tag/{tag label}	
 
 	
 ** Activity
