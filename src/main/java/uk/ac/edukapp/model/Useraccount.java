@@ -1,60 +1,68 @@
 package uk.ac.edukapp.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import uk.ac.edukapp.model.Userrole;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * The persistent class for the useraccount database table.
  * 
  */
 @Entity
-@Table(name="useraccount")
-public class Useraccount implements Serializable {
+@Table(name = "useraccount")
+public class Useraccount {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(nullable=false, length=100)
+	@Column(nullable = false, length = 100)
 	private String email;
 
-	@Column(nullable=false, length=256)
+	@Column(nullable = false, length = 256)
 	private String password;
 
-	@Column(nullable=false, length=20)
+	@Column(nullable = false, length = 20)
 	private String username;
-	
-	@Column(nullable=false, length=256)
-  private String salt;
-	
-	@Column(nullable=false, length=256)
-  private String token;
+
+	@Column(nullable = false, length = 256)
+	private String salt;
+
+	@Column(nullable = false, length = 256)
+	private String token;
+
+	// bi-directional many-to-many association to Userrole
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "useraccount_roles", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "role_id", nullable = false) })
+	private List<Userrole> roles;
 
 	@JsonIgnore
-    public String getSalt() {
-    return salt;
-  }
+	public String getSalt() {
+		return salt;
+	}
 
-  public void setSalt(String salt) {
-    this.salt = salt;
-  }
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 
-  @JsonIgnore
-  public String getToken() {
-    return token;
-  }
+	@JsonIgnore
+	public String getToken() {
+		return token;
+	}
 
-  public void setToken(String token) {
-    this.token = token;
-  }
+	public void setToken(String token) {
+		this.token = token;
+	}
 
-    public Useraccount() {
-    }
+	public Useraccount() {
+	}
 
 	@JsonIgnore
 	public int getId() {
@@ -91,4 +99,11 @@ public class Useraccount implements Serializable {
 		this.username = username;
 	}
 
+	public List<Userrole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Userrole> roles) {
+		this.roles = roles;
+	}
 }
