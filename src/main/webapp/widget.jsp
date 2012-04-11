@@ -99,16 +99,13 @@
 						<a id="edit-widget-information" href="#">edit</a>
 						<h6>Tagged as:</h6>
 						<div id="widget-tags"></div>
-						<a id="add-tag" href="#">add tag</a>
+						<a id="add-tag">add tag</a>
 
 						<h6>Useful for:</h6>
 						<div id="widget-useful-for">
-							<a href="#" class="btn btn-warning"><i
-								class="icon-ok-circle icon-white"></i> collaboration</a> <a href="#"
-								class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>
-								learning</a> <a href="#" class="btn btn-warning"><i
-								class="icon-ok-circle icon-white"></i> fun</a>
+							
 						</div>
+						<a id="add-affordance">add affordance</a>
 				</div>
 				
 				<div class="row-fluid">				

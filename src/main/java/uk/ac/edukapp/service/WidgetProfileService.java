@@ -209,8 +209,8 @@ public class WidgetProfileService extends AbstractService {
 				widgetProfile = new Widgetprofile();
 				widgetProfile.setName(widget.getTitle());
 				widgetProfile.setWidId(widget.getUri());
-				entityManager.persist(widgetProfile);				
-				
+				entityManager.persist(widgetProfile);
+
 				//
 				// Create the widget description
 				//
@@ -218,13 +218,11 @@ public class WidgetProfileService extends AbstractService {
 				widgetDescription.setWid_id(widgetProfile.getId());
 				widgetDescription.setDescription(widget.getDescription());
 				widgetProfile.setDescription(widgetDescription);
-				
+
 			}
 
 			widgetProfiles.add(widgetProfile);
 		}
-		
-		
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
@@ -300,8 +298,8 @@ public class WidgetProfileService extends AbstractService {
 	private boolean isNumeric(String str) {
 		return str.matches("-?\\d+(.\\d+)?");
 	}
-	
-	public Message addTag(Widgetprofile widgetProfile, String newTag){
+
+	public Message addTag(Widgetprofile widgetProfile, String newTag) {
 		if (isNumeric(newTag)) {
 			return addTagIdToWidget(widgetProfile, newTag);
 		} else {
@@ -324,12 +322,12 @@ public class WidgetProfileService extends AbstractService {
 			msg.setMessage("no widget found with id:" + id);
 			return msg;
 		}
-		
+
 		return addTag(widget, newTag);
 	}
 
 	public Message updateDescription(String id, String text) {
-		
+
 		Widgetprofile widget = null;
 
 		// check whether id is numeric
@@ -350,13 +348,14 @@ public class WidgetProfileService extends AbstractService {
 		msg.setId("" + widget.getId());
 		return msg;
 	}
-	
+
 	/**
 	 * Update the description associated with a widget profile
+	 * 
 	 * @param widgetProfile
 	 * @param text
 	 */
-	private void updateDescription(Widgetprofile widgetProfile, String text){
+	private void updateDescription(Widgetprofile widgetProfile, String text) {
 		WidgetDescription widget_desc = widgetProfile.getDescription();
 		if (widget_desc == null) {
 			widget_desc = new WidgetDescription();
@@ -365,10 +364,11 @@ public class WidgetProfileService extends AbstractService {
 		widget_desc.setDescription(text);
 		widgetProfile.setDescription(widget_desc);
 
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(entityManager.merge(widgetProfile));
-		entityManager.getTransaction().commit();	
+		entityManager.getTransaction().commit();
 	}
 
 	public Message addComment(String id, String text, String userid) {
@@ -423,5 +423,48 @@ public class WidgetProfileService extends AbstractService {
 		msg.setMessage("OK");
 		return msg;
 
+	}
+
+	public Message addActivity(Widgetprofile widgetProfile, String body) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+
+		entityManager.getTransaction().begin();
+
+		// check if activity exists
+		int activity_id = Integer.parseInt(body);
+		Activity activity = entityManager.find(Activity.class, activity_id);
+
+		if (activity == null) {
+			Message msg = new Message();
+			msg.setMessage("error - activity with id:" + activity_id
+					+ " does not exist");
+			return msg;
+		}
+
+		List<Activity> widget_activities = widgetProfile.getActivities();
+
+		boolean contains = false;
+		for (Activity a : widget_activities) {
+			if (a.getActivitytext().equals(activity.getActivitytext())
+					&& (a.getId() == activity.getId())) {
+				contains = true;
+			}
+		}
+
+		if (contains) {
+			Message msg = new Message();
+			msg.setMessage("Widget:" + widgetProfile.getId()
+					+ " already has activity:" + activity.getActivitytext());
+			return msg;
+		} else {
+			widget_activities.add(activity);
+		}
+
+		entityManager.persist(entityManager.merge(widgetProfile));
+		entityManager.getTransaction().commit();
+		Message msg = new Message();
+		msg.setMessage("OK");
+		return msg;
 	}
 }
