@@ -19,7 +19,7 @@ function () {
             var newText = $('#widget-description textarea').val();
             $.ajax({
                 type: 'PUT',
-            	dataType: 'json',
+                dataType: 'json',
                 url: "/api/widget/" + widget_id + "/description",
                 data: newText,
                 cache: false,
@@ -46,11 +46,16 @@ function () {
     //
     $('#add-tag').click(function () {
         $('#widget-tags').append('<form id="add-tag-form" action="javascript:function(){return false;}" class="well form-inline"><input type="text" class="input-small">' + '<button type="submit" class="btn">add</button>' + '</form>');
+        // console.log('form added');
+        // var new_position = $('#add-tag-form').offset();
+        // console.log(new_position);
+       //window.scrollTo(new_position.left,new_position.top);
+        $('#add-tag-form input').focus();
         $('#add-tag-form').submit(function () {
             var newTag = $('#add-tag-form input[type="text"]').val();
             $.ajax({
                 type: 'POST',
-            	dataType: 'json',
+                dataType: 'json',
                 url: "/api/widget/" + widget_id +"/tag",
                 data: newTag,
                 cache: false,
@@ -69,8 +74,127 @@ function () {
                 }
             });
         });
-        console.log("done");
+        //console.log("done");
     });
+
+
+    //
+    // Add affordance event handler
+    //
+    $('#add-affordance').click(function () {
+
+
+        
+
+        //store in an array all current affordances of this widget profile
+        //get this from dom elements
+        var widget_affordances = [];
+        $('#widget-useful-for a').each(function(){
+            widget_affordances.push($(this).text());
+        });
+        console.log(widget_affordances);
+        //show all available affordances
+        $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: "/api/activity?operation=all",
+                cache: false,
+                beforeSend: function(){
+                    //implement a loading icon here
+                },
+                success: function (resp) {
+                    console.log(resp); 
+                    $('#widget-useful-for').append('<form id="select-affordances-form" action="javascript:function(){return false;}" class="well form-inline"></form>');
+        
+                    for (var index in resp){
+                        var affordance = resp[index];
+                        if ($.inArray(affordance.activitytext,widget_affordances)<0){
+                            //if not in the array show it
+                            var affordance_element = document.createElement("a");
+                            var affordance_icon = document.createElement("i");
+                            var affordance_id = affordance.id;
+                            $(affordance_icon).attr("class", "icon-ok-circle icon-white available-affordance");
+                            $(affordance_element).attr("class", "btn btn-warning disabled");
+                            $(affordance_element).text(affordance.activitytext);
+                            $(affordance_element).attr("href", "/activity/" + affordance_id);
+                            $(affordance_element).attr("id", "add-activity-" + affordance_id);
+                            $(affordance_element).prepend(affordance_icon);
+
+
+                            var insert_element = document.createElement("a");
+                            $(insert_element).attr("class","btn-mini btn-warning insert-activity-element");
+                            $(insert_element).attr("href","#add-activity-"+affordance_id);
+                            $(insert_element).attr("id","add-activity-insert-icon-"+affordance_id);
+                            var insert_element_icon = document.createElement("i");
+                            $(insert_element_icon).attr("class", "icon-plus icon-white");                           
+                            $(insert_element).prepend(insert_element_icon);
+                            
+                            $('#select-affordances-form').append(affordance_element);
+                            $('#select-affordances-form').append(insert_element).append(" ");
+                            
+                            
+                        }                  
+                    }  
+
+                    //add click handlers in the affordance list elements
+                    $('a.insert-activity-element').click(function(e){
+                        //e.preventDefault();
+                        console.log("aff clicked");
+                        var insert_element = $(this);
+                        var affordance_id = $(this).attr("id").split('add-activity-insert-icon-')[1];
+                                    
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            url: "/api/widget/" + widget_id +"/activity",
+                            data: affordance_id,
+                            cache: false,
+                            success: function (resp) {
+                                //console.log(resp);
+                                if (resp['message']=="OK") {
+                                    var affordance_element = $('#add-activity-'+affordance_id);
+                                    $(insert_element).remove();
+                                    $(affordance_element).remove();
+
+
+                                    var affordance = document.createElement("a");
+                                    var affordance_icon = document.createElement("i");
+                                    $(affordance_icon).attr("class", "icon-ok-circle icon-white");
+                                    $(affordance).attr("class", "btn btn-warning");
+                                    $(affordance).text($(affordance_element).text());
+                                    $(affordance).attr("href", "/activity/" + affordance_id);
+                                    $(affordance).prepend(affordance_icon);
+                                    $("#widget-useful-for").prepend(affordance).prepend(" ");    
+                                } else {
+                                    $('#widget-tags').append("1 - there was an error in your addition");
+                                    console.log('activity addition error:');
+                                    console.log(resp);
+                                }
+                            },
+                            error: function () {
+                                $('#widget-tags').append("2 - there was an error in your addition");
+                                console.log('activity addition - ajax error');
+                            }
+                        });
+
+
+
+
+                        
+
+
+
+                    });
+                },
+                error: function () {
+                    $('#widget-useful-for').append("There was an error while retrieving available affordances");
+                }
+            });
+
+    });
+
+
+
     
     //
     // add write a review handler
@@ -90,8 +214,8 @@ function () {
             
             $.ajax({
                 type: 'POST',
-            	dataType: 'json',
-            	url:"/api/widget/"+widget_id+"/comment",
+                dataType: 'json',
+                url:"/api/widget/"+widget_id+"/comment",
                 data: JSON.stringify(review),
                 cache: false,
                 beforeSend: function(x) {
@@ -101,7 +225,7 @@ function () {
                 },
                 success: function (resp) {
                     if (resp['message'] === "OK") {
-                        $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '	<div class="span1">' + '		<img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '		<h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '	</div>' + '	<div class="span11">' + '		<div class="review-item-info-wrapper"></div>' + '		<p class="review-content-text">' + reviewText + '</p>' + '		<h6>just now</h6>' + '	</div>' + '</div>' + '</div>');
+                        $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '  <div class="span1">' + '        <img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '        <h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '  </div>' + ' <div class="span11">' + '       <div class="review-item-info-wrapper"></div>' + '       <p class="review-content-text">' + reviewText + '</p>' + '      <h6>just now</h6>' + '  </div>' + '</div>' + '</div>');
                         $('#write-a-review').remove();
                     } else {
                         console.log('error');
@@ -177,11 +301,30 @@ function () {
         }
         
         //
+        // Show activities
+        //
+        if (data.widgetProfile.activities) {
+            var affordances = data.widgetProfile.activities;
+            for (var i = 0; i < affordances.length; i++) {
+                var affordance = document.createElement("a");
+                var affordance_icon = document.createElement("i");
+                var affordance_id = affordances[i].id;
+                $(affordance_icon).attr("class", "icon-ok-circle icon-white");
+                $(affordance).attr("class", "btn btn-warning");
+                $(affordance).text(affordances[i].activitytext);
+                $(affordance).attr("href", "/activity/" + affordance_id);
+                $(affordance).prepend(affordance_icon);
+                $("#widget-useful-for").append(affordance).append(" ");
+            }
+        }
+
+
+        //
         // Load similar widget profiles
         //
         $.getJSON('/api/similar?uri=' + widgetUri, function (similar) {
             for (var i = 0; i < similar.length; i++) {
-                $("<li class='span2'>" + '<div class="thumbnail">' + '	<a href="/widget/' + similar[i].id + '">' + similar[i].name + '</a>' + '	<div class="caption">' + '		<h5>' + similar[i].description + '</h5>' + '		<p></p>' + '		<p><a href="widget.jsp?id=' + similar[i].id + '" class="btn btn-primary">Read more >></a></p>' + '	</div>' + '</div>' + '</li>').hide().appendTo("#related-widgets").fadeIn("slow");
+                $("<li class='span2'>" + '<div class="thumbnail">' + '  <a href="/widget/' + similar[i].id + '">' + similar[i].name + '</a>' + '    <div class="caption">' + '      <h5>' + similar[i].description + '</h5>' + '        <p></p>' + '        <p><a href="widget.jsp?id=' + similar[i].id + '" class="btn btn-primary">Read more >></a></p>' + '  </div>' + '</div>' + '</li>').hide().appendTo("#related-widgets").fadeIn("slow");
             }
         });
         
