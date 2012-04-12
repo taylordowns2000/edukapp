@@ -363,47 +363,4 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.persist(entityManager.merge(widgetProfile));
 		entityManager.getTransaction().commit();
 	}
-
-	public Message addActivity(Widgetprofile widgetProfile, String body) {
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-
-		entityManager.getTransaction().begin();
-
-		// check if activity exists
-		int activity_id = Integer.parseInt(body);
-		Activity activity = entityManager.find(Activity.class, activity_id);
-
-		if (activity == null) {
-			Message msg = new Message();
-			msg.setMessage("error - activity with id:" + activity_id
-					+ " does not exist");
-			return msg;
-		}
-
-		List<Activity> widget_activities = widgetProfile.getActivities();
-
-		boolean contains = false;
-		for (Activity a : widget_activities) {
-			if (a.getActivitytext().equals(activity.getActivitytext())
-					&& (a.getId() == activity.getId())) {
-				contains = true;
-			}
-		}
-
-		if (contains) {
-			Message msg = new Message();
-			msg.setMessage("Widget:" + widgetProfile.getId()
-					+ " already has activity:" + activity.getActivitytext());
-			return msg;
-		} else {
-			widget_activities.add(activity);
-		}
-
-		entityManager.persist(entityManager.merge(widgetProfile));
-		entityManager.getTransaction().commit();
-		Message msg = new Message();
-		msg.setMessage("OK");
-		return msg;
-	}
 }
