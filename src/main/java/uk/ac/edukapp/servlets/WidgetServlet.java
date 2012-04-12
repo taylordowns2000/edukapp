@@ -25,14 +25,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.shiro.SecurityUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.renderer.Renderer;
 import uk.ac.edukapp.service.ActivityService;
+import uk.ac.edukapp.service.UserReviewService;
 import uk.ac.edukapp.service.WidgetProfileService;
 import uk.ac.edukapp.util.Message;
 
@@ -116,15 +119,23 @@ public class WidgetServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		//
+		// POST always requires a valid user login
+		//
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject().getPrincipal();
+		if (userAccount == null){
+			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
+		}
 
 		String body = IOUtils.toString(req.getInputStream());
 		if (body == null || body.trim().length() == 0) {
 			resp.sendError(400, "no tag specified");
 			return;
 		}
-
-		System.out.println("Message body =" + body);
-
+		
+		Message message = new Message();
+		
 		String part = req.getParameter("part");
 
 		//
@@ -144,25 +155,35 @@ public class WidgetServlet extends HttpServlet {
 			msg = widgetProfileService.addTag(widgetProfile, body);
 			MetadataRenderer.render(out, msg);
 		} else if (part.equals("comment")) {
-			//
-			// TODO
-			//
-			// 1. validate the userId
-			// 2. check that the current shiro principal matches the user id
-			// 3. Map the JSON onto an actual Comment bean or DTO
-			Message msg = null;
+
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode json = mapper.readTree(body);
 			String userId = json.findValue("userId").asText();
 			String text = json.findValue("comment").asText();
 
 			//
-			// TODO Create a direct method using the profile and a new comment
-			// object
+			// Check that the current logged in user is the same principal as
+			// the comment owner
 			//
-			msg = widgetProfileService.addComment(
-					String.valueOf(widgetProfile.getId()), text, userId);
-			MetadataRenderer.render(out, msg);
+			if (userAccount.getId() == Integer.parseInt(userId)){
+				
+				// TODO Map the JSON onto an actual Comment bean or DTO
+				
+				UserReviewService userReviewService = new UserReviewService(getServletContext());
+				
+				if (userReviewService.publishUserReview(text, userAccount, widgetProfile)){
+					message.setMessage("OK");
+					resp.setStatus(201);
+				} else {
+					message.setMessage("Problem saving review");
+					resp.setStatus(500);
+				}
+				MetadataRenderer.render(out, message);				
+			} else {
+				message.setMessage("You are not authorized to create a review");
+				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+
 		} else if (part.equals("activity")) {
 			Message msg = null;
 			msg = widgetProfileService.addActivity(widgetProfile, body);
