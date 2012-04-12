@@ -1,25 +1,18 @@
 package uk.ac.edukapp.service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
-import uk.ac.edukapp.exceptions.EntityNotFound;
-import uk.ac.edukapp.exceptions.WidgetUpdateException;
 import uk.ac.edukapp.model.Activity;
-import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Tag;
-import uk.ac.edukapp.model.Useraccount;
-import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.WidgetDescription;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.SearchResults;
@@ -369,60 +362,6 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entityManager.merge(widgetProfile));
 		entityManager.getTransaction().commit();
-	}
-
-	public Message addComment(String id, String text, String userid) {
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-		Useraccount user = entityManager.find(Useraccount.class, userid);
-		Widgetprofile widget = entityManager.find(Widgetprofile.class, id);
-
-		if (user == null) {
-			Message msg = new Message();
-			msg.setMessage("user is null");
-			return msg;
-		}
-		if (widget == null) {
-			Message msg = new Message();
-			msg.setMessage("widget is null");
-			return msg;
-		}
-
-		Comment c = new Comment();
-		c.setCommenttext(text);
-		try {
-			entityManager.getTransaction().begin();
-			entityManager.persist(c);
-			entityManager.getTransaction().commit();
-		} catch (Exception e) {
-			Message msg = new Message();
-			msg.setMessage("error");
-			return msg;
-		}
-
-		Userreview ur = new Userreview();
-		ur.setComment(c);
-		byte b = 0;
-		ur.setRating(b);
-		ur.setUserAccount(user);
-		ur.setWidgetProfile(widget);
-		java.util.Date date = new java.util.Date();
-		Timestamp now = new Timestamp(date.getTime());
-		ur.setTime(now);
-		try {
-			entityManager.getTransaction().begin();
-			entityManager.persist(ur);
-			entityManager.getTransaction().commit();
-		} catch (Exception e) {
-			Message msg = new Message();
-			msg.setMessage("error");
-			return msg;
-		}
-
-		Message msg = new Message();
-		msg.setMessage("OK");
-		return msg;
-
 	}
 
 	public Message addActivity(Widgetprofile widgetProfile, String body) {
