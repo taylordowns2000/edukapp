@@ -96,16 +96,16 @@
 							recently with desktop publishing software like Aldus PageMaker
 							including versions of Lorem Ipsum.
 						</dl>
-						<a id="edit-widget-information" href="#">edit</a>
+						<shiro:authenticated><a id="edit-widget-information" href="#">edit</a></shiro:authenticated>
 						<h6>Tagged as:</h6>
 						<div id="widget-tags"></div>
-						<a id="add-tag">add tag</a>
+						<shiro:authenticated><a id="add-tag">add tag</a></shiro:authenticated>
 
 						<h6>Useful for:</h6>
 						<div id="widget-useful-for">
 							
 						</div>
-						<a id="add-affordance">add affordance</a>
+						<shiro:authenticated><a id="add-affordance">add affordance</a></shiro:authenticated>
 				</div>
 				
 				<div class="row-fluid">				
@@ -116,9 +116,9 @@
 				<div class="row-fluid">
 					<div id="user-reviews">
 						<h6>User reviews</h6>
-						<p id="write-a-review-anchor">
+						<shiro:authenticated><p id="write-a-review-anchor">
 							<a href="#write-a-review">Write a review</a>
-						</p>
+						</p></shiro:authenticated>
 						<div id="user-reviews-list"></div>
 					</div>
 					<div class="span4">&nbsp;</div>
