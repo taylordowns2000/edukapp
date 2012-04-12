@@ -9,7 +9,7 @@
 				    <shiro:authenticated>
 				        <ul class="nav">
 				          <div id="logged-in-user-id" style="display:none"><shiro:principal property="id"/></div>
-						  <li><a href="/user/<shiro:principal property="id"/>"><i class="icon icon-user icon-white"></i><shiro:principal property="username"/></a></li>
+						  <li><a href="/user/<shiro:principal property="id"/>"><i class="icon icon-user icon-white"></i><span id="logged-in-user-name"><shiro:principal property="username"/></span></a></li>
 						  <li><a style="margin-left:5px;" href="/logout">Log out</a></li>
 				        </ul>
 					</shiro:authenticated>
