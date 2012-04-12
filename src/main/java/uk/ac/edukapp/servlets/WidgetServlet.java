@@ -151,9 +151,7 @@ public class WidgetServlet extends HttpServlet {
 				getServletContext());
 
 		if (part.equals("tag")) {
-			Message msg = null;
-			msg = widgetProfileService.addTag(widgetProfile, body);
-			MetadataRenderer.render(out, msg);
+			message = widgetProfileService.addTag(widgetProfile, body);
 		} else if (part.equals("comment")) {
 
 			ObjectMapper mapper = new ObjectMapper();
@@ -173,22 +171,31 @@ public class WidgetServlet extends HttpServlet {
 				
 				if (userReviewService.publishUserReview(text, userAccount, widgetProfile)){
 					message.setMessage("OK");
-					resp.setStatus(201);
+					resp.setStatus(HttpServletResponse.SC_CREATED);
 				} else {
 					message.setMessage("Problem saving review");
-					resp.setStatus(500);
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				}
-				MetadataRenderer.render(out, message);				
 			} else {
 				message.setMessage("You are not authorized to create a review");
 				resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 
 		} else if (part.equals("activity")) {
-			Message msg = null;
-			msg = widgetProfileService.addActivity(widgetProfile, body);
-			MetadataRenderer.render(out, msg);
+			
+			ActivityService activityService = new ActivityService(getServletContext());
+			
+			if (activityService.addActivity(widgetProfile, body)){
+				message.setMessage("OK");
+				resp.setStatus(HttpServletResponse.SC_CREATED);
+			} else {
+				message.setMessage("Problem saving activity");
+				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			}
 		}
+		
+		MetadataRenderer.render(out, message);
 		out.flush();
 		out.close();
 	}
