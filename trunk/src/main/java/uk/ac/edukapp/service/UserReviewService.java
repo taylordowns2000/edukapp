@@ -16,34 +16,24 @@
 
 package uk.ac.edukapp.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 
 public class UserReviewService extends AbstractService {
 	
+	private final byte DEFAULT_RATING = 0;
+	
 	public UserReviewService(ServletContext ctx){
 		super(ctx);
-	}
-	
-	public void publishUserReview(Useraccount userAccount, byte rating, Widgetprofile widgetProfile){
-		Userreview userReview = new Userreview();
-		userReview.setRating(rating);
-		userReview.setWidgetProfile(widgetProfile);
-		userReview.setUserAccount(userAccount);
-		
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-		entityManager.getTransaction().begin();
-		entityManager.persist(userReview);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -54,6 +44,28 @@ public class UserReviewService extends AbstractService {
 		List<Userreview> reviews = (List<Userreview>)wpQuery.getResultList();
 		entityManager.close();
 		return reviews;
+	}
+	
+	public boolean publishUserReview(String text, Useraccount userAccount, Widgetprofile widgetProfile){
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		//
+		// Create the review
+		//
+		Userreview userReview = new Userreview();
+		userReview.setUserAccount(userAccount);
+		userReview.setWidgetProfile(widgetProfile);
+		userReview.setRating(DEFAULT_RATING);
+		userReview.setTime(new Date());
+		entityManager.persist(userReview);
+		Comment comment = new Comment();
+		comment.setCommenttext(text);
+		entityManager.persist(comment);		
+		userReview.setComment(comment);
+		
+		entityManager.getTransaction().commit();
+		return true;
 	}
 
 }
