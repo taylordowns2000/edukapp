@@ -18,6 +18,7 @@ package uk.ac.edukapp.servlets;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +31,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
@@ -95,7 +97,9 @@ public class WidgetServlet extends HttpServlet {
 		} else if (part.equals("description")) {
 
 		} else if (part.equals("comments")) {
-
+			UserReviewService userReviewService = new UserReviewService(getServletContext());
+			List<Userreview> reviews = userReviewService.getUserReviewsForWidgetProfile(widgetProfile); 
+			MetadataRenderer.render(out, reviews);
 		} else if (part.equals("ratings")) {
 
 		} else if (part.equals("rating")) {
@@ -104,6 +108,10 @@ public class WidgetServlet extends HttpServlet {
 
 		} else if (part.equals("activity")) {
 
+		} else if (part.equals("similar")) {
+			WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
+			List<Widgetprofile> widgetProfiles = widgetProfileService.findSimilarWidgetsProfiles(widgetProfile, "en");
+			MetadataRenderer.render(out, widgetProfiles);
 		}
 		out.flush();
 		out.close();

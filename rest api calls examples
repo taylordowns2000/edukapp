@@ -22,7 +22,8 @@ GET
 /api/widget/{$id}/tags								
 /api/widget/{$id}/activities					
 /api/widget/{$id}/description 						
-/api/widget/{$id}/comments						
+/api/widget/{$id}/comments	
+/api/widget/{$id}/similar /* return similar widgets */						
 /api/widget/{$id}/ratings   /*full list*/  			
 /api/widget/{$id}/rating    /*average rating*/ 		
 /api/widget/{$id}/stats     /*instantiation stats*/ 
