@@ -16,7 +16,7 @@ function renderWidget(id, icon, name, description){
     '			<h5>'+name+'</h5>'+
     '			<p>'+description+'</p>'+
     '			<p>'+
-    '				<a href="/widget/'+id+'" class="btn btn-primary">Read more >>></a>'+
+    '				<a href="/widget/'+id+'" class="btn btn-primary btn-mini">Read more &raquo;</a>'+
     '			</p>'+
     '		</div>'+
     '	</div>'+
