@@ -9,6 +9,7 @@
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
+<script src="/scripts/widget_partial.js"></script>
 <script src="/scripts/tag.js"></script>
 </head>
 <body>
