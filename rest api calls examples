@@ -9,74 +9,72 @@ GET /api/widget?id={widget id}
 GET /api/widget?uri={widget uri}
 
 ** Widget
--------------------------------------------------
-CLEAN URL 												urlrewriteRule  implementation
+-------------------------------------------------									
 
 GET
 
-/* get full info */										
-/api/widget/{$id}																	
-/* or just the field you want */
-/api/widget/{$id}/name 							
-/api/widget/{$id}/render /*return instance url*/    
-/api/widget/{$id}/tags								
-/api/widget/{$id}/activities					
-/api/widget/{$id}/description 						
-/api/widget/{$id}/comments	
-/api/widget/{$id}/similar /* return similar widgets */						
-/api/widget/{$id}/ratings   /*full list*/  			
-/api/widget/{$id}/rating    /*average rating*/ 		
-/api/widget/{$id}/stats     /*instantiation stats*/ 
-/*chronological list of commenting/rating/updating/...  */
-/api/widget/{$id}/activity                          
+implemented?  URL pattern                   Comments							
+Y             /api/widget/{$id}             /* full info */		                             														
+N             /api/widget/{$id}/name 							                  
+N             /api/widget/{$id}/render      /*return instance url*/        
+N             /api/widget/{$id}/tags								
+N             /api/widget/{$id}/activities					
+N             /api/widget/{$id}/description 						
+Y             /api/widget/{$id}/comments	
+Y             /api/widget/{$id}/similar     /* return similar widgets */						
+N             /api/widget/{$id}/ratings     /*full list*/  			
+N             /api/widget/{$id}/rating      /*average rating*/ 		
+N             /api/widget/{$id}/stats       /*instantiation stats*/ 
+N             /api/widget/{$id}/activity    /*chronological list of commenting/rating/updating/...  */
+                          
 
 POST
 
-/api/widget/{$id}/tag  (tag id or tag text in request body) 					
-/api/widget/{$id}/activity (activity id or activity text in request body) 						
-/api/widget/{$id}/comment ({$text} and {$userid} in request body)
-/api/widget/{$id}/rating  ({$value} and {$userid} in request body) 
+Y             /api/widget/{$id}/tag  (tag id or tag text in request body) 					
+Y             /api/widget/{$id}/activity (activity id or activity text in request body) 						
+Y             /api/widget/{$id}/comment ({$text} and {$userid} in request body)
+N             /api/widget/{$id}/rating  ({$value} and {$userid} in request body) 
 
 PUT
 
-/api/widget/${id}/description/ (${text} in request body)
-/api/widget/w3c/              {$.wgt file} attached
-/api/widget/gadget/           {$.xml file} attached
-/api/widget/gadget/           ({$uri} in request body)
+Y             /api/widget/${id}/description/ (${text} in request body)
+N             /api/widget/w3c/              {$.wgt file} attached
+N             /api/widget/gadget/           {$.xml file} attached
+N             /api/widget/gadget/           ({$uri} in request body)
 
 DELETE
 
-/api/widget/${id} 								
-/api/widget/{$id}/tag/{$id} 				
-/api/widget/{$id}/tag/{$text}  
-/api/widget/{$id}/comment/{$id} 
-/api/widget/{$id}/activity/{$id}		
-/api/widget/{$id}/activity/{$text}	  
-/api/widget/{$id}/rating/{$id}  			
+N             /api/widget/${id} 								
+N             /api/widget/{$id}/tag/{$id} 				
+N             /api/widget/{$id}/tag/{$text}  
+N             /api/widget/{$id}/comment/{$id} 
+N             /api/widget/{$id}/activity/{$id}		
+N             /api/widget/{$id}/activity/{$text}	  
+N             /api/widget/{$id}/rating/{$id}  			
 
 ** Tag
 --------------------------------------------------
 
 GET
 
-/api/tag/{tag id}  /*tag metadata only */
-/api/tag/{tag id}/widgets  /* widgets matching tag */
-/api/tag/popular /*popular tags - metadata only */
-/api/tag/all /* all tags - metadata only */		 
+Y             /api/tag/{tag id}  /*tag metadata only */
+Y             /api/tag/{tag id}/widgets  /* widgets matching tag */
+Y             /api/tag/popular /*popular tags - metadata only */
+Y             /api/tag/all /* all tags - metadata only */		 
 
 POST
 
-/api/tag/  (tag label in request body)
+Y             /api/tag/  (tag label in request body)
 
 PUT
 
-/api/tag/{tag id}  ({new label} in request body)		
-/api/tag/{tag label} ({new label} in request body)
+N             /api/tag/{tag id}  ({new label} in request body)		
+N             /api/tag/{tag label} ({new label} in request body)
 
 DELETE
 
-/api/tag/{tag id}
-/api/tag/{tag label}	
+N             /api/tag/{tag id}
+N             /api/tag/{tag label}	
 
 	
 ** Activity
