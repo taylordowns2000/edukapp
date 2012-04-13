@@ -64,7 +64,7 @@ function () {
                     if (resp['message']=="OK") {
                         var tag_db_id = resp['id'];
                         $('#add-tag-form').remove();
-                        $('#widget-tags').append('<a class="btn btn-info" href="/tags/' + tag_db_id + '"><i class="icon-tag icon-white"></i>' + newTag + '</a>');
+                        $('#widget-tags').append('<a class="btn btn-info" href="/tag/' + tag_db_id + '"><i class="icon-tag icon-white"></i>' + newTag + '</a>');
                     } else {
                         $('#widget-tags').append("1 - there was an error in your addition");
                     }
