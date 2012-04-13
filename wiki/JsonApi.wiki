@@ -61,9 +61,52 @@ Get the specified widget profile
 
 Get widgets similar to the specified widget profile
 
+Example:
+
+{{{
+GET /api/widgets/4/similar
+}}}
+
+Returns:
+
+{{{
+[
+  {
+  "id":1153,
+  "name":"Natter",
+  "type":"W3C Widget",
+  "featured":0,
+  "uri":"http://www.getwookie.org/widgets/natter",
+  "tags":[],
+  "activities":[]
+  }
+]
+}}}
+
+
 = GET /api/widget/{widget id}/comments=
 
-Get comments and reviews for the specified widget profile
+Get comments and reviews for the specified widget profile.
+
+Example:
+
+{{{
+GET /api/widget/4/comments
+}}}
+
+Returns:
+
+{{{
+[
+  {
+  "id":1,
+  "text":"TEST",
+  "rating":3,
+  "time":"2012-02-14T10:20:01.000+0000",
+  "user":"scott"
+  }
+]
+}}}
 
 =GET /api/tag/{tag id}=
 
@@ -110,55 +153,14 @@ Example:
 The following methods are deprecated in favour or more RESTful patterns.
 
 
-= GET /api/similar?uri={widget uri}=
+== GET /api/similar?uri={widget uri}==
 
 Search for similar widgets to the widget identified with the uri parameter.
 
 _instead use /api/widget/{widget id}/similar_
 
-Example:
-
-{{{
-GET /api/similar?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
-}}}
-
-Returns:
-
-{{{
-[
-  {
-  "id":1153,
-  "name":"Natter",
-  "type":"W3C Widget",
-  "featured":0,
-  "uri":"http://www.getwookie.org/widgets/natter",
-  "tags":[],
-  "activities":[]
-  }
-]
-}}}
-
-= GET /api/review?uri={widget uri} =
+== GET /api/review?uri={widget uri} ==
 
 Get user reviews for the specified widget.
 
-
-Example:
-
-{{{
-GET /api/review?uri=http%3A%2F%2Fwookie.apache.org%2Fwidgets%2Fsimplechat
-}}}
-
-Returns:
-
-{{{
-[
-  {
-  "id":1,
-  "text":"TEST",
-  "rating":3,
-  "time":"2012-02-14T10:20:01.000+0000",
-  "user":"scott"
-  }
-]
-}}}
+_instead use /api/widget/{widget id}/comments
