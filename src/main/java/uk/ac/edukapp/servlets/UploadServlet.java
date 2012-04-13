@@ -3,9 +3,11 @@ package uk.ac.edukapp.servlets;
 import uk.ac.edukapp.model.*;
 import uk.ac.edukapp.renderer.WookieServerConfiguration;
 import uk.ac.edukapp.repository.SolrConnector;
+import uk.ac.edukapp.service.WidgetProfileService;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.List;
 
@@ -26,6 +28,11 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -77,31 +84,25 @@ public class UploadServlet extends HttpServlet {
 					diskFileItemFactory);
 			try {
 				// Get the multipart items as a list
+				@SuppressWarnings("unchecked")
 				List<FileItem> listFileItems = (List<FileItem>) servletFileUpload.parseRequest(request);
 				// Iterate the multipart items list
 				for (FileItem fileItemCurrent : listFileItems) {
-					// If the current item is a form field, then create a string
-					// part
 					if (!fileItemCurrent.isFormField()) {
 						// The item is a file upload, so we create a FilePart
 						FilePart filePart = new FilePart(
 								fileItemCurrent.getFieldName(), 
 								new ByteArrayPartSource( fileItemCurrent.getName(),fileItemCurrent.get())
 						);
-						if (!uploadW3CWidget(filePart)){
+						int widget_id = uploadW3CWidget(filePart);
+						if (widget_id == -1){
 							doForward(request, response, "/upload.jsp?error=3");							
+						} else {
+							doForward(request, response, "/widget/"+widget_id);
 						}
 					}
 				}
 
-			} catch (HttpException hte) {
-				log.error("Fatal protocol violation: " + hte.getMessage());
-				hte.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=4");
-			} catch (IOException ioe) {
-				log.error("Fatal transport error: " + ioe.getMessage());
-				ioe.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=5");
 			} catch (FileUploadException fue) {
 				fue.printStackTrace();
 				doForward(request, response, "/upload.jsp?error=6");
@@ -171,13 +172,12 @@ public class UploadServlet extends HttpServlet {
 	}
 	
 	/**
-	 * Upload a Widget to Wookie
+	 * Upload a Widget to Wookie and return the id of the edukapp widgetprofile 
 	 * @param filePart
-	 * @return true if the widget was successfully uploaded
-	 * @throws HttpException
-	 * @throws IOException
+	 * @return the id of the uploaded widgetprofile
+	 * @throws Exception
 	 */
-	private boolean uploadW3CWidget(FilePart filePart) throws HttpException, IOException{
+	private int uploadW3CWidget(FilePart filePart) throws Exception{
 		
 		HttpClient client = new HttpClient();
 		WookieServerConfiguration wookie = WookieServerConfiguration.getInstance();
@@ -193,14 +193,47 @@ public class UploadServlet extends HttpServlet {
 		if (status == 200 || status == 201){
 			
 			//
+			// create a profile from the returned metadata
+			//
+			Widgetprofile widgetprofile = this.createWidgetProfileFromResponse(postMethod.getResponseBodyAsStream());
+			
+			//
 			// update the index
 			//
 			SolrConnector.getInstance().index();
 			
-			return true;
+			//
+			// Return the id
+			//
+			return widgetprofile.getId();
 		} 
-		return false;
+		throw new Exception("Upload failed");
+	}
+		
+	/**
+	 * Create a widget profile object from the metadata in the Wookie POST response
+	 * @param body
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
+	private Widgetprofile createWidgetProfileFromResponse(InputStream body) throws JDOMException, IOException{
+		//
+		// parse the response and extract the widget metadata
+		//
+		SAXBuilder builder = new SAXBuilder();
+		Document document = (Document) builder.build(body);
+		Namespace XML_NS = Namespace.getNamespace("","http://www.w3.org/ns/widgets");
+		Element rootNode = document.getRootElement();
+		String uri = document.getRootElement().getAttributeValue("id");
+		String name = rootNode.getChildText("name", XML_NS);
+		String description = rootNode.getChildText("description",XML_NS);
 
+		//
+		// create and return the widget profile
+		//
+		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
+		return widgetProfileService.createWidgetProfile(uri, name, description);
 	}
 
 }
