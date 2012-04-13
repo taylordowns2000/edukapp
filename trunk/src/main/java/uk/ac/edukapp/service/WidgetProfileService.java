@@ -144,6 +144,9 @@ public class WidgetProfileService extends AbstractService {
 				.createEntityManager();
 		Widgetprofile widgetProfile = entityManager.find(Widgetprofile.class,
 				id);
+		
+		if (widgetProfile == null) return null;
+		
 		//
 		// Ensure dependent objects are available when detached
 		//

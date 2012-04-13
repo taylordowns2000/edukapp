@@ -67,8 +67,10 @@ public class WidgetServlet extends HttpServlet {
 		// Get widget resource
 		//
 		Widgetprofile widgetProfile = getWidgetProfile(req);
-		if (widgetProfile == null)
+		if (widgetProfile == null){
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
 
 		//
 		// Return full metadata
