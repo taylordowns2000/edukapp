@@ -177,8 +177,8 @@ public class LtiRenderer {
 
 	private void setPreference(WidgetInstance widgetInstance, String name, String value) {
 		try {
-			conn.setPropertyForInstance(widgetInstance, "setpersonalproperty", name, value);
-		} catch (WookieConnectorException e) {
+			conn.setPropertyForInstance(widgetInstance, false, name, value);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
