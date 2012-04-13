@@ -49,17 +49,9 @@
 </ul>				
 				</div>
 				<div class="row-fluid">
-					<div class="span6">
-					  <ol id="search_results" class="thumbnails">
-					  
-					  </ol>
-					  
-				      
+					<div class="span12">
+					  <ol id="search_results" class="thumbnails"></ol>   
 					</div>
-					<!--/span-->
-					<div class="span6">		  
-					</div>
-					<!--/span-->
 				</div>
 				<!--/row-->
 				 <%@ include file='/components/footer.jsp'%>
