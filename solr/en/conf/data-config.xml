@@ -7,13 +7,12 @@
 				processor="XPathEntityProcessor"
 				forEach="/widgets/widget"
                 transformer="TemplateTransformer">
-                <field column="title"  xpath="/widgets/widget/title" />
+                <field column="title"  xpath="/widgets/widget/name" />
                 <field column="id"   xpath="/widgets/widget/@id" />
-                <field column="uri"   xpath="/widgets/widget/@identifier" />
+                <field column="uri"   xpath="/widgets/widget/@id" />
                 <field column="version" xpath="/widgets/widget/@version"/>
-                <field column="icon"   xpath="/widgets/widget/icon" />
+                <field column="icon"   xpath="/widgets/widget/icon/@src" />
                 <field column="description"   xpath="/widgets/widget/description" />
-                <field column="category"   xpath="/widgets/widget/category" />
                 <field column="author"   xpath="/widgets/widget/author" />
                 <field column="author_email"   xpath="/widgets/widget/author/@email" />
 		</entity>
