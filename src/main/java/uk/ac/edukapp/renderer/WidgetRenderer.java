@@ -1,10 +1,14 @@
 package uk.ac.edukapp.renderer;
 
 import java.io.IOException;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.wookie.connector.framework.User;
 import org.apache.wookie.connector.framework.WidgetInstance;
 import org.apache.wookie.connector.framework.WookieConnectorException;
 import org.apache.wookie.connector.framework.WookieConnectorService;
+
+import uk.ac.edukapp.model.Useraccount;
 
 public class WidgetRenderer {
 
@@ -36,8 +40,7 @@ public class WidgetRenderer {
 		String html = "";
 		WidgetInstance widgetInstance = null;
 		try {
-			conn.setCurrentUser(new User("edukapp-front-page",
-					"edukapp-front-page"));
+			setUser();
 			widgetInstance = conn.getOrCreateInstance(uri);
 			if (widgetInstance.getHeight() != null && widgetInstance.getHeight().trim().length() > 0) height = Integer.parseInt(widgetInstance.getHeight());
 		} catch (IOException ioe) {
@@ -57,6 +60,19 @@ public class WidgetRenderer {
 
 	public String render(String uri) {
 		return render(uri, 500, 300);
+	}
+	
+	/**
+	 * Set the user - this will be the current logged-in user if available
+	 */
+	private void setUser(){
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject().getPrincipal();
+		if (userAccount != null){
+			User user = new User(String.valueOf(userAccount.getId()), userAccount.getUsername());
+			conn.setCurrentUser(user);
+		} else {
+			conn.setCurrentUser(new User("Guest","Guest"));
+		}
 	}
 
 }
