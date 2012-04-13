@@ -97,12 +97,12 @@ Returns:
 ]
 }}}
 
-= GET /api/widget?id={widget id}=
+= GET /api/widget/{widget id}=
 
 Get the specified widget profile
 
 
-= GET /api/widget?uri={widget uri}=
+= GET /api/widget/{widget uri}=
 
 Get the specified widget profile
 
