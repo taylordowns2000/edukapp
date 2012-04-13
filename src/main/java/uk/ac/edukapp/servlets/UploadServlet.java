@@ -1,11 +1,12 @@
 package uk.ac.edukapp.servlets;
 
 import uk.ac.edukapp.model.*;
+import uk.ac.edukapp.renderer.WookieServerConfiguration;
+import uk.ac.edukapp.repository.SolrConnector;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,17 +22,10 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -83,147 +77,21 @@ public class UploadServlet extends HttpServlet {
 					diskFileItemFactory);
 			try {
 				// Get the multipart items as a list
-				List<FileItem> listFileItems = (List<FileItem>) servletFileUpload
-						.parseRequest(request);
-				// Create a list to hold all of the parts
-				List<org.apache.commons.httpclient.methods.multipart.Part> listParts = new ArrayList<org.apache.commons.httpclient.methods.multipart.Part>();
+				List<FileItem> listFileItems = (List<FileItem>) servletFileUpload.parseRequest(request);
 				// Iterate the multipart items list
 				for (FileItem fileItemCurrent : listFileItems) {
 					// If the current item is a form field, then create a string
 					// part
-					if (fileItemCurrent.isFormField()) {
-						StringPart stringPart = new StringPart(
-								fileItemCurrent.getFieldName(), // The field
-																// name
-								fileItemCurrent.getString() // The field value
-						);
-						log.info("request string part:"
-								+ fileItemCurrent.getFieldName() + ":"
-								+ fileItemCurrent.getString());
-						// Add the part to the list
-						listParts.add(stringPart);
-					} else {
+					if (!fileItemCurrent.isFormField()) {
 						// The item is a file upload, so we create a FilePart
 						FilePart filePart = new FilePart(
-								fileItemCurrent.getFieldName(), // The field
-																// name
-								new ByteArrayPartSource(
-										fileItemCurrent.getName(), // The
-																	// uploaded
-																	// file name
-										fileItemCurrent.get() // The uploaded
-																// file contents
-								));
-						// Add the part to the list
-						listParts.add(filePart);
+								fileItemCurrent.getFieldName(), 
+								new ByteArrayPartSource( fileItemCurrent.getName(),fileItemCurrent.get())
+						);
+						if (!uploadW3CWidget(filePart)){
+							doForward(request, response, "/upload.jsp?error=3");							
+						}
 					}
-				}
-				PostMethod postMethod = new PostMethod(
-						"http://widgets.open.ac.uk:8080/wookie/widgets");
-				MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(
-						listParts
-								.toArray(new org.apache.commons.httpclient.methods.multipart.Part[] {}),
-						postMethod.getParams());
-
-				postMethod.setRequestEntity(multipartRequestEntity);
-
-				HttpClient client = new HttpClient();
-
-				// add the basic http authentication credentials
-				Credentials defaultcreds = new UsernamePasswordCredentials(
-						"java", "java");
-				client.getState().setCredentials(
-						new AuthScope("widgets.open.ac.uk", 8080,
-								AuthScope.ANY_REALM), defaultcreds);
-
-				int status = client.executeMethod(postMethod);
-
-				System.out.println("returns status:" + status);
-				log.info("post execution return status:" + status);
-
-				byte[] responseBody = postMethod.getResponseBody();
-				System.out.println("RESPONSE follows");
-				System.out.println(new String(responseBody));
-				log.info("RESPONSE follows");
-				log.info(new String(responseBody));
-
-				InputStream istream = postMethod.getResponseBodyAsStream();
-
-				// if (status == HttpStatus.SC_OK) {
-				// // HTTP 200 succesful upload
-				// // widget updated
-				//
-				// } else if (status == HttpStatus.SC_CREATED) {
-				// // HTTP 201 succesful upload
-				// // - new widget created
-				if (status == HttpStatus.SC_OK
-						|| status == HttpStatus.SC_CREATED) {
-
-					SAXBuilder builder = new SAXBuilder();
-					Document document = (Document) builder.build(istream);
-					Element rootNode = document.getRootElement();
-					Namespace XML_NS = Namespace.getNamespace("",
-							"http://www.w3.org/ns/widgets");
-
-					String widget_id = rootNode.getAttributeValue("id");
-					String version = rootNode.getAttributeValue("version");
-					String recomended_height = rootNode
-							.getAttributeValue("height");
-					String recomended_width = rootNode
-							.getAttributeValue("width");
-					String name = rootNode.getChildText("name", XML_NS);
-					String icon = rootNode.getChildText("icon", XML_NS);
-					String description = rootNode.getChildText("description",
-							XML_NS);
-					String author = rootNode.getChildText("author", XML_NS);
-
-					System.out.println("\n\nname:" + name + "\n\n");
-					log.info("\n\nname:" + name + "\n\n");
-
-					EntityManagerFactory factory = Persistence
-							.createEntityManagerFactory("edukapp");
-					EntityManager em = factory.createEntityManager();
-
-					/*-----------*/
-					Widgetprofile widgetprofile = null;
-					try {
-						em.getTransaction().begin();
-						widgetprofile = new Widgetprofile();
-						widgetprofile.setName(name);
-						byte zero = 0;
-						widgetprofile.setW3cOrOs(zero);
-						widgetprofile.setWidId(widget_id);
-						em.persist(widgetprofile);
-
-						WidgetDescription wd = new WidgetDescription();
-						wd.setDescription(description);
-						wd.setWid_id(widgetprofile.getId());
-						em.persist(wd);
-
-						log.info("Widget created with id:"
-								+ widgetprofile.getId());
-
-					} catch (Exception e) {
-						e.printStackTrace();
-						// em.getTransaction().rollback();
-						doForward(request, response, "/upload.jsp?error=1");
-					}
-					/*----------*/
-
-					em.getTransaction().commit();
-					em.close();
-					factory.close();
-
-					if (widgetprofile != null) {
-						doForward(request, response, "/widget.jsp?id="
-								+ widgetprofile.getId());
-					} else {
-						doForward(request, response, "/upload.jsp?error=2");
-					}
-
-				} else {
-					// any other HTTP status than 200/201
-					doForward(request, response, "/upload.jsp?error=3");
 				}
 
 			} catch (HttpException hte) {
@@ -237,9 +105,6 @@ public class UploadServlet extends HttpServlet {
 			} catch (FileUploadException fue) {
 				fue.printStackTrace();
 				doForward(request, response, "/upload.jsp?error=6");
-			} catch (JDOMException jdomex) {
-				jdomex.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=7");
 			} catch (Exception e) {
 				e.printStackTrace();
 				doForward(request, response, "/upload.jsp?error=9");
@@ -303,6 +168,39 @@ public class UploadServlet extends HttpServlet {
 		// .getRequestDispatcher(jsp);
 		// dispatcher.forward(request, response);
 		response.sendRedirect(jsp);
+	}
+	
+	/**
+	 * Upload a Widget to Wookie
+	 * @param filePart
+	 * @return true if the widget was successfully uploaded
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	private boolean uploadW3CWidget(FilePart filePart) throws HttpException, IOException{
+		
+		HttpClient client = new HttpClient();
+		WookieServerConfiguration wookie = WookieServerConfiguration.getInstance();
+		client.getState().setCredentials(wookie.getAuthScope(), wookie.getCredentials());
+		
+		PostMethod postMethod = new PostMethod(wookie.getWookieServerLocation()+"/widgets");
+
+		Part[] parts = {filePart};
+		postMethod.setRequestEntity(new MultipartRequestEntity(parts, postMethod.getParams()));
+
+		int status = client.executeMethod(postMethod);
+		
+		if (status == 200 || status == 201){
+			
+			//
+			// update the index
+			//
+			SolrConnector.getInstance().index();
+			
+			return true;
+		} 
+		return false;
+
 	}
 
 }
