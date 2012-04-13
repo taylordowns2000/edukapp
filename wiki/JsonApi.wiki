@@ -46,9 +46,75 @@ Example:
 GET /api/search?q=chat
 }}}
 
+
+= GET /api/widget/{widget id}=
+
+Get the specified widget profile
+
+
+= GET /api/widget/{widget uri}=
+
+Get the specified widget profile
+
+
+= GET /api/widget/{widget id}/similar=
+
+Get widgets similar to the specified widget profile
+
+= GET /api/widget/{widget id}/comments=
+
+Get comments and reviews for the specified widget profile
+
+=GET /api/tag/{tag id}=
+
+Get the tag specified by the id (this can be the actual tag id, or just the tag name). 
+
+=GET /api/tag/{tag id}/widgets=
+
+Get the widgets matching the tag specified by the id (this can be the actual tag id, or just the tag name)
+
+=GET /api/tag/popular=
+
+Returns the most popular tags used for widgets, in descending order, along with the number of times used.
+
+Example:
+
+{{{
+[
+    [
+        {
+            "id": 1,
+            "tagtext": "fun"
+        },
+        29
+    ],
+    [
+        {
+            "id": 2,
+            "tagtext": "games"
+        },
+        17
+    ],
+    [
+        {
+            "id": 651,
+            "tagtext": "maths"
+        },
+        10
+    ]
+]
+}}}
+
+= "At risk" deprecated API methods =
+
+The following methods are deprecated in favour or more RESTful patterns.
+
+
 = GET /api/similar?uri={widget uri}=
 
 Search for similar widgets to the widget identified with the uri parameter.
+
+_instead use /api/widget/{widget id}/similar_
 
 Example:
 
@@ -94,55 +160,5 @@ Returns:
   "time":"2012-02-14T10:20:01.000+0000",
   "user":"scott"
   }
-]
-}}}
-
-= GET /api/widget/{widget id}=
-
-Get the specified widget profile
-
-
-= GET /api/widget/{widget uri}=
-
-Get the specified widget profile
-
-
-=GET /api/tag/{tag id}=
-
-Get the tag specified by the id (this can be the actual tag id, or just the tag name). 
-
-=GET /api/tag/{tag id}/widgets=
-
-Get the widgets matching the tag specified by the id (this can be the actual tag id, or just the tag name)
-
-=GET /api/tag/popular=
-
-Returns the most popular tags used for widgets, in descending order, along with the number of times used.
-
-Example:
-
-{{{
-[
-    [
-        {
-            "id": 1,
-            "tagtext": "fun"
-        },
-        29
-    ],
-    [
-        {
-            "id": 2,
-            "tagtext": "games"
-        },
-        17
-    ],
-    [
-        {
-            "id": 651,
-            "tagtext": "maths"
-        },
-        10
-    ]
 ]
 }}}
