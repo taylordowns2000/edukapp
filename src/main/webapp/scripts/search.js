@@ -43,23 +43,7 @@ function displaySearchResults(data){
     }
     
     for (var i=0;i<data.widgets.length;i++){
-    	//console.log(data.widgets[i]);
-			$('#search_results').append(''+		
-		'	<li class="span3">'+
-		'	<div class="thumbnail">'+
-		'		<img src="http://placehold.it/260x180" alt="">'+
-		'		<div class="caption">'+
-		'			<h5>'+data.widgets[i].name+'</h5>'+
-		'			<p>'+data.widgets[i].description+'</p>'+
-		'			<p>'+
-		'				<a href="/widget/'+data.widgets[i].id+'" class="btn btn-primary">Read more >>></a>'+
-		'			</p>'+
-		'		</div>'+
-		'	</div>'+
-		'</li>');
-		
-    	
-    	//showWidget(data.widgets[i]);
+        $('#search_results').append(''+renderWidget(data.widgets[i].id, data.widgets[i].icon, data.widgets[i].name, data.widgets[i].description));	        
     }
 }
 /*
@@ -87,14 +71,6 @@ function displaySearchResults(data){
                       
                       
  */
-
-
-
-//function showWidget(widget){
-//    var resultItem = document.createElement("li");
-//    $(resultItem).html("<a href='widget.jsp?id="+widget.id+"'>"+widget.name+"</a>");
-//    $(resultItem).appendTo('#search_results');
-//}
 
 function createPaginationLinks(number_of_results, current_page){
 
