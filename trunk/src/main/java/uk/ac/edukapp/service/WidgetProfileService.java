@@ -50,6 +50,35 @@ public class WidgetProfileService extends AbstractService {
 	public WidgetProfileService(ServletContext ctx) {
 		super(ctx);
 	}
+	
+	/**
+	 * Create a widget profile and save it
+	 * @param uri
+	 * @param name
+	 * @param description
+	 * @return the widget profile 
+	 */
+	public Widgetprofile createWidgetProfile(String uri, String name, String description){
+		
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Widgetprofile widgetprofile = new Widgetprofile();
+		widgetprofile.setName(name);
+		byte zero = 0;
+		widgetprofile.setW3cOrOs(zero);
+		widgetprofile.setWidId(uri);
+		em.persist(widgetprofile);
+
+		WidgetDescription wd = new WidgetDescription();
+		wd.setDescription(description);
+		wd.setWid_id(widgetprofile.getId());
+		em.persist(wd);				
+		em.getTransaction().commit();
+		em.close();
+		
+		return widgetprofile;
+		
+	}
 
 	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag) {
 		return tag.getWidgetprofiles();
