@@ -26,6 +26,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 
 import uk.ac.edukapp.renderer.SearchResults;
@@ -126,6 +127,32 @@ public class SolrConnector {
 		}
 		return new ArrayList<Widget>();   	
 	}
+	
+	/**
+	 * Update indexes of widgets in all cores
+	 */
+	public void index(){
+		index("en");
+		index("fr");
+	}
+	
+	/**
+	 * Index widgets by running the data import for the specified language core
+	 * @param lang
+	 */
+	public void index(String lang){
+		try {
+			SolrServer server = getLocalizedSolrServer(lang);
+			
+			ModifiableSolrParams params = new ModifiableSolrParams();
+		    params.set("qt", "/dataimport");
+		    params.set("command", "full-import");
+		    server.query(params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 
 	private SolrServer getLocalizedSolrServer(String lang) throws MalformedURLException{
 		if (lang==null || lang.trim().equals("")) lang="en";
@@ -133,4 +160,3 @@ public class SolrConnector {
 	}
 
 }
-
