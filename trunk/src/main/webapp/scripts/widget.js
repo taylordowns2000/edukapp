@@ -322,7 +322,7 @@ function () {
         //
         // Load similar widget profiles
         //
-        $.getJSON('/api/similar?uri=' + widgetUri, function (data) {
+        $.getJSON('/api/widget/' + widget_id + "/similar", function (data) {
             for (var i = 0; i < data.length; i++) {
                 $('#related-widgets').append(''+renderWidget(data[i].id, data[i].icon, data[i].name, data[i].description));	        
             }
@@ -331,7 +331,7 @@ function () {
         //
         // Load reviews
         //
-        $.getJSON('/api/review?uri=' + widgetUri, function (reviews) {
+        $.getJSON('/api/widget/' + widget_id +'/comments', function (reviews) {
             for (var i = 0; i < reviews.length; i++) {
                 var li = document.createElement("div");
                 $(li).hide();
