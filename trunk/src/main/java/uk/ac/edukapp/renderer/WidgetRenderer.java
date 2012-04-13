@@ -42,6 +42,7 @@ public class WidgetRenderer {
 		try {
 			setUser();
 			widgetInstance = conn.getOrCreateInstance(uri);
+			if (widgetInstance.getWidth() != null && widgetInstance.getWidth().trim().length() > 0) width = Integer.parseInt(widgetInstance.getWidth());
 			if (widgetInstance.getHeight() != null && widgetInstance.getHeight().trim().length() > 0) height = Integer.parseInt(widgetInstance.getHeight());
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
