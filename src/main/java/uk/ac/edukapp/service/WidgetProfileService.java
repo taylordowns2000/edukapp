@@ -234,6 +234,7 @@ public class WidgetProfileService extends AbstractService {
 				widgetProfile = new Widgetprofile();
 				widgetProfile.setName(widget.getTitle());
 				widgetProfile.setWidId(widget.getUri());
+				widgetProfile.setIcon(widget.getIcon());
 				entityManager.persist(widgetProfile);
 
 				//

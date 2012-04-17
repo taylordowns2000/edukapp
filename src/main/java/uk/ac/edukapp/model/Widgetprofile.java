@@ -40,6 +40,9 @@ public class Widgetprofile implements Serializable {
 
 	@Column(nullable = false, length = 100)
 	private String name;
+	
+	@Column(nullable = false)
+	private String icon;
 
 	@JsonIgnore
 	@Column(name = "w3c_or_os", nullable = false)
@@ -84,6 +87,20 @@ public class Widgetprofile implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public byte getW3cOrOs() {
