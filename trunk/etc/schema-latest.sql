@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
 CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `icon` varchar(1024) NOT NULL,
   `wid_id` varchar(150) NOT NULL COMMENT 'either wookie_id or gadget url',
   `w3c_or_os` tinyint(1) NOT NULL,
   `featured` tinyint(1) DEFAULT '0',

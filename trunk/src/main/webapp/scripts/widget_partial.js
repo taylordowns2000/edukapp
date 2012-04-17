@@ -4,14 +4,14 @@
 function renderWidget(id, icon, name, description){
     
     //
-    // Replace with placeholder for now
+    // Replace with placeholder for now if missing
     //
-    icon = "http://placehold.it/128x128"
+    if (!icon) icon = "http://placehold.it/80x80"
 
     var renderedWidget = 
     '	<li class="span3">'+
     '	<div class="thumbnail">'+
-    '		<img src="'+icon+'" alt="">'+
+    '		<img style="max-height:80px; max-width:80px" src="'+icon+'" alt="">'+
     '		<div class="caption">'+
     '			<h5>'+name+'</h5>'+
     '			<p class="caption-description">'+description+'</p>'+
