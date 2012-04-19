@@ -8,48 +8,42 @@ import javax.persistence.*;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-
 /**
  * The persistent class for the userreview database table.
  * 
  */
 @Entity
-@Table(name="userreview")
-@NamedQueries({
-    @NamedQuery(name="Userreview.findForWidgetProfile", query="SELECT r FROM Userreview r WHERE r.widgetProfile = :widgetprofile")
-}) 
+@Table(name = "userreview")
+@NamedQueries({ @NamedQuery(name = "Userreview.findForWidgetProfile", query = "SELECT r FROM Userreview r WHERE r.widgetProfile = :widgetprofile") })
 public class Userreview implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(nullable=false)
-	@ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="comment_id", referencedColumnName="id")
+	@Column(nullable = true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "comment_id", referencedColumnName = "id")
 	private Comment comment;
-	
-	@Column(nullable=false)
-	private byte rating;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Date time;
 
 	@JsonIgnore
-	@Column(nullable=false)
-	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="widgetprofile_id", referencedColumnName="id")
+	@Column(nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "widgetprofile_id", referencedColumnName = "id")
 	private Widgetprofile widgetProfile;
-	
-	@Column(nullable=false)
-	@ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="user_id", referencedColumnName="id")
+
+	@Column(nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Useraccount userAccount;
 
-    public Userreview() {
-    }
+	public Userreview() {
+	}
 
 	public int getId() {
 		return this.id;
@@ -57,14 +51,6 @@ public class Userreview implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public byte getRating() {
-		return this.rating;
-	}
-
-	public void setRating(byte rating) {
-		this.rating = rating;
 	}
 
 	public Date getTime() {
@@ -83,7 +69,8 @@ public class Userreview implements Serializable {
 	}
 
 	/**
-	 * @param widgetProfile the widgetProfile to set
+	 * @param widgetProfile
+	 *            the widgetProfile to set
 	 */
 	public void setWidgetProfile(Widgetprofile widgetProfile) {
 		this.widgetProfile = widgetProfile;
@@ -98,7 +85,8 @@ public class Userreview implements Serializable {
 	}
 
 	/**
-	 * @param userAccount the userAccount to set
+	 * @param userAccount
+	 *            the userAccount to set
 	 */
 	public void setUserAccount(Useraccount userAccount) {
 		this.userAccount = userAccount;
@@ -113,25 +101,28 @@ public class Userreview implements Serializable {
 	}
 
 	/**
-	 * @param comment the comment to set
+	 * @param comment
+	 *            the comment to set
 	 */
 	public void setComment(Comment comment) {
 		this.comment = comment;
 	}
-	
+
 	/**
 	 * Return the actual comment text, e.g. for serialization
+	 * 
 	 * @return
 	 */
-	public String getText(){
+	public String getText() {
 		return this.getComment().getCommenttext();
 	}
-	
+
 	/**
 	 * Return just the user name, e.g. for serialization
+	 * 
 	 * @return
 	 */
-	public String getUser(){
+	public String getUser() {
 		return this.getUserAccount().getUsername();
 	}
 

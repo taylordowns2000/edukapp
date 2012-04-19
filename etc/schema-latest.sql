@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 18, 2012 at 03:33 AM
+-- Generation Time: Apr 19, 2012 at 06:29 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activitytext` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2652 ;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,21 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `commenttext` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3302 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ltiprovider`
+--
+
+CREATE TABLE IF NOT EXISTS `ltiprovider` (
+  `id` int(11) NOT NULL,
+  `consumerKey` varchar(255) DEFAULT NULL,
+  `consumerSecret` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `U_LTPRVDR_ID` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -76,6 +90,19 @@ CREATE TABLE IF NOT EXISTS `openjpa_sequence_table` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rolename` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2606 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tags`
 --
 
@@ -84,20 +111,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `tagtext` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `test`
---
-
-CREATE TABLE IF NOT EXISTS `test` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(22) NOT NULL,
-  `salary` float NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2752 ;
 
 -- --------------------------------------------------------
 
@@ -124,8 +138,22 @@ CREATE TABLE IF NOT EXISTS `useraccount` (
   `password` varchar(256) NOT NULL,
   `salt` varchar(256) NOT NULL DEFAULT '01',
   `token` varchar(256) NOT NULL DEFAULT '02',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3352 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `useraccount_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `useraccount_roles` (
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -145,18 +173,32 @@ CREATE TABLE IF NOT EXISTS `useractivities` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `userratings`
+--
+
+CREATE TABLE IF NOT EXISTS `userratings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `rating` tinyint(4) NOT NULL,
+  `widgetprofile_id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3402 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `userreview`
 --
 
 CREATE TABLE IF NOT EXISTS `userreview` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `rating` tinyint(4) NOT NULL,
   `comment_id` int(11) NOT NULL,
   `widgetprofile_id` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3252 ;
 
 -- --------------------------------------------------------
 
@@ -169,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
   `widgetprofile_id` int(11) NOT NULL,
   `activity_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=59 ;
 
 -- --------------------------------------------------------
 
@@ -180,14 +222,14 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
 CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `icon` varchar(1024) NOT NULL,
   `wid_id` varchar(150) NOT NULL COMMENT 'either wookie_id or gadget url',
   `w3c_or_os` tinyint(1) NOT NULL,
   `featured` tinyint(1) DEFAULT '0',
   `DESCRIPTION_WID_ID` int(11) DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2552 ;
 
 -- --------------------------------------------------------
 
@@ -196,20 +238,6 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
 --
 
 CREATE TABLE IF NOT EXISTS `widgetprofiles_tags` (
-  `widgetprofile_id` int(11) NOT NULL,
-  `tag_id` int(11) NOT NULL,
-  PRIMARY KEY (`widgetprofile_id`,`tag_id`),
-  KEY `widgetprofile_id` (`widgetprofile_id`),
-  KEY `tag_id` (`tag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `widgettags`
---
-
-CREATE TABLE IF NOT EXISTS `widgettags` (
   `widgetprofile_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
   PRIMARY KEY (`widgetprofile_id`,`tag_id`),
@@ -233,11 +261,11 @@ CREATE TABLE IF NOT EXISTS `widget_descriptions` (
 --
 
 --
--- Constraints for table `widgettags`
+-- Constraints for table `useraccount_roles`
 --
-ALTER TABLE `widgettags`
-  ADD CONSTRAINT `widgettags_ibfk_3` FOREIGN KEY (`widgetprofile_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `widgettags_ibfk_4` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `useraccount_roles`
+  ADD CONSTRAINT `useraccount_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `useraccount_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
