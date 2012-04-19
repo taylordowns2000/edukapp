@@ -19,19 +19,21 @@ import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Widgetprofile;
 
 /**
- * An extended widget profile for holding a collection of related objects, useful
- * for rendering extended metadata about a widget
+ * An extended widget profile for holding a collection of related objects,
+ * useful for rendering extended metadata about a widget
  * 
  * @author scottw
- *
+ * 
  */
 public class ExtendedWidgetProfile {
-	
+
 	private Widgetprofile widgetProfile;
-	
+
 	private Useraccount uploadedBy;
-	
+
 	private String renderInfo;
+
+	private Number averageRating;
 
 	/**
 	 * @return the widgetProfile
@@ -41,7 +43,8 @@ public class ExtendedWidgetProfile {
 	}
 
 	/**
-	 * @param widgetProfile the widgetProfile to set
+	 * @param widgetProfile
+	 *            the widgetProfile to set
 	 */
 	public void setWidgetProfile(Widgetprofile widgetProfile) {
 		this.widgetProfile = widgetProfile;
@@ -55,7 +58,8 @@ public class ExtendedWidgetProfile {
 	}
 
 	/**
-	 * @param uploadedBy the uploadedBy to set
+	 * @param uploadedBy
+	 *            the uploadedBy to set
 	 */
 	public void setUploadedBy(Useraccount uploadedBy) {
 		this.uploadedBy = uploadedBy;
@@ -69,10 +73,19 @@ public class ExtendedWidgetProfile {
 	}
 
 	/**
-	 * @param renderInfo the renderInfo to set
+	 * @param renderInfo
+	 *            the renderInfo to set
 	 */
 	public void setRenderInfo(String renderInfo) {
 		this.renderInfo = renderInfo;
+	}
+
+	public Number getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Number averageRating) {
+		this.averageRating = averageRating;
 	}
 
 }

@@ -7,6 +7,54 @@ function () {
     // Get the current widget id
     //
     var widget_id = $('#widgetid').val();
+
+    //
+    // set up the rating module
+    //
+    $('#rating-module').raty({
+        click   : function(score,evt){
+            console.log('id='+$(this).attr('id'));
+            console.log('score='+score);
+            console.log('event=');
+            console.log(evt);
+            
+
+            var rate  = {};
+            rate.rating = score;
+            rate.userId = $('#logged-in-user-id').text();
+
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url:"/api/widget/"+widget_id+"/rating",
+                data: JSON.stringify(rate),
+                cache: false,
+                beforeSend: function(x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    }
+                },
+                success: function (resp) {
+                    if (resp['message'] === "OK") {
+                       console.log("successssssssssss");
+                    } else {
+                        console.log('error');
+                        //$('#widget-description').append("1there was an error in your update");
+                    }
+                },
+                
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+        },
+        starOff : 'star-off.png',
+        starOn  : 'star-on.png',
+        path    : 'images',
+           //cancel  : true
+        });
     
     //
     // Add edit event handler
@@ -83,9 +131,6 @@ function () {
     //
     $('#add-affordance').click(function () {
 
-
-        
-
         //store in an array all current affordances of this widget profile
         //get this from dom elements
         var widget_affordances = [];
@@ -131,8 +176,7 @@ function () {
                             
                             $('#select-affordances-form').append(affordance_element);
                             $('#select-affordances-form').append(insert_element).append(" ");
-                            
-                            
+           
                         }                  
                     }  
 
@@ -176,14 +220,6 @@ function () {
                                 console.log('activity addition - ajax error');
                             }
                         });
-
-
-
-
-                        
-
-
-
                     });
                 },
                 error: function () {
@@ -200,7 +236,14 @@ function () {
     // add write a review handler
     //
     $('#write-a-review-anchor').click(function () {
-        $(this).replaceWith('<div style="width:100%;" id="write-a-review">' + '<label>Your review:</label>' + '<div class="controls">' + '<textarea class="input-xlarge" id="review-textarea" rows="3"></textarea>' + '</div><button type="submit" class="btn btn-primary">Submit</button>' + '<button id="edit-description-cancel" class="btn">Cancel</button>' + '</div>');
+        $(this).replaceWith('<div style="width:100%;" id="write-a-review">' + 
+        		'<label>Your review:</label>' + 
+        		'<div class="controls">' + 
+        		'<textarea class="input-xlarge" id="review-textarea" rows="3"></textarea>' + 
+        		'</div><button type="submit" class="btn btn-primary">Submit</button>' + 
+        		'<button id="edit-description-cancel" class="btn">Cancel</button>' + 
+        		'</div>');
+
         $('#write-a-review button[type="submit"]').click(function () {
             //get info from hidden fields
             var reviewText = $('#review-textarea').val();
@@ -248,7 +291,7 @@ function () {
     // Load the widget profile
     //
     $.getJSON('/api/widget/' + widget_id, function (data) {
-        console.log(data);
+        //console.log(data);
         widgetUri = data.widgetProfile.uri;
         
         //
@@ -260,6 +303,24 @@ function () {
             $("#upload-info").text("Uploaded by " + data.uploadedBy.username);
         }
         
+        //
+        // Show average rating
+        //
+        var average_rating;
+        if (data.averageRating) {
+            average_rating = data.averageRating;
+        }else {
+            average_rating = 0;
+        }
+        $('#widget-rating').raty({
+                readOnly    : true,
+                start       : average_rating,
+                starOff : 'star-off.png',
+                starOn  : 'star-on.png',
+                path    : 'images',
+            });
+
+
         //
         // Show description
         //

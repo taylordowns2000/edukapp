@@ -27,43 +27,46 @@ import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.util.Message;
 
 public class UserReviewService extends AbstractService {
-	
-	private final byte DEFAULT_RATING = 0;
-	
-	public UserReviewService(ServletContext ctx){
+
+	public UserReviewService(ServletContext ctx) {
 		super(ctx);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<Userreview> getUserReviewsForWidgetProfile(Widgetprofile widgetProfile){
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
-		Query wpQuery = entityManager.createNamedQuery("Userreview.findForWidgetProfile");
+	public List<Userreview> getUserReviewsForWidgetProfile(
+			Widgetprofile widgetProfile) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		Query wpQuery = entityManager
+				.createNamedQuery("Userreview.findForWidgetProfile");
 		wpQuery.setParameter("widgetprofile", widgetProfile);
-		List<Userreview> reviews = (List<Userreview>)wpQuery.getResultList();
+		List<Userreview> reviews = (List<Userreview>) wpQuery.getResultList();
 		entityManager.close();
 		return reviews;
 	}
-	
-	public boolean publishUserReview(String text, Useraccount userAccount, Widgetprofile widgetProfile){
-		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+
+	public boolean publishUserReview(String text, Useraccount userAccount,
+			Widgetprofile widgetProfile) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
 		entityManager.getTransaction().begin();
-		
+
 		//
 		// Create the review
 		//
 		Userreview userReview = new Userreview();
 		userReview.setUserAccount(userAccount);
 		userReview.setWidgetProfile(widgetProfile);
-		userReview.setRating(DEFAULT_RATING);
 		userReview.setTime(new Date());
 		entityManager.persist(userReview);
 		Comment comment = new Comment();
 		comment.setCommenttext(text);
-		entityManager.persist(comment);		
+		entityManager.persist(comment);
 		userReview.setComment(comment);
-		
+
 		entityManager.getTransaction().commit();
 		return true;
 	}

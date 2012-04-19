@@ -37,6 +37,7 @@ import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.renderer.Renderer;
 import uk.ac.edukapp.service.ActivityService;
+import uk.ac.edukapp.service.UserRateService;
 import uk.ac.edukapp.service.UserReviewService;
 import uk.ac.edukapp.service.WidgetProfileService;
 import uk.ac.edukapp.util.Message;
@@ -67,7 +68,7 @@ public class WidgetServlet extends HttpServlet {
 		// Get widget resource
 		//
 		Widgetprofile widgetProfile = getWidgetProfile(req);
-		if (widgetProfile == null){
+		if (widgetProfile == null) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
@@ -83,6 +84,12 @@ public class WidgetServlet extends HttpServlet {
 					getServletContext());
 			extendedWidgetProfile.setUploadedBy(activityService
 					.getUploadedBy(widgetProfile));
+
+			UserRateService rateService = new UserRateService(
+					getServletContext());
+			extendedWidgetProfile.setAverageRating(rateService
+					.getAverageRating(widgetProfile));
+
 			MetadataRenderer.render(out, extendedWidgetProfile);
 		}
 
@@ -99,8 +106,10 @@ public class WidgetServlet extends HttpServlet {
 		} else if (part.equals("description")) {
 
 		} else if (part.equals("comments")) {
-			UserReviewService userReviewService = new UserReviewService(getServletContext());
-			List<Userreview> reviews = userReviewService.getUserReviewsForWidgetProfile(widgetProfile); 
+			UserReviewService userReviewService = new UserReviewService(
+					getServletContext());
+			List<Userreview> reviews = userReviewService
+					.getUserReviewsForWidgetProfile(widgetProfile);
 			MetadataRenderer.render(out, reviews);
 		} else if (part.equals("ratings")) {
 
@@ -111,8 +120,10 @@ public class WidgetServlet extends HttpServlet {
 		} else if (part.equals("activity")) {
 
 		} else if (part.equals("similar")) {
-			WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
-			List<Widgetprofile> widgetProfiles = widgetProfileService.findSimilarWidgetsProfiles(widgetProfile, "en");
+			WidgetProfileService widgetProfileService = new WidgetProfileService(
+					getServletContext());
+			List<Widgetprofile> widgetProfiles = widgetProfileService
+					.findSimilarWidgetsProfiles(widgetProfile, "en");
 			MetadataRenderer.render(out, widgetProfiles);
 		}
 		out.flush();
@@ -132,8 +143,9 @@ public class WidgetServlet extends HttpServlet {
 		//
 		// POST always requires a valid user login
 		//
-		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject().getPrincipal();
-		if (userAccount == null){
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject()
+				.getPrincipal();
+		if (userAccount == null) {
 			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
@@ -143,9 +155,9 @@ public class WidgetServlet extends HttpServlet {
 			resp.sendError(400, "no tag specified");
 			return;
 		}
-		
+
 		Message message = new Message();
-		
+
 		String part = req.getParameter("part");
 
 		//
@@ -173,13 +185,15 @@ public class WidgetServlet extends HttpServlet {
 			// Check that the current logged in user is the same principal as
 			// the comment owner
 			//
-			if (userAccount.getId() == Integer.parseInt(userId)){
-				
+			if (userAccount.getId() == Integer.parseInt(userId)) {
+
 				// TODO Map the JSON onto an actual Comment bean or DTO
-				
-				UserReviewService userReviewService = new UserReviewService(getServletContext());
-				
-				if (userReviewService.publishUserReview(text, userAccount, widgetProfile)){
+
+				UserReviewService userReviewService = new UserReviewService(
+						getServletContext());
+
+				if (userReviewService.publishUserReview(text, userAccount,
+						widgetProfile)) {
 					message.setMessage("OK");
 					resp.setStatus(HttpServletResponse.SC_CREATED);
 				} else {
@@ -192,10 +206,11 @@ public class WidgetServlet extends HttpServlet {
 			}
 
 		} else if (part.equals("activity")) {
-			
-			ActivityService activityService = new ActivityService(getServletContext());
-			
-			if (activityService.addActivity(widgetProfile, body)){
+
+			ActivityService activityService = new ActivityService(
+					getServletContext());
+
+			if (activityService.addActivity(widgetProfile, body)) {
 				message.setMessage("OK");
 				resp.setStatus(HttpServletResponse.SC_CREATED);
 			} else {
@@ -203,8 +218,34 @@ public class WidgetServlet extends HttpServlet {
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
 			}
+		} else if (part.equals("rating")) {
+
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode json = mapper.readTree(body);
+			String userId = json.findValue("userId").asText();
+			String rating = json.findValue("rating").asText();
+
+			System.out.println("userid = " + userId);
+			System.out.println("rating = " + rating);
+
+			if (userId == null || rating == null) {
+				message.setMessage("parameters missing");
+				resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
+
+			UserRateService userRateService = new UserRateService(
+					getServletContext());
+
+			message = userRateService.publishUserRate(rating, userAccount,
+					widgetProfile);
+			if (message.getMessage().equals("OK")) {
+				resp.setStatus(HttpServletResponse.SC_CREATED);
+			} else {
+				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+
 		}
-		
+
 		MetadataRenderer.render(out, message);
 		out.flush();
 		out.close();

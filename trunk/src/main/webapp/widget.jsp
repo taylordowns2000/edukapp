@@ -13,6 +13,7 @@
 <script src="/scripts/widget_partial.js"></script>
 <script src="/scripts/widget.js"></script>
 <script src="/scripts/bootstrap-modal.js"></script>
+<script src="/scripts/jquery.raty.min.js"></script>
 </head>
 
 
@@ -77,10 +78,9 @@
 							<span id="widget-usage"> <i
 								class="icon-download icon-white"></i> 3 downloads <br> <i
 								class="icon-share-alt icon-white"></i>16 embeds<br>
-							</span> <span id="widget-rating">average rating <i
-								class="icon-star icon-white"></i><i class="icon-star icon-white"></i><i
-								class="icon-star icon-white"></i> (1 rating)
-							</span>
+							</span> 
+							average rating:<span id="widget-rating"></span><br/>
+							your rating:<span id="rating-module"></span>
 						</p>
 				</div>
 

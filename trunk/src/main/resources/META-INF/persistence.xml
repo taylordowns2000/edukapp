@@ -16,6 +16,7 @@
 	<class>uk.ac.edukapp.model.WidgetDescription</class>
 	<class>uk.ac.edukapp.model.LtiProvider</class>
 	<class>uk.ac.edukapp.model.Userrole</class>
+	<class>uk.ac.edukapp.model.Userrating</class>
 		<!--
 		<class>put your classes here</class>
 		-->

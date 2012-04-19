@@ -33,7 +33,7 @@ POST
 Y             /api/widget/{$id}/tag  (tag id or tag text in request body) 					
 Y             /api/widget/{$id}/activity (activity id or activity text in request body) 						
 Y             /api/widget/{$id}/comment ({$text} and {$userid} in request body)
-N             /api/widget/{$id}/rating  ({$value} and {$userid} in request body) 
+Y             /api/widget/{$id}/rating  ({$rating} and {$userid} in request body) 
 
 PUT
 
