@@ -50,16 +50,18 @@ public class WidgetProfileService extends AbstractService {
 	public WidgetProfileService(ServletContext ctx) {
 		super(ctx);
 	}
-	
+
 	/**
 	 * Create a widget profile and save it
+	 * 
 	 * @param uri
 	 * @param name
 	 * @param description
-	 * @return the widget profile 
+	 * @return the widget profile
 	 */
-	public Widgetprofile createWidgetProfile(String uri, String name, String description){
-		
+	public Widgetprofile createWidgetProfile(String uri, String name,
+			String description) {
+
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
 		Widgetprofile widgetprofile = new Widgetprofile();
@@ -72,12 +74,12 @@ public class WidgetProfileService extends AbstractService {
 		WidgetDescription wd = new WidgetDescription();
 		wd.setDescription(description);
 		wd.setWid_id(widgetprofile.getId());
-		em.persist(wd);				
+		em.persist(wd);
 		em.getTransaction().commit();
 		em.close();
-		
+
 		return widgetprofile;
-		
+
 	}
 
 	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag) {
@@ -173,9 +175,10 @@ public class WidgetProfileService extends AbstractService {
 				.createEntityManager();
 		Widgetprofile widgetProfile = entityManager.find(Widgetprofile.class,
 				id);
-		
-		if (widgetProfile == null) return null;
-		
+
+		if (widgetProfile == null)
+			return null;
+
 		//
 		// Ensure dependent objects are available when detached
 		//
@@ -396,4 +399,44 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.persist(entityManager.merge(widgetProfile));
 		entityManager.getTransaction().commit();
 	}
+
+	public boolean addActivity(Widgetprofile widgetProfile, String body) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+
+		entityManager.getTransaction().begin();
+
+		// check if activity exists
+		int activity_id = Integer.parseInt(body);
+		Activity activity = entityManager.find(Activity.class, activity_id);
+
+		if (activity == null) {
+			logger.error("error - activity with id:" + activity_id
+					+ " does not exist");
+			return false;
+		}
+
+		List<Activity> widget_activities = widgetProfile.getActivities();
+
+		boolean contains = false;
+		for (Activity a : widget_activities) {
+			if (a.getActivitytext().equals(activity.getActivitytext())
+					&& (a.getId() == activity.getId())) {
+				contains = true;
+			}
+		}
+
+		if (contains) {
+			logger.warn("Widget:" + widgetProfile.getId()
+					+ " already has activity:" + activity.getActivitytext());
+			return false;
+		} else {
+			widget_activities.add(activity);
+		}
+
+		entityManager.persist(entityManager.merge(widgetProfile));
+		entityManager.getTransaction().commit();
+		return true;
+	}
+
 }

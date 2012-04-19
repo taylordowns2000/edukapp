@@ -217,10 +217,10 @@ public class WidgetServlet extends HttpServlet {
 
 		} else if (part.equals("activity")) {
 
-			ActivityService activityService = new ActivityService(
+			WidgetProfileService widgetService = new WidgetProfileService(
 					getServletContext());
 
-			if (activityService.addActivity(widgetProfile, body)) {
+			if (widgetService.addActivity(widgetProfile, body)) {
 				message.setMessage("OK");
 				resp.setStatus(HttpServletResponse.SC_CREATED);
 			} else {

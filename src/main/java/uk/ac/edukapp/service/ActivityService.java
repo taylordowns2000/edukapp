@@ -29,7 +29,7 @@ import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.model.Useractivity;
 
 /**
- * Service for user activity
+ * Service for user activity (rating/updating/tagging/...)
  * 
  * DO NOT CONFUSE with widget activity (affordance)
  * 
@@ -37,7 +37,7 @@ import uk.ac.edukapp.model.Useractivity;
  * 
  */
 public class ActivityService extends AbstractService {
-	
+
 	final Logger logger = Logger.getLogger(ActivityService.class.getName());
 
 	public ActivityService(ServletContext servletContext) {
@@ -66,43 +66,6 @@ public class ActivityService extends AbstractService {
 				userActivity.getSubjectId());
 		entityManager.close();
 		return userAccount;
-	}
-	
-	public boolean addActivity(Widgetprofile widgetProfile, String body) {
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-
-		entityManager.getTransaction().begin();
-
-		// check if activity exists
-		int activity_id = Integer.parseInt(body);
-		Activity activity = entityManager.find(Activity.class, activity_id);
-
-		if (activity == null) {
-			logger.error("error - activity with id:" + activity_id+ " does not exist");
-			return false;
-		}
-
-		List<Activity> widget_activities = widgetProfile.getActivities();
-
-		boolean contains = false;
-		for (Activity a : widget_activities) {
-			if (a.getActivitytext().equals(activity.getActivitytext())
-					&& (a.getId() == activity.getId())) {
-				contains = true;
-			}
-		}
-
-		if (contains) {
-			logger.warn("Widget:" + widgetProfile.getId() + " already has activity:" + activity.getActivitytext());
-			return false;
-		} else {
-			widget_activities.add(activity);
-		}
-
-		entityManager.persist(entityManager.merge(widgetProfile));
-		entityManager.getTransaction().commit();
-		return true;
 	}
 
 }

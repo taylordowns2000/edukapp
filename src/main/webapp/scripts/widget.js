@@ -52,7 +52,7 @@ function () {
         },
         starOff : 'star-off.png',
         starOn  : 'star-on.png',
-        path    : 'images',
+        path    : '/images',
            //cancel  : true
         });
     
@@ -317,7 +317,7 @@ function () {
                 start       : average_rating,
                 starOff : 'star-off.png',
                 starOn  : 'star-on.png',
-                path    : 'images',
+                path    : '/images',
             });
 
 
