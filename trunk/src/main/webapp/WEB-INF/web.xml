@@ -145,17 +145,7 @@
 		<servlet-name>WidgetServlet</servlet-name>
 		<url-pattern>/api/widget</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<description>User account servlet</description>
-		<display-name>user</display-name>
-		<servlet-name>UserServlet</servlet-name>
-		<servlet-class>uk.ac.edukapp.servlets.UserServlet</servlet-class>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UserServlet</servlet-name>
-		<url-pattern>/api/user</url-pattern>
-	</servlet-mapping>
+
 	<servlet>
 		<description>Login servlet</description>
 		<display-name>login</display-name>
