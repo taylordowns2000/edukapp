@@ -31,6 +31,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.model.Userrating;
 import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.ExtendedWidgetProfile;
@@ -112,8 +113,17 @@ public class WidgetServlet extends HttpServlet {
 					.getUserReviewsForWidgetProfile(widgetProfile);
 			MetadataRenderer.render(out, reviews);
 		} else if (part.equals("ratings")) {
+			UserRateService userRateService = new UserRateService(
+					getServletContext());
+			List<Userrating> ratings = userRateService
+					.getRatingsForWidgetProfile(widgetProfile);
+			MetadataRenderer.render(out, ratings);
 
 		} else if (part.equals("rating")) {
+			UserRateService userRateService = new UserRateService(
+					getServletContext());
+			Number avg_rating = userRateService.getAverageRating(widgetProfile);
+			MetadataRenderer.render(out, avg_rating);
 
 		} else if (part.equals("stats")) {
 

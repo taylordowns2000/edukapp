@@ -22,8 +22,8 @@ N             /api/widget/{$id}/activities
 N             /api/widget/{$id}/description 						
 Y             /api/widget/{$id}/comments	
 Y             /api/widget/{$id}/similar     /* return similar widgets */						
-N             /api/widget/{$id}/ratings     /*full list*/  			
-N             /api/widget/{$id}/rating      /*average rating*/ 		
+Y             /api/widget/{$id}/ratings     /*full list*/  			
+Y             /api/widget/{$id}/rating      /*average rating*/ 		
 N             /api/widget/{$id}/stats       /*instantiation stats*/ 
 N             /api/widget/{$id}/activity    /*chronological list of commenting/rating/updating/...  */
                           
