@@ -21,7 +21,7 @@ public class UserRateService extends AbstractService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Userrating> getUserRatingForWidgetProfile(
+	public List<Userrating> getRatingsForWidgetProfile(
 			Widgetprofile widgetProfile) {
 		EntityManager entityManager = getEntityManagerFactory()
 				.createEntityManager();
@@ -40,8 +40,6 @@ public class UserRateService extends AbstractService {
 		q.setParameter("widgetprofile", widgetProfile);
 
 		Number average = (Number) q.getSingleResult();
-
-		System.out.println("nmuber" + average.doubleValue());
 
 		return average;
 	}
@@ -98,4 +96,5 @@ public class UserRateService extends AbstractService {
 		return msg;
 
 	}
+
 }
