@@ -18,6 +18,10 @@
 		<from>^/tag/([0-9a-z]+)</from>
 		<to>/tag.jsp?id=$1</to>
 	</rule>
+	<rule>
+		<from>^/activity/([0-9]+)</from>
+		<to>/activity.jsp?id=$1</to>
+	</rule>
 	<!--
 	***  rewrite rules for rest API  ***
 	-->

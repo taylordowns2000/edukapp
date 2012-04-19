@@ -20,14 +20,10 @@
 						<li>Blog</li>
 					</ul>
 				</div>
-				<div id="footer-types" class="span3">
+				<div id="footer-activities" class="span3">
 					<h3><i class="icon-ok-circle"></i>Activities</h3>
 					<ul class="unstyled">
-						<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>alpha</a>
-						<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>beta</a>
-						<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>collaboration</a>
-						<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>delta</a>
-						<a href="#" class="btn btn-warning"><i class="icon-ok-circle icon-white"></i>epsilon</a>
+						
 					</ul>
 					<h4 class="see-more">
 						<a href="#">see more..</a>

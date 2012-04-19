@@ -125,6 +125,7 @@ DELETE
 ----------------------------------------------
 GET
 /api/user/{$id}
+/api/user/{$id}/activity
 POST
 PUT
 DELETE
