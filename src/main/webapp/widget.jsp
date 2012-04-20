@@ -65,10 +65,20 @@
 			
 			<!--/span-->
 			<div class="span9">
-				<div class="row-fluid">
+				<div class="row-fluid" style="position:relative;">
+					<div class="span9">
 					<h1 id="widget_name">Widget name</h1>
 					<p id="upload-info" class="upload-info">no upload info
 						available</p>
+					</div>
+					<div class="span3" id="widget-type-logo-holder" style="position:absolute;right:5px;top:5px;">
+						<div class="thumbnail">
+							<img style="height:40px;" id="widget-type-logo"></img>
+							<div class="caption">
+								<p></p>
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="row-fluid">
