@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 19, 2012 at 06:29 PM
+-- Generation Time: Apr 20, 2012 at 04:25 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `accountinfo` (
   `shortbio` varchar(2056) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activitytext` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2652 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2652 ;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `commenttext` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3302 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3803 ;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `ltiprovider` (
   `consumerSecret` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `U_LTPRVDR_ID` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `openjpa_sequence_table` (
   `ID` tinyint(4) NOT NULL,
   `SEQUENCE_VALUE` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `rolename` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2606 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2606 ;
 
 -- --------------------------------------------------------
 
@@ -111,8 +111,20 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `tagtext` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2752 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3855 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `types`
+--
+
+CREATE TABLE IF NOT EXISTS `types` (
+  `id` int(11) NOT NULL,
+  `typetext` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `U_TYPES_ID` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -129,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `useraccount` (
   `token` varchar(256) NOT NULL DEFAULT '02',
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3352 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3552 ;
 
 -- --------------------------------------------------------
 
@@ -142,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `useraccount_roles` (
   `role_id` int(11) NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -155,9 +167,9 @@ CREATE TABLE IF NOT EXISTS `useractivities` (
   `subject_id` int(11) NOT NULL,
   `activity` varchar(25) NOT NULL,
   `object_id` int(11) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `time` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -171,8 +183,10 @@ CREATE TABLE IF NOT EXISTS `userratings` (
   `rating` tinyint(4) NOT NULL,
   `widgetprofile_id` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3402 ;
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `widgetprofile_id` (`widgetprofile_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3402 ;
 
 -- --------------------------------------------------------
 
@@ -186,8 +200,11 @@ CREATE TABLE IF NOT EXISTS `userreview` (
   `comment_id` int(11) NOT NULL,
   `widgetprofile_id` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3252 ;
+  PRIMARY KEY (`id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `widgetprofile_id` (`widgetprofile_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3753 ;
 
 -- --------------------------------------------------------
 
@@ -199,8 +216,10 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `widgetprofile_id` int(11) NOT NULL,
   `activity_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=59 ;
+  PRIMARY KEY (`id`),
+  KEY `widgetprofile_id` (`widgetprofile_id`),
+  KEY `activity_id` (`activity_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
 
 -- --------------------------------------------------------
 
@@ -218,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2552 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2552 ;
 
 -- --------------------------------------------------------
 
@@ -231,8 +250,10 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles_tags` (
   `tag_id` int(11) NOT NULL,
   PRIMARY KEY (`widgetprofile_id`,`tag_id`),
   KEY `widgetprofile_id` (`widgetprofile_id`),
-  KEY `tag_id` (`tag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `tag_id` (`tag_id`),
+  KEY `widgetprofile_id_2` (`widgetprofile_id`),
+  KEY `tag_id_2` (`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -242,12 +263,19 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles_tags` (
 
 CREATE TABLE IF NOT EXISTS `widget_descriptions` (
   `wid_id` int(11) NOT NULL,
-  `description` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `description` text,
+  KEY `wid_id` (`wid_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `accountinfo`
+--
+ALTER TABLE `accountinfo`
+  ADD CONSTRAINT `accountinfo_ibfk_1` FOREIGN KEY (`id`) REFERENCES `useraccount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `useraccount_roles`
@@ -255,6 +283,33 @@ CREATE TABLE IF NOT EXISTS `widget_descriptions` (
 ALTER TABLE `useraccount_roles`
   ADD CONSTRAINT `useraccount_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `useraccount_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userratings`
+--
+ALTER TABLE `userratings`
+  ADD CONSTRAINT `userratings_ibfk_2` FOREIGN KEY (`widgetprofile_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `widgetactivities`
+--
+ALTER TABLE `widgetactivities`
+  ADD CONSTRAINT `widgetactivities_ibfk_2` FOREIGN KEY (`activity_id`) REFERENCES `activities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `widgetactivities_ibfk_1` FOREIGN KEY (`widgetprofile_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `widgetprofiles_tags`
+--
+ALTER TABLE `widgetprofiles_tags`
+  ADD CONSTRAINT `widgetprofiles_tags_ibfk_2` FOREIGN KEY (`widgetprofile_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `widgetprofiles_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `widget_descriptions`
+--
+ALTER TABLE `widget_descriptions`
+  ADD CONSTRAINT `widget_descriptions_ibfk_1` FOREIGN KEY (`wid_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
