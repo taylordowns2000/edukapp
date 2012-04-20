@@ -4,39 +4,38 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
-
+import java.util.Date;
 
 /**
  * The persistent class for the useractivities database table.
  * 
  */
 @Entity
-@Table(name="useractivities")
-@NamedQueries({
-    @NamedQuery(name="Useractivity.uploaded", query="SELECT act " + "FROM Useractivity act WHERE (act.objectId = :objectId AND act.activity='uploaded')")
-}) 
+@Table(name = "useractivities")
+@NamedQueries({ @NamedQuery(name = "Useractivity.uploaded", query = "SELECT act "
+		+ "FROM Useractivity act WHERE (act.objectId = :objectId AND act.activity='uploaded')") })
 public class Useractivity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(nullable=false, length=25)
+	@Column(nullable = false, length = 25)
 	private String activity;
 
-	@Column(name="object_id", nullable=false)
+	@Column(name = "object_id", nullable = false)
 	private int objectId;
 
-	@Column(name="subject_id", nullable=false)
+	@Column(name = "subject_id", nullable = false)
 	private int subjectId;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Timestamp time;
 
-    public Useractivity() {
-    }
+	public Useractivity() {
+	}
 
 	public int getId() {
 		return this.id;

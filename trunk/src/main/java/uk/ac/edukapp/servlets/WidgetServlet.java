@@ -184,6 +184,10 @@ public class WidgetServlet extends HttpServlet {
 
 		if (part.equals("tag")) {
 			message = widgetProfileService.addTag(widgetProfile, body);
+			//
+			// log this tagging to UserActivity table
+			//
+			addUserActivity("tagged", widgetProfile.getId());
 		} else if (part.equals("comment")) {
 
 			ObjectMapper mapper = new ObjectMapper();
@@ -206,6 +210,10 @@ public class WidgetServlet extends HttpServlet {
 						widgetProfile)) {
 					message.setMessage("OK");
 					resp.setStatus(HttpServletResponse.SC_CREATED);
+					//
+					// log this review to UserActivity table
+					//
+					addUserActivity("commented", widgetProfile.getId());
 				} else {
 					message.setMessage("Problem saving review");
 					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -223,6 +231,10 @@ public class WidgetServlet extends HttpServlet {
 			if (widgetService.addActivity(widgetProfile, body)) {
 				message.setMessage("OK");
 				resp.setStatus(HttpServletResponse.SC_CREATED);
+				//
+				// log this activity-binding UserActivity table
+				//
+				addUserActivity("bindactivity", widgetProfile.getId());
 			} else {
 				message.setMessage("Problem saving activity");
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -249,6 +261,10 @@ public class WidgetServlet extends HttpServlet {
 			message = userRateService.publishUserRate(rating, userAccount,
 					widgetProfile);
 			if (message.getMessage().equals("OK")) {
+				//
+				// log this rating to UserActivity table
+				//
+				addUserActivity("rated", widgetProfile.getId());
 				resp.setStatus(HttpServletResponse.SC_CREATED);
 			} else {
 				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -301,7 +317,10 @@ public class WidgetServlet extends HttpServlet {
 					widgetProfile.getWidId(), body);
 
 			MetadataRenderer.render(out, msg);
-
+			//
+			// log this update to UserActivity table
+			//
+			addUserActivity("updatedescription", widgetProfile.getId());
 		}
 		out.flush();
 		out.close();
@@ -332,5 +351,24 @@ public class WidgetServlet extends HttpServlet {
 			widgetProfile = widgetProfileService.findWidgetProfileByUri(uri);
 
 		return widgetProfile;
+	}
+
+	private void addActivity(int sub_id, String activity, int obj_id) {
+		try {
+			ActivityService avtivityServie = new ActivityService(
+					getServletContext());
+			avtivityServie.addUserActivity(sub_id, activity, obj_id);
+		} catch (Exception e) {
+			System.err.println("adding to user activity table failed");
+			e.printStackTrace();
+		}
+	}
+
+	private void addUserActivity(String activity, int obj_id) {
+		// get userid from security principal
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject()
+				.getPrincipal();
+		int userId = userAccount.getId();
+		addActivity(userId, activity, obj_id);
 	}
 }

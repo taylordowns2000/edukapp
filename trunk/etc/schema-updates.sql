@@ -1,4 +1,5 @@
-ALTER TABLE `useractivities` CHANGE `time` `time` DATE NOT NULL;
+-- ALTER TABLE `useractivities` CHANGE `time` `time` DATE NOT NULL;
+-- nope that's a mistake revert it back to timestamp
 
 --
 -- Constraints for table `accountinfo`

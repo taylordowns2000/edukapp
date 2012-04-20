@@ -15,6 +15,8 @@
  */
 package uk.ac.edukapp.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,6 +29,7 @@ import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.model.Useractivity;
+import uk.ac.edukapp.util.Message;
 
 /**
  * Service for user activity (rating/updating/tagging/...)
@@ -66,6 +69,23 @@ public class ActivityService extends AbstractService {
 				userActivity.getSubjectId());
 		entityManager.close();
 		return userAccount;
+	}
+
+	public void addUserActivity(int subject_id, String activity, int object_id)
+			throws Exception {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		entityManager.getTransaction().begin();
+		Useractivity ua = new Useractivity();
+		ua.setSubjectId(subject_id);
+		ua.setActivity(activity);
+		ua.setObjectId(object_id);
+		java.util.Date date = new java.util.Date();
+		Timestamp now = new Timestamp(date.getTime());
+		ua.setTime(now);
+		entityManager.persist(ua);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 
 }
