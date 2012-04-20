@@ -80,7 +80,12 @@
 								class="icon-share-alt icon-white"></i>16 embeds<br>
 							</span> 
 							average rating:<span id="widget-rating"></span><br/>
+							<shiro:authenticated>
 							your rating:<span id="rating-module"></span>
+							</shiro:authenticated>
+							<shiro:notAuthenticated>
+							Login to rate
+							</shiro:notAuthenticated>
 						</p>
 				</div>
 
