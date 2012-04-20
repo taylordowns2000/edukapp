@@ -197,7 +197,6 @@ public class WidgetProfileService extends AbstractService {
 		List widgets = searchResults.getWidgets();
 		searchResults.setWidgets(getWidgetProfilesForWidgets(widgets));
 		return searchResults;
-
 	}
 
 	private List<Widgetprofile> getWidgetProfilesForWidgets(List<Widget> widgets) {

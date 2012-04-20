@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `useractivities` (
   `subject_id` int(11) NOT NULL,
   `activity` varchar(25) NOT NULL,
   `object_id` int(11) NOT NULL,
-  `time` date NOT NULL,
+  `time` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
