@@ -4,8 +4,8 @@ edukapp widget store
 
 Before you start:
 
-1. Create a new local MySQL database called "edukapptest" (username and password the same)
-2. Run the "edukapptests_06_02.sql" query to setup the tables
+1. Create a new local MySQL database called "edukapptests" (username and password the same)
+2. Run the "schema-latest.sql" query to setup the tables
 
 To start:
 
