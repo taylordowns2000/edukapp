@@ -291,7 +291,6 @@ function () {
     // Load the widget profile
     //
     $.getJSON('/api/widget/' + widget_id, function (data) {
-        //console.log(data);
         widgetUri = data.widgetProfile.uri;
         
         //
@@ -307,7 +306,6 @@ function () {
         // Show w3c or opensocial logo
         //
         if (data.widgetProfile.type === "W3C Widget") {
-            alert("aaa");
             $('#widget-type-logo-holder img').attr("src","/images/W3C_Logo.png");
             $('#widget-type-logo-holder p').html("This widget complies with the <a href=\"http://www.w3.org/TR/widgets/\">W3C widget</a> standard");
         } else {
