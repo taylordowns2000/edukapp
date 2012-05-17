@@ -16,7 +16,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @NamedQueries({
 		@NamedQuery(name = "Userrating.findForWidgetProfile", query = "SELECT r FROM Userrating r WHERE r.widgetProfile = :widgetprofile"),
 		@NamedQuery(name = "Userrating.findForWidgetAndUser", query = "SELECT r FROM Userrating r WHERE r.widgetProfile = :widgetprofile AND r.userAccount = :useraccount"),
-		@NamedQuery(name = "Userrating.getAverageValue", query = "SELECT AVG(r.rating) FROM Userrating r WHERE r.widgetProfile = :widgetprofile") })
+		@NamedQuery(name = "Userrating.getAverageValue", query = "SELECT AVG(r.rating) FROM Userrating r WHERE r.widgetProfile = :widgetprofile"),
+		@NamedQuery(name = "Userrating.getCount", query = "SELECT COUNT(r.rating) FROM Userrating r WHERE r.widgetProfile = :widgetprofile") 
+		})
 public class Userrating implements Serializable {
 	private static final long serialVersionUID = 1L;
 
