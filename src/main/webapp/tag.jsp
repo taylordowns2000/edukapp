@@ -21,35 +21,26 @@
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-list">
-						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>
-						
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="span9">
-<ul class="breadcrumb">
-  <li>
-    <a href="#">Home</a> <span class="divider">/</span>
-  </li>
-  <li class="active">
-    Tag<span class="divider">/</span>
-  </li>  
-</ul>
+		
+			<div class="span12">
+				<div class="row-fluid">
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a> <span class="divider">/</span></li>
+                        <li class="active">Tag<span class="divider">/</span></li>  
+                    </ul>
+                </div>
 
-				<ul id="widget-tagged-as-results" class="thumbnails">
 
-				</ul>
+            <div class="row-fluid">
+                <div class="span12">
+                    <ol id="widget-tagged-as-results" class="thumbnails"></ol>
+                </div>
+            </div>
 
 
 				<%@ include file="/components/footer.jsp"%>
 			</div>
-
 		</div>
-		<!-- end of page-wrapper -->
+
 </body>
 </html>
