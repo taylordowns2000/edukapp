@@ -67,6 +67,7 @@
 			<div class="span9">
 				<div class="row-fluid" style="position:relative;">
 					<div class="span9">
+					<img id="widget_icon" src="" class="widget-icon pull-left">
 					<h1 id="widget_name">Widget name</h1>
 					<p id="upload-info" class="upload-info">no upload info
 						available</p>
