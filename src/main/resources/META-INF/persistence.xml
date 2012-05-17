@@ -14,6 +14,7 @@
 	<class>uk.ac.edukapp.model.Widgetprofile</class>
 	<class>uk.ac.edukapp.model.Accountinfo</class>
 	<class>uk.ac.edukapp.model.WidgetDescription</class>
+	<class>uk.ac.edukapp.model.WidgetStats</class>
 	<class>uk.ac.edukapp.model.LtiProvider</class>
 	<class>uk.ac.edukapp.model.Userrole</class>
 	<class>uk.ac.edukapp.model.Userrating</class>
