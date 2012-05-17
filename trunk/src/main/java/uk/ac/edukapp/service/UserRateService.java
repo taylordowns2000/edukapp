@@ -40,8 +40,20 @@ public class UserRateService extends AbstractService {
 		q.setParameter("widgetprofile", widgetProfile);
 
 		Number average = (Number) q.getSingleResult();
+		if (average == null) average = 0.0;
 
 		return average;
+	}
+	
+	public Long getRatingCount(Widgetprofile widgetProfile) {
+		EntityManager entityManager = getEntityManagerFactory()
+				.createEntityManager();
+		Query q = entityManager.createNamedQuery("Userrating.getCount");
+		q.setParameter("widgetprofile", widgetProfile);
+
+		Long count = (Long) q.getSingleResult();
+
+		return count;
 	}
 
 	public Message publishUserRate(String rating, Useraccount userAccount,
