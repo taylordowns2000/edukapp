@@ -14,6 +14,7 @@ import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.WidgetDescription;
+import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
@@ -246,6 +247,16 @@ public class WidgetProfileService extends AbstractService {
 				widgetDescription.setWid_id(widgetProfile.getId());
 				widgetDescription.setDescription(widget.getDescription());
 				widgetProfile.setDescription(widgetDescription);
+				
+				//
+				// Create the widget stats
+				//
+				WidgetStats widgetStats = new WidgetStats();
+				widgetStats.setWid_id(widgetProfile.getId());
+				widgetStats.setDownloads(0);
+				widgetStats.setEmbeds(0);
+				widgetStats.setViews(0);
+				entityManager.persist(widgetStats);
 
 			}
 
