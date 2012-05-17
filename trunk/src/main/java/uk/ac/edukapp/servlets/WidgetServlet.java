@@ -41,6 +41,7 @@ import uk.ac.edukapp.service.ActivityService;
 import uk.ac.edukapp.service.UserRateService;
 import uk.ac.edukapp.service.UserReviewService;
 import uk.ac.edukapp.service.WidgetProfileService;
+import uk.ac.edukapp.service.WidgetStatsService;
 import uk.ac.edukapp.util.Message;
 
 /**
@@ -86,10 +87,9 @@ public class WidgetServlet extends HttpServlet {
 			extendedWidgetProfile.setUploadedBy(activityService
 					.getUploadedBy(widgetProfile));
 
-			UserRateService rateService = new UserRateService(
-					getServletContext());
-			extendedWidgetProfile.setAverageRating(rateService
-					.getAverageRating(widgetProfile));
+			
+			WidgetStatsService widgetStatsService = new WidgetStatsService(getServletContext());
+			extendedWidgetProfile.setWidgetStats(widgetStatsService.getStats(widgetProfile));
 
 			MetadataRenderer.render(out, extendedWidgetProfile);
 		}
