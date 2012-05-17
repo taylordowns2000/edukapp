@@ -15,7 +15,10 @@
  */
 package uk.ac.edukapp.renderer;
 
+import org.codehaus.jackson.annotate.JsonUnwrapped;
+
 import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
 
 /**
@@ -33,7 +36,8 @@ public class ExtendedWidgetProfile {
 
 	private String renderInfo;
 
-	private Number averageRating;
+	@JsonUnwrapped
+	private WidgetStats widgetStats;
 
 	/**
 	 * @return the widgetProfile
@@ -80,12 +84,19 @@ public class ExtendedWidgetProfile {
 		this.renderInfo = renderInfo;
 	}
 
-	public Number getAverageRating() {
-		return averageRating;
+	/**
+	 * @return the widgetStats
+	 */
+	public WidgetStats getWidgetStats() {
+		return widgetStats;
 	}
 
-	public void setAverageRating(Number averageRating) {
-		this.averageRating = averageRating;
+	/**
+	 * @param widgetStats the widgetStats to set
+	 */
+	public void setWidgetStats(WidgetStats widgetStats) {
+		this.widgetStats = widgetStats;
 	}
+
 
 }
