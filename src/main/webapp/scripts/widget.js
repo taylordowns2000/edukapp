@@ -301,6 +301,7 @@ function () {
         if (data.uploadedBy) {
             $("#upload-info").text("Uploaded by " + data.uploadedBy.username);
         }
+        $("#widget_icon").attr("src",data.widgetProfile.icon);
         
         //
         // Show w3c or opensocial logo
