@@ -26,82 +26,46 @@
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-list">
-						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
-						<li>
-							<div class="modal hide" id="embedModal">
-								<div class="modal-header">
-									<a class="close" data-dismiss="modal">×</a>
-									<h3>Embed widget</h3>
-									<p>Use the following code</p>
-								</div>
-								<div class="modal-body">
-									<pre class="prettyprint linenums"></pre>
-									<p id="modal-body-lti"></p>
-								</div>
-								<div class="modal-footer">
-									<!-- <a href="#" class="btn btn-primary">Save changes</a>--> 
-									<a href="#" class="btn" data-dismiss="modal">Close</a>
-								</div>
-							</div> 
-							
-							<a id="embedModal-link" data-toggle="modal" data-target="#embedModal" href="#embedModal"> <i
-								class="icon-share-alt"></i> Embed
-						</a>
-						</li>
-						<li><a href="#"><i class="icon-download"></i>Download</a></li>
-						<li><a href="#"><i class="icon-tag"></i>Tag</a></li>
-						<li><a href="#"><i class="icon-comment"></i>Review</a></li>
-						<shiro:hasRole name="admin">
-							<li><a href="#"><i class="icon-remove"></i>Delete widget</a></li>
-						</shiro:hasRole>
-					</ul>
-				</div>
-				<!--/.well -->
-			</div>
 			
-			<!--/span-->
-			<div class="span9">
+			<div class="span7">
 				<div class="row-fluid" style="position:relative;">
 					<div class="span9">
-					<img id="widget_icon" src="" class="widget-icon pull-left">
+					<img id="widget_icon" src="/images/default-icon.png" class="widget-icon pull-left">
 					<h1 id="widget_name">Widget name</h1>
 					<p id="upload-info" class="upload-info">no upload info
 						available</p>
-					</div>
-					<div class="span3" id="widget-type-logo-holder" style="position:absolute;right:5px;top:5px;">
-						<div class="thumbnail">
-							<img style="height:40px;" id="widget-type-logo"></img>
-							<div class="caption">
-								<p></p>
-							</div>
-						</div>
 					</div>
 				</div>
 				
 				<div class="row-fluid">
 						<div id="widget-preview"></div>
-
-						<p id="widget-stats-bar" class="label">
-							<span id="widget-usage"> <i
-								class="icon-download icon-white"></i> 3 downloads <br> <i
-								class="icon-share-alt icon-white"></i>16 embeds<br>
-							</span> 
-							average rating:<span id="widget-rating"></span><br/>
-							<shiro:authenticated>
-							your rating:<span id="rating-module"></span>
-							</shiro:authenticated>
-							<shiro:notAuthenticated>
-							Login to rate
-							</shiro:notAuthenticated>
-						</p>
 				</div>
+				
+				<div class="modal hide" id="embedModal">
+				    <div class="modal-header">
+				        <a class="close" data-dismiss="modal">×</a>
+				        <h3>Embed widget</h3>
+				        <p>Use the following code</p>
+				    </div>
+				    <div class="modal-body">
+				        <pre class="prettyprint linenums"></pre>
+				        <p id="modal-body-lti"></p>
+				    </div>
+				    <div class="modal-footer">
+				        <!-- <a href="#" class="btn btn-primary">Save changes</a>--> 
+				        <a href="#" class="btn" data-dismiss="modal">Close</a>
+				    </div>
+				</div> 
+					
+				<!-- Actions -->		
+				<p>
+				    <a id="embedModal-link" data-toggle="modal" data-target="#embedModal" href="#embedModal" class="btn btn-primary"> <i class="icon-share-alt icon-white"></i> Embed</a>		
+				    <a href="#" class="btn btn-primary"><i class="icon-download icon-white"></i> Download</a></li>
+				    <a href="#" class="btn btn-primary"><i class="icon-fullscreen icon-white"></i> Pop Out</a></li>
+				</p>
 
 				<div class="row-fluid">
-						<h6>Descripiton:</h6>
+						<h6>Description:</h6>
 						<dl id="widget-description">Lorem Ipsum is simply dummy text
 							of the printing and typesetting industry. Lorem Ipsum has been
 							the industry's standard dummy text ever since the 1500s, when an
@@ -114,15 +78,6 @@
 							including versions of Lorem Ipsum.
 						</dl>
 						<shiro:authenticated><a id="edit-widget-information" href="#">edit</a></shiro:authenticated>
-						<h6>Tagged as:</h6>
-						<div id="widget-tags"></div>
-						<shiro:authenticated><a id="add-tag">add tag</a></shiro:authenticated>
-
-						<h6>Useful for:</h6>
-						<div id="widget-useful-for">
-							
-						</div>
-						<shiro:authenticated><a id="add-affordance">add affordance</a></shiro:authenticated>
 				</div>
 				
 				<div class="row-fluid">				
@@ -139,15 +94,53 @@
 						<div id="user-reviews-list"></div>
 					</div>
 					<div class="span4">&nbsp;</div>
+				</div>	
+            </div>	
+			 
+			 <div class="span5">
+			 
+				<div class="well">
+						<h3>Info</h3>
+						<p>3 downloads </p> 
+						<p>16 embeds</p>
+						
+						<h3>Ratings</h3>
+
+				        <p>average rating:<span id="widget-rating"></span></p>
+							<shiro:authenticated>
+				        <p>your rating:<span id="rating-module"></span></p>
+							</shiro:authenticated>
+							<shiro:notAuthenticated>
+				        <p><i>Login to rate</i></p>
+							</shiro:notAuthenticated>
+								
+
+				        <h3>Tags</h3>
+						<div id="widget-tags"></div>
+						<shiro:authenticated><a id="add-tag">add tag</a></shiro:authenticated>
+
+						<h3>Useful for</h3>
+						<div id="widget-useful-for">
+							
+						</div>
+						<shiro:authenticated><a id="add-affordance">add affordance</a></shiro:authenticated>
+						
+						<h3>Format</h3>
+				        <div id="widget-type"></div>
+						
+						<shiro:hasRole name="admin">
+							<p><a href="#"><i class="icon-remove"></i>Delete widget</a></p>
+						</shiro:hasRole>
+					</ul>
 				</div>
-			</div>				
+			</div>	
+			
+			</div>		
 
 
-				<%@ include file='components/footer.jsp'%>
+            <%@ include file='components/footer.jsp'%>
 
 		</div>
-		<!--/row-->
-		<hr>
 	</div>
 
 
