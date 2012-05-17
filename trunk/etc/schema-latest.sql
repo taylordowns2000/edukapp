@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `accountinfo` (
   `shortbio` varchar(2056) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activitytext` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2652 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2652 ;
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `commenttext` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3803 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3803 ;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `ltiprovider` (
   `consumerSecret` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `U_LTPRVDR_ID` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `openjpa_sequence_table` (
   `ID` tinyint(4) NOT NULL,
   `SEQUENCE_VALUE` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `rolename` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2606 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2606 ;
 
 -- --------------------------------------------------------
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `tagtext` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3855 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3855 ;
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `types` (
   `typetext` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `U_TYPES_ID` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `useraccount` (
   `token` varchar(256) NOT NULL DEFAULT '02',
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3552 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3552 ;
 
 -- --------------------------------------------------------
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `useraccount_roles` (
   `role_id` int(11) NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `useractivities` (
   `object_id` int(11) NOT NULL,
   `time` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `userratings` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `widgetprofile_id` (`widgetprofile_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3402 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3402 ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `userreview` (
   KEY `comment_id` (`comment_id`),
   KEY `widgetprofile_id` (`widgetprofile_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3753 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3753 ;
 
 -- --------------------------------------------------------
 
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
   PRIMARY KEY (`id`),
   KEY `widgetprofile_id` (`widgetprofile_id`),
   KEY `activity_id` (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
 
 -- --------------------------------------------------------
 
@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2552 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2552 ;
 
 -- --------------------------------------------------------
 
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles_tags` (
   KEY `tag_id` (`tag_id`),
   KEY `widgetprofile_id_2` (`widgetprofile_id`),
   KEY `tag_id_2` (`tag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -265,7 +265,22 @@ CREATE TABLE IF NOT EXISTS `widget_descriptions` (
   `wid_id` int(11) NOT NULL,
   `description` text,
   KEY `wid_id` (`wid_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `widgetstats`
+--
+
+CREATE TABLE IF NOT EXISTS `widgetstats` (
+  `wid_id` int(11) PRIMARY KEY NOT NULL,
+  `downloads` int(11),
+  `embeds` int(11),
+  `views` int(11),
+  KEY `wid_id` (`wid_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Constraints for dumped tables
