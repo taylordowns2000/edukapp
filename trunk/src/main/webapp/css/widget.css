@@ -39,3 +39,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.promotion {
+  padding: 60px;
+  margin-bottom: 30px;
+  background-color: #FFFFCC;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
