@@ -6,20 +6,17 @@ function renderWidget(id, icon, name, description){
     //
     // Replace with placeholder for now if missing
     //
-    if (!icon) icon = "http://placehold.it/80x80"
+    if (!icon) icon = "http://placehold.it/64x64"
 
     var renderedWidget = 
-    '	<li class="span3">'+
-    '	<div class="thumbnail">'+
-    '		<img style="max-height:80px; max-width:80px" src="'+icon+'" alt="">'+
-    '		<div class="caption">'+
-    '			<h5>'+name+'</h5>'+
+    '<li class="span4 widget-partial-container">'+
+    '	 <a href="/widget/'+id+'">'+
+    '   <div class="widget-partial">'+
+    '		<img class="widget-icon pull-left" src="'+icon+'" alt="">'+
+    '			<h4>'+name+'</h4>'+
     '			<p class="caption-description">'+description+'</p>'+
-    '			<p>'+
-    '				<a href="/widget/'+id+'" class="btn btn-primary btn-mini">Read more &raquo;</a>'+
-    '			</p>'+
-    '		</div>'+
     '	</div>'+
+    '    </a>'+
     '</li>';
     
     return renderedWidget;

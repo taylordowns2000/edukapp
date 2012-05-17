@@ -4958,13 +4958,3 @@ a.badge:hover {
 .invisible {
   visibility: hidden;
 }
-
-/*
- * Additional  Thumbnail Support
- */  
-.caption-description {
-height: 30px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-}
