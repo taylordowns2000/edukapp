@@ -24,42 +24,25 @@
 
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span3">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-list">
-						<li class="nav-header">Sidebar</li>
-						 <li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
-						<li><a href="#"><i class="icon-question-sign"></i>Help topic: searching</a>
-						</li>
-					</ul>
-				</div>
-				<!--/.well -->
-			</div>
-			<!--/span-->
-			<div class="span9">
+
+			<div class="span12">
 				<div class="row-fluid">
+				    <ul class="breadcrumb">
+                        <li><a href="/index.jsp">Home</a> <span class="divider">/</span></li>
+                        <li class="active">Search<span class="divider">/</span></li>  
+                    </ul>				
+				</div>
 				
-				<ul class="breadcrumb">
-  <li>
-    <a href="/index.jsp">Home</a> <span class="divider">/</span>
-  </li>
-  <li class="active">
-    Search<span class="divider">/</span>
-  </li>  
-</ul>				
-				</div>
 				<div class="row-fluid">
-					<div class="span12">
-					  <ol id="search_results" class="thumbnails"></ol>   
-					</div>
+				    <div class="span12">
+					       <ol id="search_results" class="thumbnails"></ol>   
+				    </div>
 				</div>
-				<!--/row-->
+
 				 <%@ include file='/components/footer.jsp'%>
 			</div>
-			<!--/span-->			
+		
 		</div>
-		<!--/row-->
-		<hr>
 	</div>
 	
   
