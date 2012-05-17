@@ -18,3 +18,4 @@ footer {
 <script src="/scripts/util.js"></script>
 <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" />
 <link rel="stylesheet" href="/css/bootstrap-responsive.min.css" type="text/css" />
+<link rel="stylesheet" href="/css/widget.css" type="text/css" />
