@@ -307,11 +307,9 @@ function () {
         // Show w3c or opensocial logo
         //
         if (data.widgetProfile.type === "W3C Widget") {
-            $('#widget-type-logo-holder img').attr("src","/images/W3C_Logo.png");
-            $('#widget-type-logo-holder p').html("This widget complies with the <a href=\"http://www.w3.org/TR/widgets/\">W3C widget</a> standard");
+            $('#widget-type').html("This widget complies with the <a href=\"http://www.w3.org/TR/widgets/\">W3C widget</a> standard");
         } else {
-            $('#widget-type-logo-holder img').attr("src","/images/OpenSocial-logo.png");
-            $('#widget-type-logo-holder p').html("This widget complies with the <a href=\"http://docs.opensocial.org/display/OS/Home\">OpenSocial standard</a>");
+            $('#widget-type').html("This widget complies with the <a href=\"http://docs.opensocial.org/display/OS/Home\">OpenSocial standard</a>");
         
         }
 
