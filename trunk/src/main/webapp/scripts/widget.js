@@ -338,9 +338,11 @@ function () {
         
         //
         // Show preview instance if available
+        // and create actions
         //
         if (data.renderInfo) {
             $('#widget-preview').html(data.renderInfo);
+            $('#widget-open-fully-link').attr("href", data.renderUrl);
             $('#embedModal .modal-body pre').text((data.renderInfo));
             $('#modal-body-lti').html("<p>For Basic LTI, copy the following information to your Basic LTI consumer:</p><p>URL: http://widgets.open.ac.uk:8080/lti/" + data.widgetProfile.id + "</p><p>Consumer Key: TEST</p><p>Consumer Secret: TEST</p>");
             //show embed code as a modal
