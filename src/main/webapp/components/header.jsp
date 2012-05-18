@@ -17,6 +17,7 @@
 				        <ul class="nav">
 				          <div id="logged-in-user-id" style="display:none"><shiro:principal property="id"/></div>
 						  <li><a href="/user/<shiro:principal property="id"/>"><i class="icon icon-user icon-white"></i><span id="logged-in-user-name"><shiro:principal property="username"/></span></a></li>
+						  <input type="hidden" id="logged-in-user-gravatar-img" value="http://placehold.it/64">
 						  <li><a style="margin-left:5px;" href="/logout">Log out</a></li>
 				        </ul>
 					</shiro:authenticated>
