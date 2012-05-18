@@ -228,9 +228,6 @@ function () {
             });
 
     });
-
-
-
     
     //
     // add write a review handler
@@ -245,11 +242,11 @@ function () {
         		'</div>');
 
         $('#write-a-review button[type="submit"]').click(function () {
-            //get info from hidden fields
+            //get info from hidden fields and profile area
             var reviewText = $('#review-textarea').val();
-            var userid = $('#logged-in-user-id').val();
+            var userid = $('#logged-in-user-id').text();
             var gravatarImg = $('#logged-in-user-gravatar-img').val();
-            var username = $('#logged-in-user-name').val();
+            var username = $('#logged-in-user-name').text();
             
             var review  = {};
             review.comment = $('#review-textarea').val();
@@ -268,7 +265,7 @@ function () {
                 },
                 success: function (resp) {
                     if (resp['message'] === "OK") {
-                        $('#user-reviews').append('<div style="">' + '<div class="row-fluid">' + '  <div class="span1">' + '        <img src="http://www.gravatar.com/avatar/' + gravatarImg + '?s=35&amp;d=identicon">' + '        <h5><a href="profile.jsp?id=' + userid + '">' + username + '</a></h5>' + '  </div>' + ' <div class="span11">' + '       <div class="review-item-info-wrapper"></div>' + '       <p class="review-content-text">' + reviewText + '</p>' + '      <h6>just now</h6>' + '  </div>' + '</div>' + '</div>');
+                        $('#user-reviews').append("<div><blockquote><img src='"+gravatarImg+"' class='thumbnail'><p>"+reviewText+"</p><small><a href='/user/"+userid+"'>"+username+"</a>, just now</small>");
                         $('#write-a-review').remove();
                     } else {
                         console.log('error');
@@ -405,40 +402,13 @@ function () {
         //
         $.getJSON('/api/widget/' + widget_id +'/comments', function (reviews) {
             for (var i = 0; i < reviews.length; i++) {
-                var li = document.createElement("div");
-                $(li).hide();
                 var wrapper = document.createElement("div");
-                $(wrapper).attr("class", "row-fluid");
-                //
-                // User avatar, handle and link
-                //
-                var pic = document.createElement("div");
-                $(pic).attr("class", "span1");
-                var img = document.createElement("img");
-                $(img).attr("src", "http://www.gravatar.com/avatar/205e460b479e2e5b48aec05710c08d50?s=35&d=identicon");
-                $(pic).append(img);
-                $(pic).append("<h5><a href='#'>" + reviews[i].user + "</a></h5>");
-                $(wrapper).append(pic);
-                //
-                // Date, stars and comment
-                //
-                var item = document.createElement("div");
-                $(item).attr("class", "span11");
-                var iteminfo = document.createElement("div");
-                $(iteminfo).attr("class", "review-item-info-wrapper");
-                for (var stars = 0; stars < reviews[i].rating; stars++) {
-                    $(iteminfo).append("<i class='icon-star'></i>");
-                }
-                $(item).append(iteminfo);
-                var itemtext = document.createElement("p");
-                $(itemtext).attr("class", "review-content-text");
-                $(itemtext).text(reviews[i].text);
-                $(item).append(itemtext);
-                $(item).append("<h6>" + reviews[i].time + "</h6>");
-                $(wrapper).append(item);
-                $(li).append(wrapper);
-                $(li).appendTo("#user-reviews").fadeIn("slow");
+                $(wrapper).hide();
+                $(wrapper).append("<blockquote><img src='http://placehold.it/64' class='thumbnail'><p>"+reviews[i].text+"</p><small><a href='#'>"+reviews[i].user+"</a>, "+reviews[i].time+"</small>");
+                $(wrapper).appendTo("#user-reviews").fadeIn("slow");
             }
         });
+        
+        $("#widget_info").fadeIn();
     });
 });
