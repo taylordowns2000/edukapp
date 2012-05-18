@@ -15,6 +15,8 @@
  */
 package uk.ac.edukapp.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,8 +24,10 @@ import javax.persistence.Id;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
-public class WidgetStats {
+public class WidgetStats implements Serializable{
 	
+	private static final long serialVersionUID = 6437323458497890249L;
+
 	@JsonIgnore
 	@Id
 	@Column(nullable = false)
