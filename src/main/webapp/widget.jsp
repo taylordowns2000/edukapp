@@ -24,10 +24,10 @@
 	<%@ include file='components/header.jsp'%>
 
 
-	<div class="container-fluid">
-		<div class="row-fluid" style="display:none" id="widget_info">
+	<div class="container-fluid" style="display:none" id="widget_info">
+		<div class="row-fluid">
 			
-			<div class="span7">
+			<div class="span4">
 				<div class="row-fluid" style="position:relative;">
 					<div class="span9">
 					<img id="widget_icon" src="/images/default-icon.png" class="widget-icon pull-left">
@@ -61,7 +61,7 @@
 				<p>
 				    <a id="embedModal-link" data-toggle="modal" data-target="#embedModal" href="#embedModal" class="btn btn-primary"> <i class="icon-share-alt icon-white"></i> Embed</a>		
 				    <a href="#" class="btn btn-primary"><i class="icon-download icon-white"></i> Download</a></li>
-				    <a href="#" class="btn btn-primary"><i class="icon-fullscreen icon-white"></i> Pop Out</a></li>
+				    <a id="widget-open-fully-link" href="#" class="btn btn-primary"><i class="icon-fullscreen icon-white"></i> Full screen</a></li>
 				</p>
 
 				<div class="row-fluid">
@@ -80,21 +80,19 @@
 						<shiro:authenticated><a id="edit-widget-information" href="#">edit</a></shiro:authenticated>
 				</div>
 				
-				<div class="row-fluid">				
-                    <h3>Related widgets</h3>
-					<ul id="related-widgets" class="thumbnails"></ul>
-				</div>
-				
+
+            </div>	
+            
+            <div class="span4">
                 <br>	
-				    <div id="user-reviews">
+				<div id="user-reviews">
 				    <h3>User reviews</h3>
 				    <shiro:authenticated><p id="write-a-review-anchor"><a href="#write-a-review">Write a review</a></p></shiro:authenticated>
 				    <div id="user-reviews-list"></div>
 				</div>
-
-            </div>	
+            </div>
 			 
-			 <div class="span5">
+            <div class="span4">
 			 
 				<div class="well">
 						<h3>Info</h3>
@@ -135,6 +133,10 @@
 			
 			</div>		
 
+            <div class="row-fluid">				
+                    <h3>Related widgets</h3>
+					<ul id="related-widgets" class="thumbnails"></ul>
+            </div>
 
             <%@ include file='components/footer.jsp'%>
 
