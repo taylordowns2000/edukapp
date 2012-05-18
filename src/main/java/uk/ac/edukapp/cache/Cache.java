@@ -57,6 +57,7 @@ public class Cache {
 	public void put(String name, Object obj){
 		try {
 			jcs.put(name, obj);
+			logger.debug("JCS: added "+name);
 		} catch (CacheException e) {
 			logger.error("JCS error: cannot put object", e);
 		}
@@ -74,6 +75,7 @@ public class Cache {
 			attributes.setIsEternal(false);
 			attributes.setMaxLifeSeconds(lifetime);
 			jcs.put(name, obj, attributes);
+			logger.debug("JCS: added "+name);
 		} catch (CacheException e) {
 			logger.error("JCS error: cannot put object", e);
 		}
@@ -86,6 +88,22 @@ public class Cache {
 	 */
 	public Object get(Object name){
 		return jcs.get(name);
+	}
+	
+	/**
+	 * Remove item from cache. If the item does not exist,
+	 * no exception is thrown but an error is logged.
+	 * @param name the name of the object to remove
+	 */
+	public void remove(Object name){
+		if (jcs.get(name) != null){
+			try {
+				jcs.remove(name);
+				logger.debug("JCS: removed "+name);
+			} catch (CacheException e) {
+				logger.error("JCS error: cannot remove object", e);
+			}
+		}
 	}
 
 }
