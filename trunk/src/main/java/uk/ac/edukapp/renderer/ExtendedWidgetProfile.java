@@ -35,6 +35,8 @@ public class ExtendedWidgetProfile {
 	private Useraccount uploadedBy;
 
 	private String renderInfo;
+	
+	private String renderUrl;
 
 	@JsonUnwrapped
 	private WidgetStats widgetStats;
@@ -82,6 +84,20 @@ public class ExtendedWidgetProfile {
 	 */
 	public void setRenderInfo(String renderInfo) {
 		this.renderInfo = renderInfo;
+	}
+
+	/**
+	 * @return the renderUrl
+	 */
+	public String getRenderUrl() {
+		return renderUrl;
+	}
+
+	/**
+	 * @param renderUrl the renderUrl to set
+	 */
+	public void setRenderUrl(String renderUrl) {
+		this.renderUrl = renderUrl;
 	}
 
 	/**

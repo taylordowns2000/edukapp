@@ -8,14 +8,14 @@ import uk.ac.edukapp.model.Widgetprofile;
 
 public class Renderer {
 
-	public static String render(Widgetprofile widgetprofile) {
+	public static String render(Widgetprofile widgetprofile, boolean wrap) {
 
 		// deduce whether is w3c or open social
 		byte w3cOrOs = widgetprofile.getW3cOrOs();
 
 		if (w3cOrOs == 0) {// is w3c
 			return WidgetRenderer.getInstance()
-					.render(widgetprofile.getWidId());
+					.render(widgetprofile.getWidId(), wrap);
 		} else if (w3cOrOs == 1) {// is os
 			return GadgetRenderer.getInstance()
 					.render(widgetprofile.getWidId());
@@ -34,7 +34,7 @@ public class Renderer {
 
 		if (w3cOrOs == 0) {// is w3c
 			return WidgetRenderer.getInstance()
-					.render(widgetprofile.getWidId());
+					.render(widgetprofile.getWidId(), true);
 		} else if (w3cOrOs == 1) {// is os
 			return GadgetRenderer.getInstance()
 					.render(widgetprofile.getWidId());
@@ -55,7 +55,7 @@ public class Renderer {
 
 		if (w3cOrOs == 0) {// is w3c
 			return WidgetRenderer.getInstance().render(
-					widgetprofile.getWidId(), width, height);
+					widgetprofile.getWidId(), width, height, true);
 		} else if (w3cOrOs == 1) {// is os
 			return GadgetRenderer.getInstance().render(
 					widgetprofile.getWidId(), width, height);

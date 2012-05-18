@@ -36,7 +36,7 @@ public class WidgetRenderer {
 	 *            id (typically a uri) of widget to render
 	 * @return html-ready code as a string
 	 */
-	public String render(String uri, int width, int height) {
+	public String render(String uri, int width, int height, boolean wrap) {
 		String html = "";
 		WidgetInstance widgetInstance = null;
 		try {
@@ -51,16 +51,24 @@ public class WidgetRenderer {
 			wce.printStackTrace();
 			return null;
 		}
-		// html+="<p>"+uri+"</p>";
+
+		//
+		// If we don't need a wrapped version, just return the URL
+		//
+		if (!wrap) return widgetInstance.getUrl();
+		
+		//
+		// Return Iframe wrapper HTML snippet
+		//
 		html += "<iframe src=\"" + widgetInstance.getUrl() + "\"";
 		html += " width=\"" + width + "\"";
 		html += " height=\"" + height + "\"";
 		html += "></iframe>";
 		return html;
 	}
-
-	public String render(String uri) {
-		return render(uri, 500, 300);
+	
+	public String render(String url, boolean wrap){
+		return render(url, 500, 300, wrap);		
 	}
 	
 	/**

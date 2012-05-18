@@ -66,7 +66,7 @@ public class FeaturedServlet extends HttpServlet {
 			//
 			// Get instance rendering
 			//
-			extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile));
+			extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile, true));
 
 			extendedWidgetProfiles.add(extendedWidgetProfile);
 		}
