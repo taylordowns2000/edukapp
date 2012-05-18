@@ -7,10 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
-import uk.ac.edukapp.model.Comment;
+import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userrating;
-import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.util.Message;
 
@@ -100,6 +99,11 @@ public class UserRateService extends AbstractService {
 			entityManager.getTransaction().commit();
 
 			msg.setMessage("OK");
+			
+			//
+			// Remove cached stats for this widget profile
+			//
+			Cache.getInstance().remove("widgetStats:"+widgetProfile.getId());
 
 		} catch (Exception e) {
 			msg.setMessage("error:" + e.getMessage());
