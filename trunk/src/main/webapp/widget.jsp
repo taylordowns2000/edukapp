@@ -25,7 +25,7 @@
 
 
 	<div class="container-fluid">
-		<div class="row-fluid">
+		<div class="row-fluid" style="display:none" id="widget_info">
 			
 			<div class="span7">
 				<div class="row-fluid" style="position:relative;">
@@ -65,7 +65,7 @@
 				</p>
 
 				<div class="row-fluid">
-						<h6>Description:</h6>
+						<h3>Description:</h3>
 						<dl id="widget-description">Lorem Ipsum is simply dummy text
 							of the printing and typesetting industry. Lorem Ipsum has been
 							the industry's standard dummy text ever since the 1500s, when an
@@ -81,20 +81,17 @@
 				</div>
 				
 				<div class="row-fluid">				
-                    <h6>Related widgets</h6>
+                    <h3>Related widgets</h3>
 					<ul id="related-widgets" class="thumbnails"></ul>
 				</div>
+				
+                <br>	
+				    <div id="user-reviews">
+				    <h3>User reviews</h3>
+				    <shiro:authenticated><p id="write-a-review-anchor"><a href="#write-a-review">Write a review</a></p></shiro:authenticated>
+				    <div id="user-reviews-list"></div>
+				</div>
 
-				<div class="row-fluid">
-					<div id="user-reviews">
-						<h6>User reviews</h6>
-						<shiro:authenticated><p id="write-a-review-anchor">
-							<a href="#write-a-review">Write a review</a>
-						</p></shiro:authenticated>
-						<div id="user-reviews-list"></div>
-					</div>
-					<div class="span4">&nbsp;</div>
-				</div>	
             </div>	
 			 
 			 <div class="span5">
@@ -104,6 +101,7 @@
 						<p>3 downloads </p> 
 						<p>16 embeds</p>
 						
+						<br>
 						<h3>Ratings</h3>
 
 				        <p>average rating:<span id="widget-rating"></span></p>
@@ -113,18 +111,18 @@
 							<shiro:notAuthenticated>
 				        <p><i>Login to rate</i></p>
 							</shiro:notAuthenticated>
-								
-
+				
+                        <br>
 				        <h3>Tags</h3>
 						<div id="widget-tags"></div>
 						<shiro:authenticated><a id="add-tag">add tag</a></shiro:authenticated>
-
+                
+                        <br>
 						<h3>Useful for</h3>
-						<div id="widget-useful-for">
-							
-						</div>
+						<div id="widget-useful-for"></div>
 						<shiro:authenticated><a id="add-affordance">add affordance</a></shiro:authenticated>
 						
+						<br>
 						<h3>Format</h3>
 				        <div id="widget-type"></div>
 						
