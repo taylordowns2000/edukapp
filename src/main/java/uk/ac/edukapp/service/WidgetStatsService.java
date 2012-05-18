@@ -18,10 +18,17 @@ package uk.ac.edukapp.service;
 import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
 
 public class WidgetStatsService extends AbstractService{
+	
+
+	static Logger logger = Logger.getLogger(WidgetStatsService.class
+			.getName());
 	
 	private UserRateService userRateService;
 	
@@ -37,12 +44,25 @@ public class WidgetStatsService extends AbstractService{
 	 * @return
 	 */
 	public WidgetStats getStats(Widgetprofile widgetProfile){
-		EntityManager em = getEntityManagerFactory().createEntityManager();
-		WidgetStats widgetStats = em.find(WidgetStats.class, widgetProfile.getId());
-		em.close();
 		
-		widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
-		widgetStats.setTotalRatings(userRateService.getRatingCount(widgetProfile));
+		WidgetStats widgetStats = null;
+		
+		Cache cache = Cache.getInstance();
+		widgetStats = (WidgetStats) cache.get("widgetStats:"+widgetProfile.getId());
+		
+		if (widgetStats == null){
+			logger.debug("creating new cached stats");
+			EntityManager em = getEntityManagerFactory().createEntityManager();
+			widgetStats = em.find(WidgetStats.class, widgetProfile.getId());
+			em.close();
+		
+			widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
+			widgetStats.setTotalRatings(userRateService.getRatingCount(widgetProfile));
+			
+			cache.put("widgetStats:"+widgetProfile.getId(), widgetStats);
+		} else {
+			logger.debug("using cached stats");
+		}
 		
 		return widgetStats;
 	}
