@@ -190,7 +190,19 @@
 		<servlet-name>SessionServlet</servlet-name>
 		<url-pattern>/session</url-pattern>
 	</servlet-mapping>
-		
+
+	
+	<!--  cross domain support -->
+	<filter>
+		<filter-name>CORS</filter-name>
+		<filter-class>uk.ac.edukapp.security.CorsFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>CORS</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+
 	<!-- rewrite servlet -->
 	<filter>
     	<filter-name>UrlRewriteFilter</filter-name>
