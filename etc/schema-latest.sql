@@ -61,6 +61,9 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3803 ;
 
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -235,6 +238,8 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `featured` tinyint(1) DEFAULT '0',
   `DESCRIPTION_WID_ID` int(11) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
+  `created` timestamp NOT NULL,
+  `updated` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2552 ;
@@ -325,6 +330,8 @@ ALTER TABLE `widgetprofiles_tags`
 --
 ALTER TABLE `widget_descriptions`
   ADD CONSTRAINT `widget_descriptions_ibfk_1` FOREIGN KEY (`wid_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+  
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
