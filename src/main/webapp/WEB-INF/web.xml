@@ -44,6 +44,7 @@
 		<servlet-name>SearchServlet</servlet-name>
 		<url-pattern>/api/search</url-pattern>
 	</servlet-mapping>
+  
 	<servlet>
 		<description>Similar servlet</description>
 		<display-name>similar</display-name>
@@ -245,6 +246,25 @@
 		<url-pattern>/api/activity</url-pattern>
 	</servlet-mapping>
 	<!-- activity servlet end -->
+
+	<servlet>
+		<description></description>
+		<display-name>RestServlet</display-name>
+		<servlet-name>RestServlet</servlet-name>
+		<servlet-class>org.apache.wink.server.internal.servlet.RestServlet</servlet-class>
+<!--		<init-param>
+			<param-name>applicationConfigLocation</param-name>
+			<param-value>/WEB-INF/application</param-value>
+		</init-param>  -->
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>uk.ac.edukapp.server.configuration.WinkJacksonApplication</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RestServlet</servlet-name>
+		<url-pattern>/api/rest/*</url-pattern>
+	</servlet-mapping>
 	
 	
 	<!-- account info servlet -->

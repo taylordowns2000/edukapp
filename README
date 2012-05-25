@@ -24,8 +24,9 @@ http://localhost:8080/solr/en/dataimport?command=full-import
 
 To then get Edukapp to initialize all indexed widgets:
 
-http://localhost:8080/api/search?q=%5B*TO%20*%5D
-
+http://localhost:8080/api/search?q=%5B*TO%20*%5D&resultsize=100000
+The large result size is to make sure all the widgets are indexed, if your wookie server has more widgets than this
+increase the result size accordingly
 
 Deploy in tomcat (localhost/remote host)
 ------------------------------------------
