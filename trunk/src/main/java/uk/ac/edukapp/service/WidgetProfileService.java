@@ -1,6 +1,9 @@
 package uk.ac.edukapp.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,6 +11,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
@@ -42,14 +47,39 @@ import uk.ac.edukapp.service.WidgetService;
  * Services for Widget Profiles
  * 
  * @author scott.bradley.wilson@gmail.com
+ * @author kjpopat@gmail.com
+ * 
  */
 public class WidgetProfileService extends AbstractService {
 
 	static Logger logger = Logger.getLogger(WidgetProfileService.class
 			.getName());
+	
+	private PropertiesConfiguration properties;
+	
+	// popularity factors
+	static int EmbedFactor = 1;
+	static int DownloadFactor = 4;
+	static int ViewFactor = 20;
+
 
 	public WidgetProfileService(ServletContext ctx) {
 		super(ctx);
+		try {
+			properties = new PropertiesConfiguration("store.properties");
+			if ( properties.containsKey("popularity.factor.embeds")) {
+				EmbedFactor = properties.getInt("popularity.factor.embeds");
+			}
+			if ( properties.containsKey("popularity.factor.downloads")) {
+				DownloadFactor = properties.getInt("popularity.factor.downloads");
+			}
+			if ( properties.containsKey("popularity.factor.views")) {
+				ViewFactor = properties.getInt ("popularity.factor.views");
+			}
+		} catch (ConfigurationException e) {
+			logger.debug(e.toString());
+			// leave defaults
+		}
 	}
 
 	/**
@@ -67,6 +97,7 @@ public class WidgetProfileService extends AbstractService {
 		em.getTransaction().begin();
 		Widgetprofile widgetprofile = new Widgetprofile();
 		widgetprofile.setName(name);
+		widgetprofile.setCreated(new Date());
 		byte zero = 0;
 		widgetprofile.setW3cOrOs(zero);
 		widgetprofile.setWidId(uri);
@@ -82,6 +113,31 @@ public class WidgetProfileService extends AbstractService {
 		return widgetprofile;
 
 	}
+	
+	
+	public Widgetprofile updateWidgetProfile ( String uri, String name, String description ) {
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Query wpQuery = em.createNamedQuery("Widgetprofile.findByUri");
+		wpQuery.setParameter("uri", uri);
+		Widgetprofile widgetprofile = (Widgetprofile) wpQuery.getSingleResult();
+		if ( widgetprofile != null ) {
+			widgetprofile.setName(name);
+			widgetprofile.setUpdated(new Date());
+			WidgetDescription desc = widgetprofile.getDescription();
+			if ( desc == null ) {
+				desc = new WidgetDescription();
+				desc.setWid_id(widgetprofile.getId());
+				widgetprofile.setDescription(desc);
+			}
+			desc.setDescription(description);
+			em.persist(em.merge(widgetprofile));
+		}
+		em.getTransaction().commit();
+		return widgetprofile;
+	}
+	
+	
 
 	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag) {
 		return tag.getWidgetprofiles();
@@ -123,15 +179,98 @@ public class WidgetProfileService extends AbstractService {
 		return widgetProfiles;
 	}
 
+	
+	// comparator for rating
+	static final Comparator<Widgetprofile> RATING_ORDER = new Comparator<Widgetprofile>() {
+		public int compare (Widgetprofile wp1, Widgetprofile wp2) {
+			int wp1rating = wp1.getWidgetStats().getAverageRating().intValue();
+			int wp2rating = wp2.getWidgetStats().getAverageRating().intValue();
+			if ( wp1rating == wp2rating ) {
+				return 0;
+			}
+			return (wp1rating < wp2rating ) ? -1 : 1;
+		}
+	};
+	
+	
+	// comparator for date
+	static final Comparator<Widgetprofile> DATE_ORDER = new Comparator<Widgetprofile>() {
+		public int compare (Widgetprofile wp1, Widgetprofile wp2 ) {
+			return wp2.getUpdated().compareTo(wp1.getUpdated());
+		}
+	};
+	
+	// comparator for popularity
+	// number of times downloaded + number of times embedded
+	
+	static final Comparator<Widgetprofile> POPULARITY_ORDER = new Comparator<Widgetprofile>() {
+		public int compare (Widgetprofile wp1, Widgetprofile wp2) {
+			WidgetStats ws1 = wp1.getWidgetStats();
+			WidgetStats ws2 = wp2.getWidgetStats();
+			float wp1f = 	factorValue(ws1.getEmbeds(), EmbedFactor ) +
+							factorValue(ws1.getDownloads(), DownloadFactor ) +
+							factorValue(ws1.getViews(), ViewFactor );
+			float wp2f =	factorValue(ws2.getEmbeds(), EmbedFactor ) +
+							factorValue(ws2.getDownloads(), DownloadFactor ) +
+							factorValue(ws2.getViews(), ViewFactor );
+			if ( wp1f == wp2f ) {
+				return 0;
+			}
+			return ( wp1f < wp2f ) ? -1 : 1;
+		}
+	};
+	
+	private static float factorValue ( int value, int factor ) {
+		if ( value == 0 ) { // catch for zero divide
+			return 0;
+		}
+		else {
+			return ((float) value)/((float)factor);
+		}
+	}
+	
+
+	public SearchResults searchWidgetProfilesOrderedByRating(String query,
+			String language, int rows, int offset) {
+		return searchWidgetProfilesOrderedBy ( query, language, rows, offset, RATING_ORDER);
+	}
+	
+	public SearchResults searchWidgetProfilesOrderedByDate ( String query,
+			String language, int rows, int offset ) {
+		return searchWidgetProfilesOrderedBy ( query, language, rows, offset, DATE_ORDER );
+	}
+	
+	public SearchResults searchWidgetProfilesOrderedByPopularity(String query,
+			String language, int rows, int offset) {
+		return searchWidgetProfilesOrderedBy(query, language, rows, offset, POPULARITY_ORDER);
+	}
+	
 	public SearchResults searchWidgetProfilesOrderedByRelevance(String query,
 			String language, int rows, int offset) {
 		return searchWidgetProfiles(query, language, rows, offset);
 	}
-
-	public SearchResults searchWidgetProfilesOrderedByRating(String query,
-			String language, int rows, int offset) {
-		// FIXME create comparator using ratings
-		return searchWidgetProfiles(query, language, rows, offset);
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private SearchResults searchWidgetProfilesOrderedBy ( String query, String language, int rows, int offset, Comparator comparator ) {
+		SearchResults results = searchWidgetProfiles(query, language, rows, offset );
+		Collections.sort(results.getWidgets(), comparator );
+		return results;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public SearchResults returnWidgetProfilesOrderedByDate ( int rows, int offset ) {
+		List<Widgetprofile> widgetprofiles;
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.updated");
+		wpQuery.setFirstResult(offset);
+		wpQuery.setMaxResults(rows);
+		widgetprofiles = (List<Widgetprofile>)wpQuery.getResultList();
+		entityManager.close();
+		SearchResults sr = new SearchResults();
+		sr.setWidgets(widgetprofiles);
+		return sr;
 	}
 
 	public List<Widgetprofile> findSimilarWidgetsProfiles(
@@ -142,11 +281,7 @@ public class WidgetProfileService extends AbstractService {
 		return getWidgetProfilesForWidgets(widgets);
 	}
 
-	public SearchResults searchWidgetProfilesOrderedByPopularity(String query,
-			String language, int rows, int offset) {
-		// FIXME create comparator using popularity
-		return searchWidgetProfiles(query, language, rows, offset);
-	}
+
 
 	public Widgetprofile findWidgetProfileByUri(String uri) {
 		try {
@@ -238,6 +373,8 @@ public class WidgetProfileService extends AbstractService {
 				widgetProfile.setName(widget.getTitle());
 				widgetProfile.setWidId(widget.getUri());
 				widgetProfile.setIcon(widget.getIcon());
+				widgetProfile.setCreated(new Date());
+				widgetProfile.setUpdated(new Date());
 				entityManager.persist(widgetProfile);
 
 				//
@@ -269,6 +406,7 @@ public class WidgetProfileService extends AbstractService {
 		return widgetProfiles;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Message addTagToWidget(Widgetprofile widget, String newTag) {
 		EntityManager entityManager = getEntityManagerFactory()
 				.createEntityManager();

@@ -8,6 +8,21 @@ GET /api/review?uri={widget uri}
 GET /api/widget?id={widget id}
 GET /api/widget?uri={widget uri}
 
+------------------------------------------------------------------------------
+GET /api/rest/widgets/search/{query}/{start}/{rows}
+{query} is the search text
+{start} is an integer indicating the start point of the records returned
+{rows} is an integer indicating the number of records to return
+
+
+GET /api/rest/widgets/search/{query}/{start}/{rows}/{orderby}
+as above
+{orderby} must be one of the following: date, rating or popularity
+
+an example might be
+
+/api/rest/widgets/search/chat/0/50/popularity
+
 ** Widget
 -------------------------------------------------									
 

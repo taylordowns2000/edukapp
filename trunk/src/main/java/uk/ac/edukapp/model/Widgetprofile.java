@@ -1,6 +1,7 @@
 package uk.ac.edukapp.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,8 @@ import org.codehaus.jackson.annotate.JsonUnwrapped;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Widgetprofile.findByUri", query = "SELECT w FROM Widgetprofile w WHERE w.widId = :uri"),
-		@NamedQuery(name = "Widgetprofile.featured", query = "SELECT w FROM Widgetprofile w WHERE w.featured = 1") })
+		@NamedQuery(name = "Widgetprofile.featured", query = "SELECT w FROM Widgetprofile w WHERE w.featured = 1"),
+		@NamedQuery(name = "Widgetprofile.updated", query = "SELECT w FROM Widgetprofile w ORDERBY w.updated")})
 @Table(name = "widgetprofiles")
 public class Widgetprofile implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,6 +56,12 @@ public class Widgetprofile implements Serializable {
 	@JsonProperty(value = "uri")
 	@Column(name = "wid_id", nullable = false, length = 150)
 	private String widId;
+	
+	@Column(nullable = false)
+	private Date created;
+	
+	@Column(nullable = false)
+	private Date updated;
 
 	// bi-directional many-to-many association to Tag
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -69,6 +77,13 @@ public class Widgetprofile implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetDescription description;
+	
+	@JsonUnwrapped
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="id", referencedColumnName = "wid_id")
+	WidgetStats widgetStats;
+	
+	
 
 	public Widgetprofile() {
 	}
@@ -118,6 +133,37 @@ public class Widgetprofile implements Serializable {
 	public void setWidId(String widId) {
 		this.widId = widId;
 	}
+	
+	
+	
+
+	/**
+	 * @return the created
+	 */
+	public Date getCreated() {
+		return created;
+	}
+
+	/**
+	 * @param created the created to set
+	 */
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public Date getUpdated() {
+		return updated;
+	}
+
+	/**
+	 * @param updated the updated to set
+	 */
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 
 	public List<Tag> getTags() {
 		return this.tags;
@@ -149,6 +195,14 @@ public class Widgetprofile implements Serializable {
 
 	public void setDescription(WidgetDescription description) {
 		this.description = description;
+	}
+	
+	public WidgetStats getWidgetStats() {
+		return widgetStats;
+	}
+	
+	public void setWidgetStatus ( WidgetStats widgetStats ) {
+		this.widgetStats = widgetStats;
 	}
 
 	public String getType() {
