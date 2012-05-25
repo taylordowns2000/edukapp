@@ -47,16 +47,21 @@ public class SearchServlet extends HttpServlet{
 		String query = req.getParameter("q");
 		
 		int offset;
+		int result_size;
 		try {
+			String nResults = req.getParameter("resultsize");
+			if ( nResults == null || nResults.trim().length() == 0) nResults = "10";
+			result_size = Integer.parseInt(nResults);
 			String start = req.getParameter("start");
 			if (start == null || start.trim().length() == 0) start = "0";
 			offset = Integer.parseInt(start);
 		} catch (NumberFormatException e) {
 			offset = 0;
+			result_size = 10;
 		}
 		
 		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
-		SearchResults searchResults = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", 10, offset);
+		SearchResults searchResults = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", result_size, offset);
 		
 		OutputStream out = resp.getOutputStream();
 		MetadataRenderer.render(out, searchResults);
