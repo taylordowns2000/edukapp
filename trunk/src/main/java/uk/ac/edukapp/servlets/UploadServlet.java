@@ -1,8 +1,8 @@
 package uk.ac.edukapp.servlets;
 
 import uk.ac.edukapp.model.*;
-import uk.ac.edukapp.renderer.WookieServerConfiguration;
 import uk.ac.edukapp.repository.SolrConnector;
+import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
 import uk.ac.edukapp.service.ActivityService;
 import uk.ac.edukapp.service.UserAccountService;
 import uk.ac.edukapp.service.WidgetProfileService;
