@@ -29,7 +29,11 @@ public class WidgetRenderer {
 	public static WidgetRenderer getInstance() {
 		return renderer;
 	}
-
+	
+	public String getDownloadUrl(String uri){
+		return conn.getConnection().getURL()+"/widgets/"+uri+"?format=application/widget";
+	}
+	
 	/**
 	 * Returns html markup of widget instance as an iframe
 	 * 
