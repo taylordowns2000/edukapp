@@ -12,13 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CorsFilter implements Filter {
 
-	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		((HttpServletResponse)response).addHeader("Access-Control-Allow-Origin", "*");
@@ -26,7 +24,6 @@ public class CorsFilter implements Filter {
 
 	}
 
-	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		
 
