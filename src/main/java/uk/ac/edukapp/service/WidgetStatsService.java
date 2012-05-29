@@ -24,46 +24,47 @@ import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
 
-public class WidgetStatsService extends AbstractService{
-	
+public class WidgetStatsService extends AbstractService {
 
-	static Logger logger = Logger.getLogger(WidgetStatsService.class
-			.getName());
-	
+	static Logger logger = Logger.getLogger(WidgetStatsService.class.getName());
+
 	private UserRateService userRateService;
-	
+
 	public WidgetStatsService(ServletContext ctx) {
 		super(ctx);
 		this.userRateService = new UserRateService(ctx);
 	}
-	
+
 	/**
-	 * Get the current *LOCAL* stats for a widget
-	 * In future we'll use SPAWS to collate this with other edukapp instances
+	 * Get the current *LOCAL* stats for a widget In future we'll use SPAWS to
+	 * collate this with other edukapp instances
+	 * 
 	 * @param widgetProfile
 	 * @return
 	 */
-	public WidgetStats getStats(Widgetprofile widgetProfile){
-		
+	public WidgetStats getStats(Widgetprofile widgetProfile) {
+
 		WidgetStats widgetStats = null;
-		
+
 		Cache cache = Cache.getInstance();
-		widgetStats = (WidgetStats) cache.get("widgetStats:"+widgetProfile.getId());
-		
-		if (widgetStats == null){
+		widgetStats = (WidgetStats) cache.get("widgetStats:"
+				+ widgetProfile.getId());
+
+		if (widgetStats == null) {
 			logger.debug("creating new cached stats");
 			EntityManager em = getEntityManagerFactory().createEntityManager();
 			widgetStats = em.find(WidgetStats.class, widgetProfile.getId());
 			em.close();
-		
-			widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
-			widgetStats.setTotalRatings(userRateService.getRatingCount(widgetProfile));
-			
-			cache.put("widgetStats:"+widgetProfile.getId(), widgetStats);
+
+			// widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
+			widgetStats.setTotalRatings(userRateService
+					.getRatingCount(widgetProfile));
+
+			cache.put("widgetStats:" + widgetProfile.getId(), widgetStats);
 		} else {
 			logger.debug("using cached stats");
 		}
-		
+
 		return widgetStats;
 	}
 

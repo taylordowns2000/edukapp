@@ -35,7 +35,7 @@ import uk.ac.edukapp.renderer.SearchResults;
  * Store implementation for the Widget Discovery Service
  * 
  * Uses Solr index over http as backend.
- *
+ * 
  */
 public class SolrConnector {
 
@@ -55,14 +55,15 @@ public class SolrConnector {
 	 */
 	private SolrConnector() {
 	}
-	
+
 	/**
 	 * Add a Widget to the index
+	 * 
 	 * @param widget
 	 * @param lang
 	 * @return true if added successfully; false if an error was logged
 	 */
-	public boolean index(Widget widget, String lang){
+	public boolean index(Widget widget, String lang) {
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			server.addBean(widget);
@@ -77,12 +78,13 @@ public class SolrConnector {
 	}
 
 	/**
-	 * Execute query on Solr server. Always returns a result set list, even
-	 * if the query fails.
+	 * Execute query on Solr server. Always returns a result set list, even if
+	 * the query fails.
+	 * 
 	 * @param term
 	 * @return search results object including matching widgets
 	 */
-	public SearchResults query(String term, String lang, int rows, int offset){
+	public SearchResults query(String term, String lang, int rows, int offset) {
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			SolrQuery query = new SolrQuery();
@@ -98,65 +100,72 @@ public class SolrConnector {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new SearchResults();   	
+		return new SearchResults();
 	}
-	
+
 	/**
 	 * Execute a MoreLikeThis query on the Solr server
-	 * @param term the match term, typically a uri: match
-	 * @param lang the language core to search
+	 * 
+	 * @param term
+	 *            the match term, typically a uri: match
+	 * @param lang
+	 *            the language core to search
 	 * @return more widgets like the one identified by term
 	 */
-	public List<Widget> moreLikeThis(String term, String lang){
+	public List<Widget> moreLikeThis(String term, String lang) {
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			SolrQuery query = new SolrQuery();
-			
-			query.setQueryType("/"+MoreLikeThisParams.MLT);
+
+			query.setQueryType("/" + MoreLikeThisParams.MLT);
 			query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
 			query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
 			query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
 			query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title,description");
 			query.setQuery(term);
 			QueryResponse rsp = server.query(query);
-			
+
 			List<Widget> widgets = rsp.getBeans(Widget.class);
 			return widgets;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<Widget>();   	
+		return new ArrayList<Widget>();
 	}
-	
+
 	/**
 	 * Update indexes of widgets in all cores
 	 */
-	public void index(){
+	public void index() {
 		index("en");
 		index("fr");
 	}
-	
+
 	/**
 	 * Index widgets by running the data import for the specified language core
+	 * 
 	 * @param lang
 	 */
-	public void index(String lang){
+	public void index(String lang) {
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
-			
+
 			ModifiableSolrParams params = new ModifiableSolrParams();
-		    params.set("qt", "/dataimport");
-		    params.set("command", "full-import");
-		    server.query(params);
+			params.set("qt", "/dataimport");
+			params.set("command", "full-import");
+			server.query(params);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 	}
 
-	private SolrServer getLocalizedSolrServer(String lang) throws MalformedURLException{
-		if (lang==null || lang.trim().equals("")) lang="en";
-		return new CommonsHttpSolrServer( "http://localhost:8080/solr/"+lang);    	
+	private SolrServer getLocalizedSolrServer(String lang)
+			throws MalformedURLException {
+		if (lang == null || lang.trim().equals(""))
+			lang = "en";
+		return new CommonsHttpSolrServer("http://widgets.open.ac.uk:8080/solr/"
+				+ lang);
 	}
 
 }
