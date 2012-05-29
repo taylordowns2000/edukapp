@@ -58,9 +58,8 @@
 				</div> 
 					
 				<!-- Actions -->		
-				<p>
+				<p id="widget-actions">
 				    <a id="embedModal-link" data-toggle="modal" data-target="#embedModal" href="#embedModal" class="btn btn-primary"> <i class="icon-share-alt icon-white"></i> Embed</a>		
-				    <a href="#" class="btn btn-primary"><i class="icon-download icon-white"></i> Download</a></li>
 				    <a id="widget-open-fully-link" href="#" class="btn btn-primary"><i class="icon-fullscreen icon-white"></i> Full screen</a></li>
 				</p>
 
