@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie</artifactId>
-			<version>0.10.0-incubating-SNAPSHOT</version>
+			<version>0.10.0-incubating</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>
@@ -202,7 +202,7 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie-java-connector</artifactId>
-			<version>0.10.0-incubating-SNAPSHOT</version>
+			<version>0.10.0-incubating</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
