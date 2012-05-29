@@ -37,6 +37,8 @@ public class ExtendedWidgetProfile {
 	private String renderInfo;
 	
 	private String renderUrl;
+	
+	private String downloadUrl;
 
 	@JsonUnwrapped
 	private WidgetStats widgetStats;
@@ -112,6 +114,20 @@ public class ExtendedWidgetProfile {
 	 */
 	public void setWidgetStats(WidgetStats widgetStats) {
 		this.widgetStats = widgetStats;
+	}
+
+	/**
+	 * @return the downloadUrl
+	 */
+	public String getDownloadUrl() {
+		return downloadUrl;
+	}
+
+	/**
+	 * @param downloadUrl the downloadUrl to set
+	 */
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
 	}
 
 

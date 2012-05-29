@@ -83,6 +83,7 @@ public class WidgetServlet extends HttpServlet {
 			extendedWidgetProfile.setWidgetProfile(widgetProfile);
 			extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile, true));
 			extendedWidgetProfile.setRenderUrl(Renderer.render(widgetProfile, false));
+			extendedWidgetProfile.setDownloadUrl(Renderer.getDownloadUrl(widgetProfile));
 			ActivityService activityService = new ActivityService(
 					getServletContext());
 			extendedWidgetProfile.setUploadedBy(activityService

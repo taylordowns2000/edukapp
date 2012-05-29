@@ -7,6 +7,21 @@ import javax.servlet.ServletContext;
 import uk.ac.edukapp.model.Widgetprofile;
 
 public class Renderer {
+	
+	public static String getDownloadUrl(Widgetprofile widgetprofile){
+
+		// deduce whether is w3c or open social
+		byte w3cOrOs = widgetprofile.getW3cOrOs();
+
+		if (w3cOrOs == 0) {// is w3c
+			return WidgetRenderer.getInstance()
+					.getDownloadUrl(widgetprofile.getWidId());
+		} else if (w3cOrOs == 1) {// is os
+			return null;
+		}
+		return null;
+		
+	}
 
 	public static String render(Widgetprofile widgetprofile, boolean wrap) {
 
