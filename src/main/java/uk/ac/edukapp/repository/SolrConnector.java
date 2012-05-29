@@ -30,6 +30,7 @@ import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 
 import uk.ac.edukapp.renderer.SearchResults;
+import uk.ac.edukapp.server.configuration.SolrServerConfiguration;
 
 /**
  * Store implementation for the Widget Discovery Service
@@ -164,8 +165,7 @@ public class SolrConnector {
 			throws MalformedURLException {
 		if (lang == null || lang.trim().equals(""))
 			lang = "en";
-		return new CommonsHttpSolrServer("http://widgets.open.ac.uk:8080/solr/"
-				+ lang);
+		return new CommonsHttpSolrServer(SolrServerConfiguration.getInstance().getServerLocation(lang));
 	}
 
 }
