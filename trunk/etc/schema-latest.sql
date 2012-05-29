@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2012 at 04:25 PM
+-- Generation Time: May 29, 2012 at 01:04 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activitytext` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2652 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2657 ;
 
 -- --------------------------------------------------------
 
@@ -60,9 +60,6 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `commenttext` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3803 ;
-
-
-
 
 -- --------------------------------------------------------
 
@@ -170,9 +167,9 @@ CREATE TABLE IF NOT EXISTS `useractivities` (
   `subject_id` int(11) NOT NULL,
   `activity` varchar(25) NOT NULL,
   `object_id` int(11) NOT NULL,
-  `time` timestamp NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=321 ;
 
 -- --------------------------------------------------------
 
@@ -222,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `widgetactivities` (
   PRIMARY KEY (`id`),
   KEY `widgetprofile_id` (`widgetprofile_id`),
   KEY `activity_id` (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=80 ;
 
 -- --------------------------------------------------------
 
@@ -238,11 +235,11 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `featured` tinyint(1) DEFAULT '0',
   `DESCRIPTION_WID_ID` int(11) DEFAULT NULL,
   `icon` varchar(255) DEFAULT NULL,
-  `created` timestamp NOT NULL,
-  `updated` timestamp NOT NULL,
+  `created` date NOT NULL,
+  `updated` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2552 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2566 ;
 
 -- --------------------------------------------------------
 
@@ -263,6 +260,23 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles_tags` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `widgetstats`
+--
+
+CREATE TABLE IF NOT EXISTS `widgetstats` (
+  `wid_id` int(11) NOT NULL,
+  `downloads` int(11) DEFAULT NULL,
+  `embeds` int(11) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `averageRating` decimal(10,0) DEFAULT NULL,
+  `totalRatings` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`wid_id`),
+  KEY `wid_id` (`wid_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `widget_descriptions`
 --
 
@@ -271,21 +285,6 @@ CREATE TABLE IF NOT EXISTS `widget_descriptions` (
   `description` text,
   KEY `wid_id` (`wid_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `widgetstats`
---
-
-CREATE TABLE IF NOT EXISTS `widgetstats` (
-  `wid_id` int(11) PRIMARY KEY NOT NULL,
-  `downloads` int(11),
-  `embeds` int(11),
-  `views` int(11),
-  KEY `wid_id` (`wid_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 --
 -- Constraints for dumped tables
@@ -330,8 +329,6 @@ ALTER TABLE `widgetprofiles_tags`
 --
 ALTER TABLE `widget_descriptions`
   ADD CONSTRAINT `widget_descriptions_ibfk_1` FOREIGN KEY (`wid_id`) REFERENCES `widgetprofiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
-  
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
