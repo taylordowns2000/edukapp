@@ -148,6 +148,19 @@
 	</servlet-mapping>
 
 	<servlet>
+		<description>WidgetsConnectorServlet</description>
+		<display-name>WidgetsConnectorServlet</display-name>
+		<servlet-name>WidgetsConnectorServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.WidgetsConnectorServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WidgetsConnectorServlet</servlet-name>
+		<url-pattern>/api/widgets/all</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
 		<description>Login servlet</description>
 		<display-name>login</display-name>
 		<servlet-name>LoginServlet</servlet-name>

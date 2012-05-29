@@ -6,7 +6,6 @@ import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 
-
 /*
  *  (c) 2012 University of Bolton
  *  
@@ -28,44 +27,51 @@ import uk.ac.edukapp.repository.Widget;
  * associated with relevant Widgetprofile data
  * 
  * @author scott.bradley.wilson@gmail.com
- *
+ * 
  */
 public class WidgetService {
-	
-	public List<Widget> findWidgets(String query){
-		return findWidgets(query,"en",10,0);
-	}
-	
-	public List<Widget> findWidgets(String query, String lang, int rows, int offset){
-		@SuppressWarnings("unchecked")
-		List<Widget> widgets = SolrConnector.getInstance().query(query, lang, rows, offset).getWidgets();
-		return widgets; 
+
+	public List<Widget> findWidgets(String query) {
+		return findWidgets(query, "en", 10, 0);
 	}
 
-	public Widget findWidgetByUri(String uri){
+	public List<Widget> findWidgets(String query, String lang, int rows,
+			int offset) {
+		@SuppressWarnings("unchecked")
+		List<Widget> widgets = SolrConnector.getInstance()
+				.query(query, lang, rows, offset).getWidgets();
+		return widgets;
+	}
+
+	public Widget findWidgetByUri(String uri) {
 		return findWidgetByUri(uri, "en");
 	}
-	
-	public Widget findWidgetByUri(String uri, String lang){
+
+	public Widget findWidgetByUri(String uri, String lang) {
 		@SuppressWarnings("unchecked")
-		List<Widget> widgets = SolrConnector.getInstance().query("uri:"+uri,lang, 1,0).getWidgets();
+		List<Widget> widgets = SolrConnector.getInstance()
+				.query("uri:" + uri, lang, 1, 0).getWidgets();
 		Widget widget = null;
-		if (widgets.size()==1) widget = widgets.get(0);
+		if (widgets.size() == 1)
+			widget = widgets.get(0);
 		return widget;
 	}
-	
+
 	/**
 	 * Find widgets similar to that identified by the supplied uri
-	 * @param uri the URI (widId) of the widget
-	 * @param lang the language to use for the search
+	 * 
+	 * @param uri
+	 *            the URI (widId) of the widget
+	 * @param lang
+	 *            the language to use for the search
 	 * @return a list of similar widgets
 	 */
-	public List<Widget> findSimilarWidgets(String uri, String lang){
+	public List<Widget> findSimilarWidgets(String uri, String lang) {
 		//
 		// Escape the ":" from the search term
 		//
 		uri = uri.replace(":", "\\:");
-		return SolrConnector.getInstance().moreLikeThis("uri:"+uri,lang);   	
+		return SolrConnector.getInstance().moreLikeThis("uri:" + uri, lang);
 	}
 
 }
