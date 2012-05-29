@@ -352,6 +352,9 @@ function () {
             $('#embedModal-link').click(function () {
                 $('#embedModal').modal('toggle');
             });
+            if (data.downloadUrl){
+                $('#widget-actions').append("<a id=\"widget-download-link\" href=\""+data.downloadUrl+"\" class=\"btn btn-primary\"><i class=\"icon-download icon-white\"></i> Download</a></li>");
+            }
         }
         
         //
