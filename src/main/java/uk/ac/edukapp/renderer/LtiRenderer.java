@@ -25,6 +25,7 @@ import org.apache.wookie.connector.framework.WookieConnectorException;
 import org.apache.wookie.connector.framework.WookieConnectorService;
 
 import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
 
 /**
  * Widget Renderer for LTI requests

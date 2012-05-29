@@ -9,6 +9,7 @@ import org.apache.wookie.connector.framework.WookieConnectorException;
 import org.apache.wookie.connector.framework.WookieConnectorService;
 
 import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
 
 public class WidgetRenderer {
 
