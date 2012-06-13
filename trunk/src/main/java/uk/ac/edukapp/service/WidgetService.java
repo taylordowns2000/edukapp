@@ -2,7 +2,6 @@ package uk.ac.edukapp.service;
 
 import java.util.List;
 
-import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 

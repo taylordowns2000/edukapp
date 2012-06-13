@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * The persistent class for the userreview database table.

@@ -16,7 +16,6 @@
 package uk.ac.edukapp.service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -25,11 +24,9 @@ import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
-import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.model.Useractivity;
-import uk.ac.edukapp.util.Message;
 
 /**
  * Service for user activity (rating/updating/tagging/...)

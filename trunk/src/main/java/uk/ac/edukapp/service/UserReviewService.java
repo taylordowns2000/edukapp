@@ -27,7 +27,6 @@ import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
-import uk.ac.edukapp.util.Message;
 
 public class UserReviewService extends AbstractService {
 
