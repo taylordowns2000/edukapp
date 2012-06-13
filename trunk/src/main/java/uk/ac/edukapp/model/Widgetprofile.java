@@ -34,6 +34,9 @@ import org.codehaus.jackson.annotate.JsonUnwrapped;
 @Table(name = "widgetprofiles")
 public class Widgetprofile implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String W3C_WIDGET = "w3c";
+	public static final String OPENSOCIAL_GADGET = "opensocial";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

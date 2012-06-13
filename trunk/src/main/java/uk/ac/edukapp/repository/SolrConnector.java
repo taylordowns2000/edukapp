@@ -29,6 +29,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 
+import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.server.configuration.SolrServerConfiguration;
 
@@ -68,6 +69,7 @@ public class SolrConnector {
 		try {
 			SolrServer server = getLocalizedSolrServer(lang);
 			server.addBean(widget);
+			server.commit();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,6 +78,16 @@ public class SolrConnector {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public boolean index(Widgetprofile profile, String lang){
+		Widget widget = new Widget();
+		widget.setId(profile.getWidId());
+		widget.setUri(profile.getWidId());
+		widget.setTitle(profile.getName());
+		if (profile.getDescription() != null)
+			widget.setDescription(profile.getDescription().getDescription());
+		return index(widget, lang);
 	}
 
 	/**
