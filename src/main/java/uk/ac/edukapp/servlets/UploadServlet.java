@@ -4,9 +4,7 @@ import uk.ac.edukapp.model.*;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
 import uk.ac.edukapp.service.ActivityService;
-import uk.ac.edukapp.service.UserAccountService;
 import uk.ac.edukapp.service.WidgetProfileService;
-import uk.ac.edukapp.util.Message;
 
 import java.io.File;
 import java.io.IOException;
@@ -254,13 +252,13 @@ public class UploadServlet extends HttpServlet {
 		String uri = document.getRootElement().getAttributeValue("id");
 		String name = rootNode.getChildText("name", XML_NS);
 		String description = rootNode.getChildText("description", XML_NS);
-
+		String icon = rootNode.getChild("icon", XML_NS).getAttributeValue("src");
 		//
 		// create and return the widget profile
 		//
 		WidgetProfileService widgetProfileService = new WidgetProfileService(
 				getServletContext());
-		return widgetProfileService.createWidgetProfile(uri, name, description);
+		return widgetProfileService.createWidgetProfile(uri, name, description, icon);
 	}
 
 	private void addUserUploadActivity(int widgetprofileId) {
