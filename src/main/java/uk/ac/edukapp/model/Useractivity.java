@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * The persistent class for the useractivities database table.

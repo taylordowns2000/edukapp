@@ -1,8 +1,5 @@
 package uk.ac.edukapp.servlets;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -14,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 
 import uk.ac.edukapp.exceptions.RESTException;
-import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.service.WidgetProfileService;
 

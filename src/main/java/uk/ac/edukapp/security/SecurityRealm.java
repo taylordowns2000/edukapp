@@ -33,7 +33,6 @@ import org.apache.shiro.util.ByteSource;
 
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userrole;
-import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.service.UserAccountService;
 
 /**

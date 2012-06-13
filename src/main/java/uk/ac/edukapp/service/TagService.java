@@ -25,7 +25,6 @@ import javax.servlet.ServletContext;
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
-import uk.ac.edukapp.model.Activity;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.util.Message;
 
