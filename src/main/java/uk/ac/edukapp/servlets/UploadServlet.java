@@ -12,9 +12,6 @@ import java.io.InputStream;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -123,48 +120,32 @@ public class UploadServlet extends HttpServlet {
 		} else {
 
 			// get parameters
-			String uploadurl = null;
-			String gadgetName = null;
-
-			uploadurl = request.getParameter("uploadurl");
-			gadgetName = request.getParameter("gadget-name");
-
-			EntityManagerFactory factory = Persistence
-					.createEntityManagerFactory("edukapp");
-			EntityManager em = factory.createEntityManager();
-
-			/*-----------*/
-			Widgetprofile gadget = null;
+			String uploadurl = request.getParameter("uploadurl");
+			String gadgetName = request.getParameter("gadget-name");
+			
 			try {
-				em.getTransaction().begin();
-
-				gadget = new Widgetprofile();
-				gadget.setName(gadgetName);
-				byte one = 1;
-				gadget.setW3cOrOs(one);
-				gadget.setWidId(uploadurl);
-				em.persist(gadget);
-
-				log.info("Gadget created with id:" + gadget.getId());
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				// em.getTransaction().rollback();
-				doForward(request, response, "/upload.jsp?error=1");
-			}
-			/*----------*/
-
-			em.getTransaction().commit();
-			em.close();
-			factory.close();
-
-			if (gadget != null) {
+				
+				//
+				// create and return the widget profile
+				// TODO use the shindig metadata service
+				//
+				WidgetProfileService widgetProfileService = new WidgetProfileService(
+						getServletContext());
+				Widgetprofile gadget = widgetProfileService.createWidgetProfile(uploadurl, gadgetName, "", "", Widgetprofile.OPENSOCIAL_GADGET);
+				
 				//
 				// log the user upload to UserActivity table
 				//
 				addUserUploadActivity(gadget.getId());
 				doForward(request, response, "/widget.jsp?id=" + gadget.getId());
-			} else {
+				
+				//
+				// Update the index
+				//
+				SolrConnector.getInstance().index(gadget, "en");
+
+			} catch (Exception e) {
+				e.printStackTrace();
 				doForward(request, response, "/upload.jsp?error=1");
 			}
 		}
@@ -216,11 +197,10 @@ public class UploadServlet extends HttpServlet {
 			Widgetprofile widgetprofile = this
 					.createWidgetProfileFromResponse(postMethod
 							.getResponseBodyAsStream());
-
 			//
-			// update the index
+			// Update the index
 			//
-			SolrConnector.getInstance().index();
+			SolrConnector.getInstance().index(widgetprofile, "en");
 
 			//
 			// Return the id
@@ -258,7 +238,7 @@ public class UploadServlet extends HttpServlet {
 		//
 		WidgetProfileService widgetProfileService = new WidgetProfileService(
 				getServletContext());
-		return widgetProfileService.createWidgetProfile(uri, name, description, icon);
+		return widgetProfileService.createWidgetProfile(uri, name, description, icon, Widgetprofile.W3C_WIDGET);
 	}
 
 	private void addUserUploadActivity(int widgetprofileId) {
