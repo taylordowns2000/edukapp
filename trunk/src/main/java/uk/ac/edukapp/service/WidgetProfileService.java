@@ -99,13 +99,15 @@ public class WidgetProfileService extends AbstractService {
 	 * @return the widget profile
 	 */
 	public Widgetprofile createWidgetProfile(String uri, String name,
-			String description) {
+			String description, String icon) {
 
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
 		Widgetprofile widgetprofile = new Widgetprofile();
 		widgetprofile.setName(name);
 		widgetprofile.setCreated(new Date());
+		widgetprofile.setUpdated(new Date());
+		widgetprofile.setIcon(icon);
 		byte zero = 0;
 		widgetprofile.setW3cOrOs(zero);
 		widgetprofile.setWidId(uri);
@@ -115,8 +117,24 @@ public class WidgetProfileService extends AbstractService {
 		wd.setDescription(description);
 		wd.setWid_id(widgetprofile.getId());
 		em.persist(wd);
+		
+		//
+		// Create the widget stats
+		//
+		WidgetStats widgetStats = new WidgetStats();
+		widgetStats.setWid_id(widgetprofile.getId());
+		widgetStats.setDownloads(0);
+		widgetStats.setEmbeds(0);
+		widgetStats.setViews(0);
+		em.persist(widgetStats);
+		
 		em.getTransaction().commit();
 		em.close();
+		
+		//
+		// Update the Solr index
+		//
+		SolrConnector.getInstance().index("en");
 
 		return widgetprofile;
 
