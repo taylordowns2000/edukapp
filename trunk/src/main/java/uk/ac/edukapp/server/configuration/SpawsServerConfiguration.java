@@ -78,6 +78,8 @@ public class SpawsServerConfiguration {
 		
 		submitter = new Submitter();
 		submitter.setSubmitter(submitterName);
+		submitter.setSigner(submitterName);
+		submitter.setSubmissionAttribution(submitterName);
 	}
 
 	public static SpawsServerConfiguration getInstance() {
