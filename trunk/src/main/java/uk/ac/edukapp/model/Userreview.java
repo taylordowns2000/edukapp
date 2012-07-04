@@ -124,5 +124,24 @@ public class Userreview implements Serializable {
 	public String getUser() {
 		return this.getUserAccount().getUsername();
 	}
+	
+	/**
+	 * Return profile page link URL for serialization
+	 * 
+	 * @return
+	 */
+	public String getUserProfile(){
+		//
+		// If this is an "external review" use the account website url
+		//
+		if (this.getUserAccount().getId() == 0){
+			return this.getUserAccount().getAccountInfo().getWebsite();
+		//
+		// Otherwise return a link to the user profile page
+		//
+		} else {
+			return "/user/"+this.getUserAccount().getId();
+		}
+	}
 
 }
