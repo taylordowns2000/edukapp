@@ -32,6 +32,7 @@ import uk.ac.bolton.spaws.model.ISubmission;
 import uk.ac.bolton.spaws.model.impl.Actor;
 import uk.ac.bolton.spaws.model.impl.Review;
 import uk.ac.bolton.spaws.model.impl.Submission;
+import uk.ac.edukapp.model.Accountinfo;
 import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userreview;
@@ -105,6 +106,7 @@ public class UserReviewService extends AbstractService {
 		try {
 			ParadataManager manager = SpawsServerConfiguration.getInstance().getParadataManager();
 			ISubmission submission = new Submission(new Actor(review.getUserAccount().getUsername()), new Review(review.getComment().getCommenttext()), review.getWidgetProfile().getWidId());
+			submission.setSubmitter(SpawsServerConfiguration.getInstance().getSubmitter());
 			ArrayList<ISubmission> submissions = new ArrayList<ISubmission>();
 			submissions.add(submission);
 			manager.publishSubmissions(submissions);
@@ -125,12 +127,16 @@ public class UserReviewService extends AbstractService {
 			
 			Useraccount user = new Useraccount();
 			user.setUsername(submission.getActor().getName());
-			// TODO add a URL property for profile page link
+
+			Accountinfo accountInfo = new Accountinfo();
+			accountInfo.setWebsite(submission.getActor().getUrl());
+			user.setAccountInfo(accountInfo);
 			
 			review.setComment(comment);
 			review.setWidgetProfile(profile);
 			review.setTime(submission.getUpdated());
 			review.setUserAccount(user);
+			
 			
 			reviews.add(review);
 		}
