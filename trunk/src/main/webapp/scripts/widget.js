@@ -400,7 +400,7 @@ function () {
             for (var i = 0; i < data.length; i++) {
                 $('#related-widgets').append(''+renderWidget(data[i].id, data[i].icon, data[i].name, data[i].description));	        
             }
-        });
+        }); 
         
         //
         // Load reviews
@@ -409,7 +409,14 @@ function () {
             for (var i = 0; i < reviews.length; i++) {
                 var wrapper = document.createElement("div");
                 $(wrapper).hide();
-                $(wrapper).append("<blockquote><img src='http://placehold.it/64' class='thumbnail'><p>"+reviews[i].text+"</p><small><a href='#'>"+reviews[i].user+"</a>, "+reviews[i].time+"</small>");
+                var profileLink;
+                var userProfile = reviews[i].userProfile;
+                if (!userProfile){
+                    profileLink = reviews[i].user;
+                } else {
+                    profileLink = "<a href='"+reviews[i].userProfile+"'>"+reviews[i].user+"</a>";
+                }
+                $(wrapper).append("<blockquote><img src='http://placehold.it/64' class='thumbnail'><p>"+reviews[i].text+"</p><small>"+profileLink+", "+reviews[i].time+"</small>");
                 $(wrapper).appendTo("#user-reviews").fadeIn("slow");
             }
         });
