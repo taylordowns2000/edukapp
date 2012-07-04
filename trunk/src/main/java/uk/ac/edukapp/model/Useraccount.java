@@ -36,6 +36,10 @@ public class Useraccount {
 
 	@Column(nullable = false, length = 256)
 	private String token;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="id")
+	private Accountinfo accountInfo;
 
 	// bi-directional many-to-many association to Userrole
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -98,11 +102,26 @@ public class Useraccount {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	public List<Userrole> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(List<Userrole> roles) {
 		this.roles = roles;
+	}
+
+	/**
+	 * @return the accountInfo
+	 */
+	public Accountinfo getAccountInfo() {
+		return accountInfo;
+	}
+
+	/**
+	 * @param accountInfo the accountInfo to set
+	 */
+	public void setAccountInfo(Accountinfo accountInfo) {
+		this.accountInfo = accountInfo;
 	}
 }
