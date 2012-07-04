@@ -355,6 +355,13 @@ function () {
             if (data.downloadUrl){
                 $('#widget-actions').append("<a id=\"widget-download-link\" href=\""+data.downloadUrl+"\" class=\"btn btn-primary\"><i class=\"icon-download icon-white\"></i> Download</a></li>");
             }
+            //
+            // Set min-width of the column to the width of the widget
+            //
+            var minwidth = $('#widget-preview > iframe').width();
+            $('#widget-preview').parent
+            $('#widget-preview').parent().parent().attr("style","min-width:"+minwidth+"px;");
+            
         }
         
         //
