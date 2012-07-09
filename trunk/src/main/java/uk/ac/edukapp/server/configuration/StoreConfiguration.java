@@ -33,14 +33,24 @@ public class StoreConfiguration {
 	private static StoreConfiguration instance;
 	
 	private String location;
+	private String shindigLocation;
 	
 	private StoreConfiguration(){
+		
+		location = "http://localhost:8080";
 		
 		try {
 			PropertiesConfiguration properties = new PropertiesConfiguration("store.properties");
 			
 			if (properties.containsKey("store.location"))
 				location = properties.getString("store.location");
+			
+			if (properties.containsKey("shindig.server.location")){
+				shindigLocation = properties.getString("shindig.server.location");
+			} else {
+				shindigLocation = location+"/shindig";
+			}
+				
 		} catch (ConfigurationException e) {
 			//
 			// No store properties found, so use default
@@ -57,6 +67,14 @@ public class StoreConfiguration {
 	
 	public String getLocation(){
 		return location;
+	}
+	
+	/**
+	 * Get the location of the Shindig server used with this store
+	 * @return the URL of the shindig installation
+	 */
+	public String getShindigLocation(){
+		return this.shindigLocation;
 	}
 
 }
