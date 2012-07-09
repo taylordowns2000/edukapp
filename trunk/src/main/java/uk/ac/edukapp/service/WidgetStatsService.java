@@ -40,11 +40,10 @@ public class WidgetStatsService extends AbstractService {
 	}
 
 	/**
-	 * Get the current *LOCAL* stats for a widget In future we'll use SPAWS to
-	 * collate this with other edukapp instances
+	 * Get the current stats for a widget
 	 * 
 	 * @param widgetProfile
-	 * @return
+	 * @return a WidgetStats object for this widget
 	 */
 	public WidgetStats getStats(Widgetprofile widgetProfile) {
 
@@ -60,11 +59,26 @@ public class WidgetStatsService extends AbstractService {
 			widgetStats = em.find(WidgetStats.class, widgetProfile.getId());
 			em.close();
 
+			//
+			// TODO implement
 			// widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
+			
 			widgetStats.setTotalRatings(userRateService
 					.getRatingCount(widgetProfile));
+			
+			//
+			// Share stats, and pull in external stats
+			//
+			if (SpawsServerConfiguration.getInstance().isEnabled()){
+				publishStats(widgetProfile, widgetStats);
+				widgetStats = includeExternalStats(widgetProfile, widgetStats);
+			}
 
-			cache.put("widgetStats:" + widgetProfile.getId(), widgetStats);
+			//
+			// Cache for one hour - it may make more sense to cache for longer
+			//
+			cache.put("widgetStats:" + widgetProfile.getId(), widgetStats, SpawsServerConfiguration.getInstance().getCacheDuration());
+			
 		} else {
 			logger.debug("using cached stats");
 		}
@@ -72,6 +86,18 @@ public class WidgetStatsService extends AbstractService {
 		return widgetStats;
 	}
 	
+	private void publishStats(Widgetprofile widgetProfile, WidgetStats widgetStats){
+		//
+		// TODO
+		//
+	}
+	
+	/**
+	 * Include external statistics as well as local statistics, where these are available
+	 * @param widgetProfile the profile to match against
+	 * @param widgetStats the initial (local) stats
+	 * @return updated widget stats
+	 */
 	private WidgetStats includeExternalStats(Widgetprofile widgetProfile, WidgetStats widgetStats){
 		try {
 			ParadataManager paradataManager = SpawsServerConfiguration.getInstance().getParadataManager();
