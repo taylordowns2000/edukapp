@@ -81,7 +81,7 @@ public class Widgetprofile implements Serializable {
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetDescription description;
 
-	@JsonUnwrapped
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetStats widgetStats;
