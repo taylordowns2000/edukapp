@@ -95,8 +95,8 @@
 			 
 				<div class="well">
 						<h3>Info</h3>
-						<p>3 downloads </p> 
-						<p>16 embeds</p>
+						<p><span id="widget-downloads">3</span> downloads </p> 
+						<p><span id="widget-embeds">16</span> embeds</p>
 						
 						<br>
 						<h3>Ratings</h3>
