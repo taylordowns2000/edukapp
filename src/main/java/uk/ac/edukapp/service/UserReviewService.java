@@ -195,7 +195,7 @@ public class UserReviewService extends AbstractService {
 			//
 			// Cache external reviews
 			//
-			Cache.getInstance().put("externalReviews"+profile.getId(), externalReviews);
+			Cache.getInstance().put("externalReviews"+profile.getId(), externalReviews, SpawsServerConfiguration.getInstance().getCacheDuration());
 			logger.debug("caching external reviews for widget "+profile.getId());
 
 		}
