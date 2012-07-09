@@ -30,6 +30,8 @@ public class SpawsServerConfiguration {
 
 	static Logger _logger = Logger.getLogger(SpawsServerConfiguration.class
 			.getName());
+	
+	private static final long ONE_HOUR = new Long(3525000);
 
 	// Defaults
 	private String nodeUrl = "http://alpha.mimas.ac.uk";
@@ -37,6 +39,7 @@ public class SpawsServerConfiguration {
 	private String password = "flintstone";
 	private Node node;
 	private boolean enabled = true;
+	private long cacheDuration = ONE_HOUR;
 
 	private String submitterName = "edukapp";
 	private Submitter submitter;
@@ -57,7 +60,8 @@ public class SpawsServerConfiguration {
 				submitterName = properties.getString("spaws.submitter.name");
 			if (properties.containsKey("spaws.enabled"))
 				enabled = properties.getBoolean("spaws.enabled");
-			
+			if (properties.containsKey("spaws.cache"))
+				cacheDuration = properties.getLong("spaws.cache");
 		} catch (ConfigurationException e) {
 			//
 			// No store properties found, so use default
@@ -102,5 +106,9 @@ public class SpawsServerConfiguration {
 	
 	public boolean isEnabled(){
 		return enabled;
+	}
+	
+	public long getCacheDuration(){
+		return cacheDuration;
 	}
 }
