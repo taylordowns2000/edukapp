@@ -1,5 +1,7 @@
 package uk.ac.edukapp.renderer;
 
+import uk.ac.edukapp.server.configuration.StoreConfiguration;
+
 public class GadgetRenderer {
 
 	private static GadgetRenderer renderer = new GadgetRenderer();
@@ -14,7 +16,8 @@ public class GadgetRenderer {
 	public String render(String uri, int width, int height) {
 
 		String html = "";
-		html += "<iframe src=\"http://widgets.open.ac.uk:8080/shindig/gadgets/ifr?url="
+		
+		html += "<iframe src=\""+StoreConfiguration.getInstance().getShindigLocation()+"/gadgets/ifr?url="
 				+ uri + "\"";
 		html += " width=\"" + "500" + "\"";
 		html += " height=\"" + "300" + "\"";
