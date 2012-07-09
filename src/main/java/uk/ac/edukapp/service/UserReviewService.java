@@ -38,6 +38,7 @@ import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.Userreview;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.server.configuration.SpawsServerConfiguration;
+import uk.ac.edukapp.server.configuration.StoreConfiguration;
 
 public class UserReviewService extends AbstractService {
 	
@@ -102,24 +103,58 @@ public class UserReviewService extends AbstractService {
 		return true;
 	}
 
+	/**
+	 * Publishes a user review to an LR Node using SPAWS
+	 * @param review the review to publish
+	 */
 	private void publishUserReviewUsingSpaws(Userreview review){
 		try {
+			
 			ParadataManager manager = SpawsServerConfiguration.getInstance().getParadataManager();
-			ISubmission submission = new Submission(new Actor(review.getUserAccount().getUsername()), new Review(review.getComment().getCommenttext()), review.getWidgetProfile().getWidId());
+			
+			//
+			// Create actor information, including profile page url
+			//
+			Actor actor = new Actor(review.getUserAccount().getUsername());
+			actor.setUrl(StoreConfiguration.getInstance().getLocation()+"/user/"+review.getUserAccount().getId());
+			
+			//
+			// Create submission
+			//
+			ISubmission submission = new Submission(actor, new Review(review.getComment().getCommenttext()), review.getWidgetProfile().getWidId());
 			submission.setSubmitter(SpawsServerConfiguration.getInstance().getSubmitter());
+			
+			//
+			// Publish submission
+			//
 			ArrayList<ISubmission> submissions = new ArrayList<ISubmission>();
 			submissions.add(submission);
 			manager.publishSubmissions(submissions);
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Problem publishing review to SPAWS server", e);
 		}
 	}
 	
+	/**
+	 * Get external reviews for the widget posted on other sites, and add them to the list of reviews
+	 * 
+	 * @param profile the widget the review is for
+	 * @param reviews the list of current reviews
+	 * @throws Exception
+	 */
 	private void getExternalReviews(Widgetprofile profile, List<Userreview> reviews) throws Exception{
-		ParadataManager manager = SpawsServerConfiguration.getInstance().getParadataManager();
 		
+		//
+		// Fetch the reviews
+		// 
+		ParadataManager manager = SpawsServerConfiguration.getInstance().getParadataManager();
 		List<ISubmission> submissions = manager.getExternalSubmissions(profile.getWidId(), IReview.VERB);
+		
+		//
+		// Create a transient Userreview object graph for each review, including
+		// useraccount and accountinfo. This information isn't persisted
+		//
 		for (ISubmission submission: submissions){
 			Userreview review = new Userreview();
 			Comment comment = new Comment();
@@ -136,7 +171,6 @@ public class UserReviewService extends AbstractService {
 			review.setWidgetProfile(profile);
 			review.setTime(submission.getUpdated());
 			review.setUserAccount(user);
-			
 			
 			reviews.add(review);
 		}
