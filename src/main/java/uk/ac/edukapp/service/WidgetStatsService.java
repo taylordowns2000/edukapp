@@ -20,9 +20,13 @@ import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.bolton.spaws.ParadataManager;
+import uk.ac.bolton.spaws.model.IStats;
+import uk.ac.bolton.spaws.model.ISubmission;
 import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.server.configuration.SpawsServerConfiguration;
 
 public class WidgetStatsService extends AbstractService {
 
@@ -65,6 +69,22 @@ public class WidgetStatsService extends AbstractService {
 			logger.debug("using cached stats");
 		}
 
+		return widgetStats;
+	}
+	
+	private WidgetStats includeExternalStats(Widgetprofile widgetProfile, WidgetStats widgetStats){
+		try {
+			ParadataManager paradataManager = SpawsServerConfiguration.getInstance().getParadataManager();
+			for (ISubmission submission: paradataManager.getExternalStats(widgetProfile.getWidId())){
+				IStats stats = (IStats)submission.getAction();
+				widgetStats.setDownloads(widgetStats.getDownloads() + stats.getDownloads());
+				widgetStats.setEmbeds(widgetStats.getEmbeds() + stats.getEmbeds());
+				widgetStats.setViews(widgetStats.getViews() + stats.getViews());
+			}
+		} catch (Exception e) {
+			logger.error("problem retrieving external stats using SPAWS", e);
+		}
+		
 		return widgetStats;
 	}
 
