@@ -309,6 +309,20 @@ function () {
             $('#widget-type').html("This widget complies with the <a href=\"http://docs.opensocial.org/display/OS/Home\">OpenSocial standard</a>");
         
         }
+        
+        //
+        // Show statistics
+        //
+        if (data.downloads){
+            $('#widget-downloads').html(data.downloads);
+        } else {
+            $('#widget-downloads').html("0");        
+        }
+        if (data.embeds){
+            $('#widget-embeds').html(data.embeds);
+        } else {
+            $('#widget-embeds').html("0");        
+        }
 
 
         //
