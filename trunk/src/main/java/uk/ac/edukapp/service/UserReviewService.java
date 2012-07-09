@@ -32,6 +32,7 @@ import uk.ac.bolton.spaws.model.ISubmission;
 import uk.ac.bolton.spaws.model.impl.Actor;
 import uk.ac.bolton.spaws.model.impl.Review;
 import uk.ac.bolton.spaws.model.impl.Submission;
+import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Accountinfo;
 import uk.ac.edukapp.model.Comment;
 import uk.ac.edukapp.model.Useraccount;
@@ -143,7 +144,13 @@ public class UserReviewService extends AbstractService {
 	 * @param reviews the list of current reviews
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	private void getExternalReviews(Widgetprofile profile, List<Userreview> reviews) throws Exception{
+		
+		//
+		//
+		//
+		ArrayList<Userreview> externalReviews = new ArrayList<Userreview>();
 		
 		//
 		// Fetch the reviews
@@ -151,29 +158,52 @@ public class UserReviewService extends AbstractService {
 		ParadataManager manager = SpawsServerConfiguration.getInstance().getParadataManager();
 		List<ISubmission> submissions = manager.getExternalSubmissions(profile.getWidId(), IReview.VERB);
 		
-		//
-		// Create a transient Userreview object graph for each review, including
-		// useraccount and accountinfo. This information isn't persisted
-		//
-		for (ISubmission submission: submissions){
-			Userreview review = new Userreview();
-			Comment comment = new Comment();
-			comment.setCommenttext(submission.getAction().getContent());
-			
-			Useraccount user = new Useraccount();
-			user.setUsername(submission.getActor().getName());
 
-			Accountinfo accountInfo = new Accountinfo();
-			accountInfo.setWebsite(submission.getActor().getUrl());
-			user.setAccountInfo(accountInfo);
+		//
+		// Check for cached reviews
+		//
+		Object obj = Cache.getInstance().get("externalReviews" + profile.getId());
+		if (obj != null){
+			externalReviews = (ArrayList<Userreview>) obj;
+			logger.debug("using cached external reviews for widget "+profile.getId());
+		} else {
 			
-			review.setComment(comment);
-			review.setWidgetProfile(profile);
-			review.setTime(submission.getUpdated());
-			review.setUserAccount(user);
-			
-			reviews.add(review);
+			//
+			// Create a transient Userreview object graph for each review, including
+			// useraccount and accountinfo. This information isn't persisted, though it can
+			// be cached
+			//
+			for (ISubmission submission: submissions){
+				Userreview review = new Userreview();
+				Comment comment = new Comment();
+				comment.setCommenttext(submission.getAction().getContent());
+
+				Useraccount user = new Useraccount();
+				user.setUsername(submission.getActor().getName());
+
+				Accountinfo accountInfo = new Accountinfo();
+				accountInfo.setWebsite(submission.getActor().getUrl());
+				user.setAccountInfo(accountInfo);
+
+				review.setComment(comment);
+				review.setWidgetProfile(profile);
+				review.setTime(submission.getUpdated());
+				review.setUserAccount(user);
+
+				externalReviews.add(review);
+			}
+			//
+			// Cache external reviews
+			//
+			Cache.getInstance().put("externalReviews"+profile.getId(), externalReviews);
+			logger.debug("caching external reviews for widget "+profile.getId());
+
 		}
+
+		//
+		//  Merge
+		//
+		reviews.addAll(externalReviews);
 	}
 
 }
