@@ -36,6 +36,10 @@ public class Widget implements Serializable{
 	public String icon;
 	@Field
 	public String description;
+	@Field
+	public String license;
+	@Field
+	public String author;
 
 	public String getTitle() {
 		return title;
@@ -66,6 +70,30 @@ public class Widget implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	/**
+	 * @return the license
+	 */
+	public String getLicense() {
+		return license;
+	}
+	/**
+	 * @param license the license to set
+	 */
+	public void setLicense(String license) {
+		this.license = license;
+	}
+	/**
+	 * @return the author
+	 */
+	public String getAuthor() {
+		return author;
+	}
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 }

@@ -65,6 +65,12 @@ public class Widgetprofile implements Serializable {
 
 	@Column(nullable = false)
 	private Date updated;
+	
+	@Column(nullable = true)
+	private String license;
+	
+	@Column(nullable = true)
+	private String author;
 
 	// bi-directional many-to-many association to Tag
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -272,6 +278,34 @@ public class Widgetprofile implements Serializable {
 		} else if (!widId.equals(other.widId))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @return the license
+	 */
+	public String getLicense() {
+		return license;
+	}
+
+	/**
+	 * @param license the license to set
+	 */
+	public void setLicense(String license) {
+		this.license = license;
+	}
+
+	/**
+	 * @return the author
+	 */
+	public String getAuthor() {
+		return author;
+	}
+
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 }
