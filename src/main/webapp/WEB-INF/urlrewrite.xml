@@ -57,11 +57,11 @@
 		<to>/api/tag</to>
 	</rule>
 	<rule>
-		<from>/api/tag/([0-9]+)$</from>
+		<from>/api/tag/([a-zA-z0-9]+)$</from>
 		<to>/api/tag?id=$1&amp;namesonly=true</to>
 	</rule>
 	<rule>
-		<from>/api/tag/([0-9]+)/widgets$</from>
+		<from>/api/tag/([a-zA-z0-9]+)/widgets$</from>
 		<to>/api/tag?id=$1</to>
 	</rule>
 	

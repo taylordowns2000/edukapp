@@ -72,8 +72,10 @@ N             /api/widget/{$id}/rating/{$id}
 
 GET
 
-Y             /api/tag/{tag id}  /*tag metadata only */
+Y             /api/tag/{tag id}  /* e.g. "api/tag/75" tag metadata only */
 Y             /api/tag/{tag id}/widgets  /* widgets matching tag */
+Y             /api/tag/{tag label}  /* e.g. "api/tag/fun" tag metadata only */
+Y             /api/tag/{tag label}/widgets  /* widgets matching tag */
 Y             /api/tag/popular /*popular tags - metadata only */
 Y             /api/tag/all /* all tags - metadata only */		 
 
