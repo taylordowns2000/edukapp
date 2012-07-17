@@ -57,10 +57,11 @@ public class SearchServlet extends HttpServlet{
 			offset = 0;
 			result_size = 10;
 		}
-		
+		resp.setHeader("Content-Type", "application/json");
+
 		WidgetProfileService widgetProfileService = new WidgetProfileService(getServletContext());
 		SearchResults searchResults = widgetProfileService.searchWidgetProfilesOrderedByRelevance(query, "en", result_size, offset);
-		
+
 		OutputStream out = resp.getOutputStream();
 		MetadataRenderer.render(out, searchResults);
 		out.flush();
