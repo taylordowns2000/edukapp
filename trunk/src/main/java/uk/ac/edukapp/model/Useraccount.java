@@ -34,7 +34,7 @@ public class Useraccount {
 	@Column(nullable = false, length = 256)
 	private String salt;
 
-	@Column(nullable = false, length = 256)
+	@Column(nullable = true, length = 256)
 	private String token;
 	
 	@OneToOne(cascade=CascadeType.ALL)
