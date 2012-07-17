@@ -120,9 +120,20 @@ public class UserReviewService extends AbstractService {
 			actor.setUrl(StoreConfiguration.getInstance().getLocation()+"/user/"+review.getUserAccount().getId());
 			
 			//
+			// Create review
+			//
+			Review spawsReview = new Review(review.getComment().getCommenttext());
+			
+			//
+			// Add context information for the review - in this case the detail page. Probably need
+			// some way of doing this that is more abstract and works with different front ends.
+			//
+			spawsReview.setContextUrl(StoreConfiguration.getInstance().getLocation()+"/widget/"+review.getWidgetProfile().getId());
+						
+			//
 			// Create submission
 			//
-			ISubmission submission = new Submission(actor, new Review(review.getComment().getCommenttext()), review.getWidgetProfile().getWidId());
+			ISubmission submission = new Submission(actor, spawsReview, review.getWidgetProfile().getWidId());
 			submission.setSubmitter(SpawsServerConfiguration.getInstance().getSubmitter());
 			
 			//
