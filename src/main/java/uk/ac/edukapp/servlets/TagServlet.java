@@ -23,7 +23,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+
 import uk.ac.edukapp.model.Tag;
+import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.service.TagService;
 import uk.ac.edukapp.util.Message;
@@ -102,6 +105,16 @@ public class TagServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws ServletException, IOException {
+		
+		//
+		// POST always requires a valid user login
+		//
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject()
+				.getPrincipal();
+		if (userAccount == null) {
+			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
+		}
 
 		//
 		// Create a TagService instance
@@ -120,9 +133,15 @@ public class TagServlet extends HttpServlet {
 			return;
 		}
 
-		Message msg = tagService.insertTag(text);
-		// Message msg = new Message();
-		// msg.setMessage("not yet implemeted");
+		try {
+			if (tagService.insertTag(text)){
+				resp.setStatus(HttpServletResponse.SC_CREATED);
+			} else {
+				resp.setStatus(HttpServletResponse.SC_OK);				
+			}
+		} catch (Exception e) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 
 		out.flush();
 		out.close();
