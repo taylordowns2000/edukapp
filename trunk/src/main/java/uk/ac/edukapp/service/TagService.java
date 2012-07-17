@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Tag;
-import uk.ac.edukapp.util.Message;
 
 /**
  * Tag service
@@ -116,49 +115,46 @@ public class TagService extends AbstractService {
 		return tag;
 	}
 
-	public Message insertTag(String text) {
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-
-		// check if the activity text already exists
-		// any better way to do this?
-		TypedQuery<Tag> query = entityManager.createNamedQuery(
-				"Tag.findByName", Tag.class);
-		query.setParameter("tagname", text);
+	/**
+	 * Create a new tag
+	 * @param text the tag label
+	 * @return true if a new tag was created; false if one already exists with the same label
+	 * @throws Exception if there was a problem creating the tag
+	 */
+	public boolean insertTag(String text) throws Exception {
 		try {
+			EntityManager entityManager = getEntityManagerFactory()
+			.createEntityManager();
+
+			//
+			// check if the tag text already exists. If it does,
+			// return false.
+			//
+			// (any better way to do this?)
+			//
+			
+			TypedQuery<Tag> query = entityManager.createNamedQuery(
+					"Tag.findByName", Tag.class);
+			query.setParameter("tagname", text);
 			List<Tag> result = query.getResultList();// getSingleResult();
 			if (result.size() > 0) {
-				Message msg = new Message();
-				msg.setMessage("exists");
-				msg.setId("-1");
-				return msg;
+				return false;
 			}
-		} catch (Exception e) {
-			// if something goes wrong
-			Message msg = new Message();
-			msg.setMessage("error" + e.getMessage());
-			return msg;
-		}
 
-		// execute the insert
-		Tag tag = new Tag();
-		tag.setTagtext(text);
-		try {
+			//
+			// execute the insert
+			//
+			Tag tag = new Tag();
+			tag.setTagtext(text);
 			entityManager.getTransaction().begin();
 			entityManager.persist(tag);
 			entityManager.getTransaction().commit();
 			entityManager.close();
-
-			Message msg = new Message();
-			msg.setId("" + tag.getId());
-			msg.setMessage("OK");
-
-			return msg;
+			return true;
+			
 		} catch (Exception e) {
-			// if something goes wrong
-			Message msg = new Message();
-			msg.setMessage("error" + e.getMessage());
-			return msg;
+			logger.error("problem creating tag:"+text, e);
+			throw e;
 		}
 	}
 }
