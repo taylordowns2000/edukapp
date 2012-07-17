@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `useraccount` (
   `email` varchar(100) NOT NULL,
   `password` varchar(256) NOT NULL,
   `salt` varchar(256) NOT NULL DEFAULT '01',
-  `token` varchar(256) NOT NULL DEFAULT '02',
+  `token` varchar(256),
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3552 ;
