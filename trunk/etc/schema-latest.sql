@@ -234,9 +234,11 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `w3c_or_os` tinyint(1) NOT NULL,
   `featured` tinyint(1) DEFAULT '0',
   `DESCRIPTION_WID_ID` int(11) DEFAULT NULL,
-  `icon` varchar(255) DEFAULT NULL,
+  `icon` varchar(255),
   `created` date NOT NULL,
   `updated` date NOT NULL,
+  `author` varchar(1024),
+  `license` varchar(2048),
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2566 ;

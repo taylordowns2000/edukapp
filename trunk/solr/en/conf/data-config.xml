@@ -14,6 +14,7 @@
                 <field column="icon"   xpath="/widgets/widget/icon/@src" />
                 <field column="description"   xpath="/widgets/widget/description" />
                 <field column="author"   xpath="/widgets/widget/author" />
+                <field column="license"   xpath="/widgets/widget/license" />
                 <field column="author_email"   xpath="/widgets/widget/author/@email" />
 		</entity>
 	</document>
