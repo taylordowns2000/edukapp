@@ -22,6 +22,7 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.web.env.IniWebEnvironment;
 
 import uk.ac.edukapp.service.UserAccountService;
+import uk.ac.edukapp.shibboleth.ShibbolethRealm;
 
 /**
  * Web Security Environment for Shiro - injects UserAccountService
@@ -44,10 +45,12 @@ public class WebSecurityEnvironment extends IniWebEnvironment {
 		ServletContext context = getServletContext();
 		UserAccountService userAccountService = new UserAccountService(context);
 		for (Realm realm : ((RealmSecurityManager) getSecurityManager()).getRealms()){
-			if (realm.getName().equals("SecurityRealm")){
-				( (SecurityRealm)realm).setUserAccountService(userAccountService);
-			}
-		}
+      if (realm.getName().equals("SecurityRealm")){
+        ( (SecurityRealm)realm).setUserAccountService(userAccountService);
+      }else if (realm.getName().equals(ShibbolethRealm.REALM_NAME)){
+        ( (ShibbolethRealm) realm).setUserAccountService(userAccountService);
+      }
+    }
 		
 	}
 	
