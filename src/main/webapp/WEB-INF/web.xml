@@ -31,7 +31,26 @@
 		<filter-name>ShiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+  <!--
+  Only enable this shibbolethFilter if there is a Shibboleth instance configured and running.
+  Not doing so would leave this application open for request forgery: an end user could
+  instruct his user agent to send a REMOTE_USER-header, thereby circumventing the
+  authentication altogether.
+  
+  NOTE you also need to modify WEB-INF/shiro.ini to enable the shibboleth security realm
+  -->
+  <!--
+  <filter>
+    <filter-name>shibbolethFilter</filter-name>
+    <filter-class>uk.ac.edukapp.shibboleth.ShiroShibbolethFilter</filter-class>
+	</filter>
+  <filter-mapping>
+    <filter-name>shibbolethFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+
 
 	<servlet>
 		<description>Search servlet</description>
@@ -44,7 +63,7 @@
 		<servlet-name>SearchServlet</servlet-name>
 		<url-pattern>/api/search</url-pattern>
 	</servlet-mapping>
-  
+
 	<servlet>
 		<description>Similar servlet</description>
 		<display-name>similar</display-name>
