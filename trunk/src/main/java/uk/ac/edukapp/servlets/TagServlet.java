@@ -28,8 +28,8 @@ import org.apache.shiro.SecurityUtils;
 import uk.ac.edukapp.model.Tag;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.renderer.MetadataRenderer;
+import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.service.TagService;
-import uk.ac.edukapp.util.Message;
 
 /**
  * Tags api endpoint
@@ -67,12 +67,10 @@ public class TagServlet extends HttpServlet {
 		} 
 		
 		else if (id.equals("all")){
-			// TODO - to implemet in TAgService
-			// MetadataRenderer.render(resp.getOutputStream(),
-			// tagService.getAllTags());
-			Message msg = new Message();
-			msg.setMessage("not yet implemeted");
-			MetadataRenderer.render(out, msg);
+			// TODO allow setting offset and limit via params
+			int offset = 0;
+			int limit = 10;
+			MetadataRenderer.render(out, tagService.getAllTags(offset, limit));
 			return;
 		} 
 		
@@ -92,10 +90,15 @@ public class TagServlet extends HttpServlet {
 				//
 				// Find and render matching widgets
 				//
-				MetadataRenderer.render(out, tag.getWidgetprofiles());				
+				// TODO allow setting offset and limit via params
+				SearchResults results = new SearchResults();
+				results.setWidgets(tag.getWidgetprofiles());
+				results.setNumber_of_results(results.getWidgets().size());
+				MetadataRenderer.render(out, results);				
 			}
 		}
 		out.flush();
+		
 		out.close();
 	}
 

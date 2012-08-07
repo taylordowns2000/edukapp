@@ -19,6 +19,7 @@ package uk.ac.edukapp.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 
@@ -39,6 +40,16 @@ public class TagService extends AbstractService {
 
 	public TagService(ServletContext servletContext) {
 		super(servletContext);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tag> getAllTags(int offset, int limit) {
+		EntityManager entityManager = getEntityManagerFactory()
+		.createEntityManager();
+		Query query = entityManager.createQuery("SELECT t FROM Tag t");
+		query.setFirstResult(offset);
+		query.setMaxResults(limit);
+		return query.getResultList();
 	}
 
 	/**
@@ -109,7 +120,8 @@ public class TagService extends AbstractService {
 		// Fetch widgetProfiles so these are available
 		// in the detached entity
 		//
-		tag.getWidgetprofiles();
+		if (tag != null)
+			tag.getWidgetprofiles();
 
 		entityManager.close();
 		return tag;
