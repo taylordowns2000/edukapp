@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
-"http://www.tuckey.org/res/dtds/urlrewrite3.2.dtd">
+"http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
 <urlrewrite>
 
 	<!--
@@ -54,15 +54,15 @@
 	</rule>
 	<rule>
 		<from>/api/tag/all$</from>
-		<to>/api/tag</to>
+		<to>/api/tag?id=all</to>
 	</rule>
 	<rule>
-		<from>/api/tag/([a-zA-z0-9]+)$</from>
+		<from>/api/tag/([a-zA-Z0-9]+)$</from>
 		<to>/api/tag?id=$1&amp;namesonly=true</to>
 	</rule>
 	<rule>
-		<from>/api/tag/([a-zA-z0-9]+)/widgets$</from>
-		<to>/api/tag?id=$1</to>
+		<from>/api/tag/([a-zA-Z0-9]+)/widgets$</from>
+		<to qsappend = "true">/api/tag?id=$1</to>
 	</rule>
 	
 	<!--
