@@ -18,8 +18,11 @@ import javax.persistence.NamedQuery;
 	@NamedQuery(name="ltiprovider.findByConsumerKey", query="select l from LtiProvider l where l.consumerKey = :key")
 })
 public class LtiProvider {
-	
-	public LtiProvider(Useraccount userAccount){
+
+  public LtiProvider() {
+  }
+
+  public LtiProvider(Useraccount userAccount){
 		this.id = userAccount.getId();
 		this.consumerKey = "TEST";
 		this.consumerSecret = "TEST";

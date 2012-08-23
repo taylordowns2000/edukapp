@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    version="1.0">
-    <persistence-unit name="edukapp">
-	<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
-	<class>uk.ac.edukapp.model.Activity</class>
-	<class>uk.ac.edukapp.model.Comment</class>
-	<class>uk.ac.edukapp.model.Tag</class>
-	<class>uk.ac.edukapp.model.Type</class>
-	<class>uk.ac.edukapp.model.Useraccount</class>
-	<class>uk.ac.edukapp.model.Useractivity</class>
-	<class>uk.ac.edukapp.model.Userreview</class>
-	<class>uk.ac.edukapp.model.Widgetprofile</class>
-	<class>uk.ac.edukapp.model.Accountinfo</class>
-	<class>uk.ac.edukapp.model.WidgetDescription</class>
-	<class>uk.ac.edukapp.model.WidgetStats</class>
-	<class>uk.ac.edukapp.model.LtiProvider</class>
-	<class>uk.ac.edukapp.model.Userrole</class>
-	<class>uk.ac.edukapp.model.Userrating</class>
-		<!--
-		<class>put your classes here</class>
-		-->
+             version="1.0">
+  <persistence-unit name="edukapp">
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <class>uk.ac.edukapp.model.Activity</class>
+    <class>uk.ac.edukapp.model.Comment</class>
+    <class>uk.ac.edukapp.model.Tag</class>
+    <class>uk.ac.edukapp.model.Type</class>
+    <class>uk.ac.edukapp.model.Useraccount</class>
+    <class>uk.ac.edukapp.model.Useractivity</class>
+    <class>uk.ac.edukapp.model.Userreview</class>
+    <class>uk.ac.edukapp.model.Widgetprofile</class>
+    <class>uk.ac.edukapp.model.Accountinfo</class>
+    <class>uk.ac.edukapp.model.WidgetDescription</class>
+    <class>uk.ac.edukapp.model.WidgetStats</class>
+    <class>uk.ac.edukapp.model.LtiProvider</class>
+    <class>uk.ac.edukapp.model.Userrole</class>
+    <class>uk.ac.edukapp.model.Userrating</class>
+    <class>uk.ac.edukapp.model.SyndicatedWidgetprofile</class>
 
-		
-    	<properties>	    
-    	
-    	    <property name="openjpa.Log" value="SQL=TRACE"/>
-    	    
-    		<property name="openjpa.ConnectionDriverName"   value="com.mysql.jdbc.Driver"/>
-    		<property name="openjpa.ConnectionURL"      	value="jdbc:mysql://localhost/edukapptests"/>
-    		<property name="openjpa.ConnectionUserName"     value="edukapptests"/>
-    		<property name="openjpa.ConnectionPassword" 	value="edukapptests"/>   
-			
-			<!-- mysql specific properties -->
-			<property name="openjpa.ConnectionFactoryProperties" value="autoReconnect=true,roundRobinLoadBalance=true"/>
-			<property name="TableType" 	value="innodb"/>   
-			
-			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
-			<!--
-            <property name="openjpa.DataCache"                value="true"/> 		
-            <property name="openjpa.RemoteCommitProvider"     value="sjvm"/>
-            <property name="openjpa.InitializeEagerly"        value="true"/>
-    		<property name="openjpa.DynamicEnhancementAgent"  value="false"/>
-    		<property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>            
-    		<property name="openjpa.jdbc.QuerySQLCache"       value="true(EnableStatistics=true)"/>
-			-->
-    	</properties>
-    </persistence-unit>    
+    <properties>
+
+      <property name="openjpa.Log" value="SQL=TRACE"/>
+
+      <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+      <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost/edukapptests"/>
+      <property name="openjpa.ConnectionUserName" value="edukapptests"/>
+      <property name="openjpa.ConnectionPassword" value="edukapptests"/>
+
+      <!-- mysql specific properties -->
+      <property name="openjpa.ConnectionFactoryProperties" value="autoReconnect=true,roundRobinLoadBalance=true"/>
+      <property name="TableType" value="innodb"/>
+
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+      <!--
+           <property name="openjpa.DataCache"                value="true"/>
+           <property name="openjpa.RemoteCommitProvider"     value="sjvm"/>
+           <property name="openjpa.InitializeEagerly"        value="true"/>
+           <property name="openjpa.DynamicEnhancementAgent"  value="false"/>
+           <property name="openjpa.RuntimeUnenhancedClasses" value="unsupported"/>
+           <property name="openjpa.jdbc.QuerySQLCache"       value="true(EnableStatistics=true)"/>
+         -->
+    </properties>
+  </persistence-unit>
 </persistence>
 
