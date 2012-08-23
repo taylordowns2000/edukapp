@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+"http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<urlrewrite>
+
+	<!--
+	***  rewrite rules for PAGES widget/tag/activity/user ***
+	-->
+	<rule>
+		<from>^/user/([0-9a-z]+)$</from>
+		<to>/profile.jsp?id=$1</to>
+	</rule>
+	<rule>
+		<from>^/widget/([0-9]+)</from>
+		<to>/widget.jsp?id=$1</to>
+	</rule>
+	<rule>
+		<from>^/tag/([0-9a-z]+)</from>
+		<to>/tag.jsp?id=$1</to>
+	</rule>
+	<rule>
+		<from>^/activity/([0-9]+)</from>
+		<to>/activity.jsp?id=$1</to>
+	</rule>
+	<!--
+	***  rewrite rules for rest API  ***
+	-->
+	<!--
+		entity WIDGET
+	-->
+	<rule>
+		<from>/api/widget/([0-9]+)/([a-z]+)$</from>
+		<to>/api/widget?id=$1&amp;part=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/([0-9]+)$</from>
+		<to>/api/widget?id=$1</to>
+	</rule>
+	<rule>
+		<from>/api/widget/([a-zA-z0-9:\/\.]+)/([a-z]+)$</from>
+		<to>/api/widget?uri=$1&amp;part=$2</to>
+	</rule>
+	<rule>
+		<from>/api/widget/([a-zA-z0-9:\/\.]+)$</from>
+		<to>/api/widget?uri=$1</to>
+	</rule>
+
+	<!--
+	entity TAG
+	-->
+	<rule>
+		<from>/api/tag/popular$</from>
+		<to>/api/tag?id=popular</to>
+	</rule>
+	<rule>
+		<from>/api/tag/all$</from>
+		<to>/api/tag?id=all</to>
+	</rule>
+	<rule>
+		<from>/api/tag/([a-zA-Z0-9]+)$</from>
+		<to>/api/tag?id=$1&amp;namesonly=true</to>
+	</rule>
+	<rule>
+		<from>/api/tag/([a-zA-Z0-9]+)/widgets$</from>
+		<to qsappend = "true">/api/tag?id=$1</to>
+	</rule>
+	
+	<!--
+	entity ACTIVITY  (affordance)
+	-->
+	<rule>
+		<from>/api/activity/name/([0-9]+)$</from>
+		<to>/api/activity?id=$1&amp;operation=getName</to>
+	</rule>
+	<rule>
+		<from>/api/activity/widgets/([0-9]+)$</from>
+		<to>/api/activity?id=$1&amp;operation=getWidgets</to>
+	</rule>
+	<!--
+		generic rule that matches /api/activity/popular and /api/activity/all
+		splitting it to avoid conflict with get activity by text (3rd rule below)
+	<rule>
+		<from>/api/activity/([a-z]+)$</from>
+		<to>/api/activity?operation=$1</to>
+	</rule>
+-->
+	<rule>
+		<from>/api/activity/popular$</from>
+		<to>/api/activity?operation=popular</to>
+	</rule>
+	<rule>
+		<from>/api/activity/all$</from>
+		<to>/api/activity?operation=all</to>
+	</rule>
+	<rule>
+		<from>/api/activity/widgets/([0-9a-z]+)$</from>
+		<to>/api/activity?text=$1&amp;operation=getWidgets</to>
+	</rule>
+	<!-- PUT method-->
+	<rule>
+		<from>/api/activity/([0-9a-z]+)$</from>
+		<to>/api/activity?text=$1</to>
+	</rule>
+
+	<!--
+	entity USER
+	-->
+	<rule>
+		<from>^/api/user/([0-9a-z]+)$</from>
+		<to>/api/user?id=$1</to>
+	</rule>
+</urlrewrite>
+

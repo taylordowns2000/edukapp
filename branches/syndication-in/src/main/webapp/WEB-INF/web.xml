@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>edukapp</display-name>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404.jsp</location>
+	</error-page>
+	<listener>
+		<listener-class>uk.ac.edukapp.listeners.ConnectionListener</listener-class>
+	</listener>
+	
+	<!-- Shiro security -->
+			<context-param>
+    		<param-name>shiroEnvironmentClass</param-name>
+    		<param-value>uk.ac.edukapp.security.WebSecurityEnvironment</param-value>
+		</context-param>
+	<listener>
+		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>ShiroFilter</filter-name>
+		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ShiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+  <!--
+  Only enable this shibbolethFilter if there is a Shibboleth instance configured and running.
+  Not doing so would leave this application open for request forgery: an end user could
+  instruct his user agent to send a REMOTE_USER-header, thereby circumventing the
+  authentication altogether.
+  
+  NOTE you also need to modify WEB-INF/shiro.ini to enable the shibboleth security realm
+  -->
+  <!--
+  <filter>
+    <filter-name>shibbolethFilter</filter-name>
+    <filter-class>uk.ac.edukapp.shibboleth.ShiroShibbolethFilter</filter-class>
+	</filter>
+  <filter-mapping>
+    <filter-name>shibbolethFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+
+
+	<servlet>
+		<description>Search servlet</description>
+		<display-name>seach</display-name>
+		<servlet-name>SearchServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.SearchServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchServlet</servlet-name>
+		<url-pattern>/api/search</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Similar servlet</description>
+		<display-name>similar</display-name>
+		<servlet-name>SimilarServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.SimilarServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SimilarServlet</servlet-name>
+		<url-pattern>/api/similar</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- basic LTI -->
+		<!-- Use Authorization Filter for BLTI API  -->
+	<servlet>
+		<description>LTI servlet</description>
+		<display-name>lti</display-name>
+		<servlet-name>LtiServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.LtiServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LtiServlet</servlet-name>
+		<url-pattern>/lti/*</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+   	    <filter-name>OAuthAuthorizationFilter</filter-name>
+   	    <filter-class>uk.ac.edukapp.security.OAuthAuthorizationFilter</filter-class>
+   	    <init-param>
+      		<param-name>signed</param-name>
+      		<param-value>true</param-value>
+        </init-param>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>OAuthAuthorizationFilter</filter-name>
+		<servlet-name>LtiServlet</servlet-name>
+  	</filter-mapping>
+	
+	<!-- upload servlet -->
+	<servlet>
+		<description>Upload servlet</description>
+		<display-name>upload</display-name>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.UploadServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/api/upload</url-pattern>
+	</servlet-mapping>
+	<!-- upload servlet end-->
+
+	<!-- update servlet -->
+	<servlet>
+		<description>Update widgets servlet</description>
+		<display-name>update</display-name>
+		<servlet-name>UpdateServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.UpdateWidgetServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpdateServlet</servlet-name>
+		<url-pattern>/updateWidget</url-pattern>
+	</servlet-mapping>
+	<!-- update servlet end-->
+
+	<servlet>
+		<description>Featured servlet</description>
+		<display-name>featured</display-name>
+		<servlet-name>FeaturedServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.FeaturedServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FeaturedServlet</servlet-name>
+		<url-pattern>/api/featured</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Review servlet</description>
+		<display-name>review</display-name>
+		<servlet-name>ReviewServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.ReviewServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ReviewServlet</servlet-name>
+		<url-pattern>/api/review</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Widget servlet</description>
+		<display-name>widget</display-name>
+		<servlet-name>WidgetServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.WidgetServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WidgetServlet</servlet-name>
+		<url-pattern>/api/widget</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>WidgetsConnectorServlet</description>
+		<display-name>WidgetsConnectorServlet</display-name>
+		<servlet-name>WidgetsConnectorServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.WidgetsConnectorServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WidgetsConnectorServlet</servlet-name>
+		<url-pattern>/api/widgets/all</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<description>Login servlet</description>
+		<display-name>login</display-name>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.ShiroLoginServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Register operations servlet</description>
+		<display-name>register</display-name>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.RegisterServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Logout servlet - invalidates session -deletes cookies</description>
+		<display-name>logout</display-name>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.LogoutServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Session servlet - checks for current auth session</description>
+		<display-name>session</display-name>
+		<servlet-name>SessionServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.SessionServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SessionServlet</servlet-name>
+		<url-pattern>/session</url-pattern>
+	</servlet-mapping>
+
+	
+	<!--  cross domain support -->
+	<filter>
+		<filter-name>CORS</filter-name>
+		<filter-class>uk.ac.edukapp.security.CorsFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>CORS</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+
+	<!-- rewrite servlet -->
+	<filter>
+    	<filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+        <init-param>
+        	<param-name>logLevel</param-name>
+            <param-value>WARN</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+    	<filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	<!-- rewrite servlet end -->
+	
+	<!-- tag servlet -->
+	<servlet>
+		<description>Tags api servlet</description>
+		<display-name>tags</display-name>
+		<servlet-name>TagServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.TagServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TagServlet</servlet-name>
+		<url-pattern>/api/tag</url-pattern>
+	</servlet-mapping>
+	<!-- tag servlet end -->
+	
+	<!-- activity servlet -->
+	<servlet>
+		<description>Activities api servlet</description>
+		<display-name>activities</display-name>
+		<servlet-name>ActivityServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.ActivityServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ActivityServlet</servlet-name>
+		<url-pattern>/api/activity</url-pattern>
+	</servlet-mapping>
+	<!-- activity servlet end -->
+
+	<servlet>
+		<description></description>
+		<display-name>RestServlet</display-name>
+		<servlet-name>RestServlet</servlet-name>
+		<servlet-class>org.apache.wink.server.internal.servlet.RestServlet</servlet-class>
+<!--		<init-param>
+			<param-name>applicationConfigLocation</param-name>
+			<param-value>/WEB-INF/application</param-value>
+		</init-param>  -->
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>uk.ac.edukapp.server.configuration.WinkJacksonApplication</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RestServlet</servlet-name>
+		<url-pattern>/api/rest/*</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- account info servlet -->
+	<servlet>
+		<description>AccountInfo api servlet</description>
+		<display-name>accountInfo</display-name>
+		<servlet-name>AccountInfoServlet</servlet-name>
+		<servlet-class>uk.ac.edukapp.servlets.AccountInfoServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AccountInfoServlet</servlet-name>
+		<url-pattern>/api/user</url-pattern>
+	</servlet-mapping>
+	<!-- account info servlet end -->
+	
+	
+</web-app>

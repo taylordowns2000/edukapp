@@ -1,0 +1,157 @@
+/* to update code repository's wiki with */
+real url														|	clean url							| implemented?
+------------------------------------------------------------------------------------------------------------------------------
+GET /api/featured
+GET /api/search?q={search terms}
+GET /api/similar?uri={widget uri}
+GET /api/review?uri={widget uri}
+GET /api/widget?id={widget id}
+GET /api/widget?uri={widget uri}
+
+------------------------------------------------------------------------------
+GET /api/rest/widgets/search/{query}/{start}/{rows}
+{query} is the search text
+{start} is an integer indicating the start point of the records returned
+{rows} is an integer indicating the number of records to return
+
+
+GET /api/rest/widgets/search/{query}/{start}/{rows}/{orderby}
+as above
+{orderby} must be one of the following: date, rating or popularity
+
+an example might be
+
+/api/rest/widgets/search/chat/0/50/popularity
+
+** Widget
+-------------------------------------------------									
+
+GET
+
+implemented?  URL pattern                   Comments							
+Y             /api/widget/{$id}             /* full info */		                             														
+N             /api/widget/{$id}/name 							                  
+N             /api/widget/{$id}/render      /*return instance url*/        
+N             /api/widget/{$id}/tags								
+N             /api/widget/{$id}/activities					
+N             /api/widget/{$id}/description 						
+Y             /api/widget/{$id}/comments	
+Y             /api/widget/{$id}/similar     /* return similar widgets */						
+Y             /api/widget/{$id}/ratings     /*full list*/  			
+Y             /api/widget/{$id}/rating      /*average rating*/ 		
+N             /api/widget/{$id}/stats       /*instantiation stats*/ 
+N             /api/widget/{$id}/activity    /*chronological list of commenting/rating/updating/...  */
+                          
+
+POST
+
+Y             /api/widget/{$id}/tag  (tag id or tag text in request body) 					
+Y             /api/widget/{$id}/activity (activity id or activity text in request body) 						
+Y             /api/widget/{$id}/comment ({$text} and {$userid} in request body)
+Y             /api/widget/{$id}/rating  ({$rating} and {$userid} in request body) 
+
+PUT
+
+Y             /api/widget/${id}/description/ (${text} in request body)
+N             /api/widget/w3c/              {$.wgt file} attached
+N             /api/widget/gadget/           {$.xml file} attached
+N             /api/widget/gadget/           ({$uri} in request body)
+
+DELETE
+
+N             /api/widget/${id} 								
+N             /api/widget/{$id}/tag/{$id} 				
+N             /api/widget/{$id}/tag/{$text}  
+N             /api/widget/{$id}/comment/{$id} 
+N             /api/widget/{$id}/activity/{$id}		
+N             /api/widget/{$id}/activity/{$text}	  
+N             /api/widget/{$id}/rating/{$id}  			
+
+** Tag
+--------------------------------------------------
+
+GET
+
+Y             /api/tag/{tag id}  /* e.g. "api/tag/75" tag metadata only */
+Y             /api/tag/{tag id}/widgets  /* widgets matching tag */
+Y             /api/tag/{tag label}  /* e.g. "api/tag/fun" tag metadata only */
+Y             /api/tag/{tag label}/widgets  /* widgets matching tag */
+Y             /api/tag/popular /*popular tags - metadata only */
+Y             /api/tag/all /* all tags - metadata only */		 
+
+POST
+
+Y             /api/tag/  (tag label in request body)
+
+PUT
+
+N             /api/tag/{tag id}  ({new label} in request body)		
+N             /api/tag/{tag label} ({new label} in request body)
+
+DELETE
+
+N             /api/tag/{tag id}
+N             /api/tag/{tag label}	
+
+	
+** Activity
+------------------------------------------------				|
+GET /api/activity?operation=popular					|	/api/activity/popular			| yes
+GET /api/activity?operation=all						|	/api/activity/all				| yes
+GET /api/activity?id={$id}&operation=getName			|	/api/activity/name/{$id}		| yes
+GET /api/activity?id={$id}&operation=getWidgets		|	/api/activity/widgets/{$id}		| yes
+
+PUT /api/activity?text={activity text}						|   /api/activity/{text}			| yes
+
+POST /api/activity?id={activity id}&newText={new text}		|	/api/activity/{id}/{text}		| no
+POST /api/activity?oldText={old text}&newText={new text}	|	/api/activity/{text}/{text}	| no	
+
+DELETE /api/activity?id={activity id}					|	/api/activity/{id}			| no
+DELETE /api/activity?text={text}							|	/api/activity/{text}			| no
+
+
+** Comment
+------------------------------------------------
+GET
+/api/comment/all
+/api/comment/{$com-id}
+/api/comment/widget/{$widget-id}
+POST
+/api/comment/{$com-id}/update/{$new-text}
+PUT
+/api/comment/{$widget-id}/{$user-id}/{$text}
+DELETE
+/api/comment/{$id}
+
+** Rating
+------------------------------------------------
+GET
+/api/rating/{$id}
+/api/rating/widget/{$id}      /*returns average rating of widget*/
+/api/rating/widget/{$id}/all  /*returns all ratings of widget*/
+POST
+/api/rating/{$id}/update/{$new-value}
+PUT
+/api/rating/{$wid-id}/{$user-id}/{$value}
+DELETE
+/api/rating/{$id}
+/api/rating/widget/{$widget-id}/user/{$user-id}
+
+
+** USER
+----------------------------------------------
+GET
+/api/user/{$id}
+/api/user/{$id}/activity
+POST
+PUT
+DELETE
+
+
+** UserActivity
+----------------------------------------------
+GET
+POST
+PUT
+DELETE
+

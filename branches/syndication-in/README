@@ -1,0 +1,69 @@
+edukapp widget store
+(http://code.google.com/p/edukapp)
+-----
+
+Before you start:
+
+1. Create a new local MySQL database called "edukapptests" (username and password the same)
+2. Run the "schema-latest.sql" query to setup the tables
+
+To start:
+
+mvn install
+mvn cargo:start
+
+This will start the following web applications:
+
+1. The Edukapp web application at localhost:8080
+2. An Apache Wookie widget server at localhost:8080/wookie
+3. An Apache Solr search engine server at localhost:8080/solr
+
+To index widget metadata from Wookie in the Solr search engine:
+
+http://localhost:8080/solr/en/dataimport?command=full-import
+
+To then get Edukapp to initialize all indexed widgets:
+
+http://localhost:8080/api/search?q=%5B*TO%20*%5D&resultsize=100000
+The large result size is to make sure all the widgets are indexed, if your wookie server has more widgets than this
+increase the result size accordingly
+
+Deploy in tomcat (localhost/remote host)
+------------------------------------------
+1. (after you build locally as standalone) copy .war files (of target/tomcat6x/webapps folder) in webapps folder
+1.1 solr.war might be faulty - copy instead the latest solr release war file
+1.2 instead of wookie 0.9.2 - get the latest wookie build by subversion
+		$> svn co http://svn.apache.org/repos/asf/incubator/wookie/trunk ./wookie-latest
+
+	and build it using
+		$> ant build-release-all
+
+	unzip file:
+	wookie-latest/release/0.10.0-incubating-SNAPSHOT/binary/war/apache-wookie-0.10.0-incubating-SNAPSHOT-war.zip
+
+	and follow instructions of how to install wookie enclosed in:
+	WAR_BUILD_NOTES
+
+2. Copy solr folder outside your webapps folder
+2.1 if not localhost edit solr/en/conf/data-config.xml and set url to your hostname
+2.2 edit webapps/solr/WEB-INF/web.xml and uncomment
+    <env-entry>
+       <env-entry-name>solr/home</env-entry-name>
+       <env-entry-value>/put/your/solr/home/here</env-entry-value>
+       <env-entry-type>java.lang.String</env-entry-type>
+    </env-entry>
+setting the env-entry-calue to your solr home folder path
+
+3.if tomcat 7 you may encounter a "session error" each time a wookie widget is rendered
+	to overcome add in /wookie/WEB-INF/web.xml 
+	in dwr-invoker servlet declaration:
+	                <init-param>
+                        <param-name>crossDomainSessionSecurity</param-name>
+                        <param-value>false</param-value>
+                	</init-param>
+	
+
+4. star JVM with the following flags (typically create a var JAVA_OPTS in {TOMCAT_HOME}/bin/catalina.sh)
+JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms1536m
+-Xmx1536m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256m
+-XX:MaxPermSize=256m -XX:+DisableExplicitGC"
