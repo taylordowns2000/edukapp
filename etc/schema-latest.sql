@@ -240,7 +240,9 @@ CREATE TABLE IF NOT EXISTS `widgetprofiles` (
   `author` varchar(1024),
   `license` varchar(2048),
   PRIMARY KEY (`id`),
-  KEY `id` (`id`)
+  KEY `id` (`id`),
+  UNIQUE KEY `U_WID_ID` (`wid_id`)
+
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2566 ;
 
 -- --------------------------------------------------------
