@@ -22,12 +22,14 @@ import java.util.Arrays;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.ac.edukapp.model.SyndicatedWidgetprofile;
+import uk.ac.edukapp.model.Widgetprofile;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeast;
@@ -45,6 +47,7 @@ public class SyndicationServiceTest {
 
   private EntityManager entityManager = mock(EntityManager.class);
 
+  private Query query = mock(Query.class);
   @Before
   public void before() {
     when(servletContext.getAttribute("emf")).thenReturn(emf);
@@ -56,6 +59,8 @@ public class SyndicationServiceTest {
 
   @Test
   public void test() {
+    when(entityManager.createNamedQuery(any(String.class))).thenReturn(query);
+    when(query.getSingleResult()).thenReturn(new Widgetprofile());
     final URL localUrl = getClass().getClassLoader().getResource("localAtomFeed.xml");
     syndicationService.setFeedUrls(Arrays.asList(localUrl));
     syndicationService.syncFeeds();

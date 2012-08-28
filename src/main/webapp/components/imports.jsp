@@ -12,7 +12,7 @@ footer {
     margin-top: 50px;
 }
 </style>
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="/scripts/jquery.min.js"></script>
 <script src="/scripts/bootstrap.min.js"></script>
 <script src="/scripts/bootstrap-collapse.js"></script>
 <script src="/scripts/util.js"></script>

@@ -25,7 +25,6 @@ import java.util.TimerTask;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -35,7 +34,7 @@ public class SyndicationScheduler {
 
   private static final Logger logger = Logger.getLogger(SyndicationScheduler.class);
 
-  private static final long period = 1000*60; // every minute
+  private long period = 1000*60; // every minute
 
   private ServletContext servletContext;
   private Timer timer;
@@ -46,13 +45,9 @@ public class SyndicationScheduler {
     syndicationService = new SyndicationService(servletContext);
     timer = new Timer();
 
-    final String syndicationUrlsConfig = servletContext.getInitParameter("syndicationUrls");
-    if (StringUtils.isNotBlank(syndicationUrlsConfig)) {
-      initWithConfig(syndicationUrlsConfig);
-    }
   }
 
-  private void initWithConfig(String syndicationUrlsConfig) {
+  public void initWithConfig(String syndicationUrlsConfig) {
     final String[] syndicationUrls = syndicationUrlsConfig.split(",");
 
     List<URL> urls = new ArrayList<URL>();
@@ -71,6 +66,7 @@ public class SyndicationScheduler {
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
+        logger.debug("Running syndication task...");
         syndicationService.syncFeeds();
       }
     }, 0L, period);
@@ -81,6 +77,17 @@ public class SyndicationScheduler {
   public void stopSchedule() {
     timer.cancel();
     logger.info("Stopped periodic syndication task.");
+  }
+
+  /**
+   * Setter for unit testing (DI)
+   */
+  public void setSyndicationService(SyndicationService syndicationService) {
+    this.syndicationService = syndicationService;
+  }
+
+  public void setPeriod(long period) {
+    this.period = period;
   }
 
 }

@@ -12,6 +12,7 @@ public class ConnectionListener implements ServletContextListener {
 
 
   private static final String SYNDICATION_SCHEDULER_ATTRIBUTE = "syndicationScheduler";
+  private static final String SYNDICATION_URLS_PARAM = "syndicationUrls";
 
   //init EntityManagerFactory and store it in servlet context
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -20,9 +21,15 @@ public class ConnectionListener implements ServletContextListener {
       EntityManagerFactory emf = Persistence.createEntityManagerFactory("edukapp");
       servletContext.setAttribute("emf", emf);
 
-      final SyndicationScheduler syndicationScheduler = new SyndicationScheduler(servletContext);
-      servletContext.setAttribute(SYNDICATION_SCHEDULER_ATTRIBUTE, syndicationScheduler);
-      syndicationScheduler.startPeriodicSyndication();
+      final String syndicationUrls = servletContext.getInitParameter(SYNDICATION_URLS_PARAM);
+      if (syndicationUrls != null) {
+        SyndicationScheduler syndicationScheduler = new SyndicationScheduler(servletContext);
+
+        syndicationScheduler.initWithConfig(syndicationUrls);
+        syndicationScheduler.startPeriodicSyndication();
+
+        servletContext.setAttribute(SYNDICATION_SCHEDULER_ATTRIBUTE, syndicationScheduler);
+      }
     }
  
     // Release the EntityManagerFactory:
@@ -31,8 +38,10 @@ public class ConnectionListener implements ServletContextListener {
             (EntityManagerFactory)e.getServletContext().getAttribute("emf");
         emf.close();
 
-      SyndicationScheduler syndicationScheduler = (SyndicationScheduler) e.getServletContext().getAttribute(SYNDICATION_SCHEDULER_ATTRIBUTE);
-      syndicationScheduler.stopSchedule();
+      if (e.getServletContext().getInitParameter(SYNDICATION_URLS_PARAM) != null) {
+        SyndicationScheduler syndicationScheduler = (SyndicationScheduler) e.getServletContext().getAttribute(SYNDICATION_SCHEDULER_ATTRIBUTE);
+        syndicationScheduler.stopSchedule();
+      }
     }
 }
 
