@@ -39,6 +39,7 @@ public class SyndicationScheduler {
   private ServletContext servletContext;
   private Timer timer;
   private SyndicationService syndicationService;
+  private long delay = 1000*30; // wait for 30 seconds, for solr to start.
 
   public SyndicationScheduler(ServletContext servletContext) {
     this.servletContext = servletContext;
@@ -69,7 +70,7 @@ public class SyndicationScheduler {
         logger.debug("Running syndication task...");
         syndicationService.syncFeeds();
       }
-    }, 0L, period);
+    }, delay, period);
     logger.info("Started periodic syndication task. In-between delay: " + period);
   }
 
@@ -90,4 +91,7 @@ public class SyndicationScheduler {
     this.period = period;
   }
 
+  public void setDelay(long delay) {
+    this.delay = delay;
+  }
 }

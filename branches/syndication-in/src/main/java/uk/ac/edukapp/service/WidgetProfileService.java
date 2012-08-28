@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
@@ -398,7 +399,7 @@ public class WidgetProfileService extends AbstractService {
 				widgetProfile = new Widgetprofile();
 				widgetProfile.setName(widget.getTitle());
 				widgetProfile.setWidId(widget.getUri());
-				widgetProfile.setIcon(widget.getIcon());
+				widgetProfile.setIcon(StringUtils.defaultString(widget.getIcon()));
 				widgetProfile.setCreated(new Date());
 				widgetProfile.setUpdated(new Date());
 				widgetProfile.setAuthor(widget.getAuthor());
