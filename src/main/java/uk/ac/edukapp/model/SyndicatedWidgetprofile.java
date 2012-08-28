@@ -76,7 +76,7 @@ public class SyndicatedWidgetprofile implements Serializable {
   @Column
   private String widgetId;
 
-  @Column
+  @Column(length = 1023)
   private String description;
 
   @Column

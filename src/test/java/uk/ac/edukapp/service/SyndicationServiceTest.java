@@ -16,6 +16,7 @@
 
 package uk.ac.edukapp.service;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -26,6 +27,7 @@ import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.ac.edukapp.model.SyndicatedWidgetprofile;
@@ -66,5 +68,19 @@ public class SyndicationServiceTest {
     syndicationService.syncFeeds();
     verify(entityManager, atLeast(1)).persist(any(SyndicatedWidgetprofile.class)); // at least the SyndicatedWidgetprofile
         // But the WidgetprofileService calls persist() multiple times so no exact count can be given here.
+  }
+
+  /**
+   * This test depends on an external system, therefore it's @Ignore'd by default.
+   */
+  @Ignore
+  @Test
+  public void remoteUrl() throws MalformedURLException {
+    when(entityManager.createNamedQuery(any(String.class))).thenReturn(query);
+    when(query.getSingleResult()).thenReturn(new Widgetprofile());
+    final URL remoteUrl = new URL("https", "wiki.surfnetlabs.nl", 443, "/rest/gadgets/1.0/g/feed");
+    syndicationService.setFeedUrls(Arrays.asList(remoteUrl));
+    syndicationService.syncFeeds();
+    verify(entityManager, atLeast(1)).persist(any(SyndicatedWidgetprofile.class)); // at least the SyndicatedWidgetprofile
   }
 }

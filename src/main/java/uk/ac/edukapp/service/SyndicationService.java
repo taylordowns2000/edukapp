@@ -34,6 +34,8 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.model.SyndicatedWidgetprofile;
@@ -45,6 +47,7 @@ public class SyndicationService extends AbstractService {
 
   private List<URL> feedUrls = Collections.emptyList();
   private WidgetProfileService widgetProfileService;
+  private DefaultHttpClient httpClient = new DefaultHttpClient();
 
   public SyndicationService() {
     super();
@@ -67,7 +70,10 @@ public class SyndicationService extends AbstractService {
         // but the update will not be propagated to the widgetProfileService.
         if (widgetProfileService.findWidgetProfileByUri(p.getUri()) == null) {
           // TODO: create a UI to not import all gadgets automatically but make a selection
-          widgetProfileService.createWidgetProfile(p.getUri(), p.getName(), p.getDescription(),
+          widgetProfileService.createWidgetProfile(
+              p.getUri(),
+              p.getName().substring(0, 99),
+              p.getDescription(),
               p.getUri(), // TODO: replace with icon uri? (but from where)
               Widgetprofile.OPENSOCIAL_GADGET);
         } else {
@@ -113,7 +119,13 @@ public class SyndicationService extends AbstractService {
   private List<SyndicatedWidgetprofile> getWidgetsFromFeedUri(URL url) {
     SyndFeedInput input = new SyndFeedInput();
     try {
-      final InputStreamReader reader = new InputStreamReader(url.openStream());
+      InputStreamReader reader;
+      if (url.getProtocol().equals("file")) {
+        reader = new InputStreamReader(url.openStream());
+      } else {
+        reader = new InputStreamReader(httpClient.execute(new HttpGet(url.toString
+            ())).getEntity().getContent());
+      }
       SyndFeed feed = input.build(reader);
       return buildWidgets(feed);
     } catch (IOException e) {
@@ -143,7 +155,7 @@ public class SyndicationService extends AbstractService {
               copyright,
               e.getAuthor(),
               e.getUri(),
-              e.getDescription().getValue(),
+              e.getDescription() == null ? null : e.getDescription().getValue(),
               e.getUri(),
               e.getUpdatedDate(),
               e.getPublishedDate());
