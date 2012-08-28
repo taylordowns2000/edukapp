@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -31,6 +33,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 @Entity
 @Table(name = "syndicatedwidgetprofiles")
+@NamedQueries({
+    @NamedQuery(name = "SyndicatedWidgetprofile.findByUri",
+        query = "SELECT w FROM SyndicatedWidgetprofile w WHERE w.uri = :uri")
+})
 public class SyndicatedWidgetprofile implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -61,7 +67,7 @@ public class SyndicatedWidgetprofile implements Serializable {
   @Column
   private String name;
 
-  @Column
+  @Column(columnDefinition = "text(65535) default null")
   private String license;
 
   @Column
@@ -105,5 +111,53 @@ public class SyndicatedWidgetprofile implements Serializable {
 
   public String getUri() {
     return uri;
+  }
+
+  public void setSourceUri(String sourceUri) {
+    this.sourceUri = sourceUri;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setLicense(String license) {
+    this.license = license;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public void setWidgetId(String widgetId) {
+    this.widgetId = widgetId;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+
+  public void setUpdated(Date updated) {
+    this.updated = updated;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
+  }
+
+  public Date getUpdated() {
+    return updated;
+  }
+
+  public String getLicense() {
+    return license;
+  }
+
+  public String getAuthor() {
+    return author;
   }
 }

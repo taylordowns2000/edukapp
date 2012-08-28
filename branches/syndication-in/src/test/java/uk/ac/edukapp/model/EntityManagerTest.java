@@ -20,6 +20,7 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
@@ -43,12 +44,16 @@ public class EntityManagerTest {
    * Try to persist an entity
    */
   @Test
-  public void persist() {
+  public void persist() throws InterruptedException {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("edukapp");
     final EntityManager em = emf.createEntityManager();
+    final EntityTransaction transaction = em.getTransaction();
+    transaction.begin();
     final SyndicatedWidgetprofile syndicatedWidgetprofile = new SyndicatedWidgetprofile("", "", "", "", "", "", "",
         new Date(), new Date());
     em.persist(syndicatedWidgetprofile);
+    transaction.commit();
+    em.close();
     logger.debug("Persisted entity's id: " + syndicatedWidgetprofile.getId());
     assertTrue(syndicatedWidgetprofile.getId() > 0);
   }

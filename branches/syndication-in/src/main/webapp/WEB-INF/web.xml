@@ -20,7 +20,18 @@
     		<param-name>shiroEnvironmentClass</param-name>
     		<param-value>uk.ac.edukapp.security.WebSecurityEnvironment</param-value>
 		</context-param>
-	<listener>
+
+  <!--
+  Use this context-param to enable syndication of other widget publishers.
+   syndicationUrls is a comma-separated list of URLs to use.
+   -->
+  <context-param>
+    <param-name>syndicationUrls</param-name>
+    <param-value>http://localhost:8081/widgets/local</param-value>
+  </context-param>
+
+
+  <listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
 	</listener>
 	<filter>
