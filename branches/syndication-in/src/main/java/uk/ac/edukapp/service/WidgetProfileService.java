@@ -25,7 +25,6 @@ import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 import uk.ac.edukapp.util.Message;
-import uk.ac.edukapp.service.WidgetService;
 
 /*
  *  (c) 2012 University of Bolton
@@ -136,7 +135,12 @@ public class WidgetProfileService extends AbstractService {
 		em.getTransaction().commit();
 		em.close();
 
-		return widgetprofile;
+    //
+    // Update the index
+    //
+    SolrConnector.getInstance().index(widgetprofile, "en");
+
+    return widgetprofile;
 
 	}
 
