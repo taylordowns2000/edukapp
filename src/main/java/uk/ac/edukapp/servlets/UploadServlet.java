@@ -1,15 +1,8 @@
 package uk.ac.edukapp.servlets;
 
-import uk.ac.edukapp.model.*;
-import uk.ac.edukapp.repository.SolrConnector;
-import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
-import uk.ac.edukapp.service.ActivityService;
-import uk.ac.edukapp.service.WidgetProfileService;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -21,9 +14,12 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.*;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
@@ -32,6 +28,12 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+
+import uk.ac.edukapp.model.Useraccount;
+import uk.ac.edukapp.model.Widgetprofile;
+import uk.ac.edukapp.server.configuration.WookieServerConfiguration;
+import uk.ac.edukapp.service.ActivityService;
+import uk.ac.edukapp.service.WidgetProfileService;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -138,11 +140,6 @@ public class UploadServlet extends HttpServlet {
 				//
 				addUserUploadActivity(gadget.getId());
 				doForward(request, response, "/widget.jsp?id=" + gadget.getId());
-				
-				//
-				// Update the index
-				//
-				SolrConnector.getInstance().index(gadget, "en");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -197,11 +194,6 @@ public class UploadServlet extends HttpServlet {
 			Widgetprofile widgetprofile = this
 					.createWidgetProfileFromResponse(postMethod
 							.getResponseBodyAsStream());
-			//
-			// Update the index
-			//
-			SolrConnector.getInstance().index(widgetprofile, "en");
-
 			//
 			// Return the id
 			//
