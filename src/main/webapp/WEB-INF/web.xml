@@ -27,7 +27,7 @@
    -->
   <context-param>
     <param-name>syndicationUrls</param-name>
-    <param-value>http://localhost:8081/widgets/local</param-value>
+    <param-value>https://wiki.surfnetlabs.nl/rest/gadgets/1.0/g/feed</param-value>
   </context-param>
 
 

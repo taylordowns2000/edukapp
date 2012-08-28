@@ -50,6 +50,7 @@ public class SyndicationSchedulerTest {
   public void test() throws InterruptedException {
     // 100 ms between calls
     scheduler.setPeriod(100);
+    scheduler.setDelay(0L);
     // Start the scheduler
     scheduler.startPeriodicSyndication();
     // Wait for 550 ms, more than enough for 5 delays of 100 ms

@@ -65,9 +65,9 @@ public class Widgetprofile implements Serializable {
 
 	@Column(nullable = false)
 	private Date updated;
-	
-	@Column(nullable = true)
-	private String license;
+
+  @Column(columnDefinition = "text(65535) default null")
+  private String license;
 	
 	@Column(nullable = true)
 	private String author;

@@ -34,6 +34,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
@@ -73,7 +74,7 @@ public class SyndicationService extends AbstractService {
           widgetProfileService.createWidgetProfile(
               p.getUri(),
               p.getName().substring(0, 99),
-              p.getDescription(),
+              StringUtils.defaultString(p.getDescription()),
               p.getUri(), // TODO: replace with icon uri? (but from where)
               Widgetprofile.OPENSOCIAL_GADGET);
         } else {

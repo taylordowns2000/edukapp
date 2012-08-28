@@ -85,7 +85,8 @@ public class SolrConnector {
 		widget.setId(profile.getWidId());
 		widget.setUri(profile.getWidId());
 		widget.setTitle(profile.getName());
-		widget.setAuthor(profile.getAuthor());
+    widget.setIcon(profile.getIcon());
+    widget.setAuthor(profile.getAuthor());
 		widget.setLicense(profile.getLicense());
 		if (profile.getDescription() != null)
 			widget.setDescription(profile.getDescription().getDescription());
