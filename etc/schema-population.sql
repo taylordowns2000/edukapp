@@ -146,7 +146,7 @@ INSERT INTO `widgetprofiles` (`id`, `name`, `wid_id`, `w3c_or_os`, `featured`, `
 (2553, 'Ta-Da!', 'http://www.getwookie.org/widgets/todo', 0, 1, NULL, 'http://localhost:8080/wookie/wservices/www.getwookie.org/widgets/camera/icon.svg', '2012-05-29', '2012-05-29'),
 (2554, 'Natter', 'http://www.getwookie.org/widgets/natter', 0, 1, NULL, 'http://localhost:8080/wookie/wservices/www.getwookie.org/widgets/natter/icon.png', '2012-05-29', '2012-05-29'),
 (2555, 'Bubbles', 'http://www.opera.com/widgets/bubbles', 0, 0, NULL, 'http://localhost:8080/wookie/wservices/www.opera.com/widgets/bubbles/icon_64.png', '2012-05-29', '2012-05-29'),
-(2556, 'SimpleChat', 'http://wookie.apache.org/widgets/simplechat', 0, 0, NULL, 'http://localhost:8080/wookie/wservices/wookie.apache.org/widgets/simplechat/icon.png', '2012-05-29', '2012-05-29'),
+(2556, 'SimpleChat', 'http://wookie.apache.org/widgets/simplechat-local', 0, 0, NULL, 'http://localhost:8080/wookie/wservices/wookie.apache.org/widgets/simplechat/icon.png', '2012-05-29', '2012-05-29'),
 (2557, 'freeder', 'http://wookie.apache.org/widgets/freeder', 0, 1, NULL, 'http://localhost:8080/wookie/wservices/wookie.apache.org/widgets/freeder/images/icon.png', '2012-05-29', '2012-05-29'),
 (2558, 'WookieWiki', 'http://www.getwookie.org/widgets/wiki', 0, 0, NULL, 'http://localhost:8080/wookie/wservices/www.getwookie.org/widgets/wiki/icon.png ', '2012-05-29', '2012-05-29'),
 (2559, 'geo', 'http://wookie.apache.org/widgets/geo', 0, 0, NULL, 'http://localhost:8080/wookie/wservices/wookie.apache.org/widgets/geo/icon.svg', '2012-05-29', '2012-05-29'),
