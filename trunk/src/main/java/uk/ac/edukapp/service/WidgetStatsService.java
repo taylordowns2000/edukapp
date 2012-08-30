@@ -38,14 +38,24 @@ public class WidgetStatsService extends AbstractService {
 		super(ctx);
 		this.userRateService = new UserRateService(ctx);
 	}
+	
+	/**
+	 * Get the current stats for a widget (including external stats)
+	 * @param widgetProfile
+	 * @return
+	 */
+	public WidgetStats getStats(Widgetprofile widgetProfile){
+		return getStats(widgetProfile, true);
+	}
 
 	/**
 	 * Get the current stats for a widget
 	 * 
 	 * @param widgetProfile
+	 * @param includeExternalStats
 	 * @return a WidgetStats object for this widget
 	 */
-	public WidgetStats getStats(Widgetprofile widgetProfile) {
+	public WidgetStats getStats(Widgetprofile widgetProfile, boolean includeExternalStats) {
 
 		WidgetStats widgetStats = null;
 
@@ -67,10 +77,9 @@ public class WidgetStatsService extends AbstractService {
 					.getRatingCount(widgetProfile));
 			
 			//
-			// Share stats, and pull in external stats
+			// Pull in external stats
 			//
-			if (SpawsServerConfiguration.getInstance().isEnabled()){
-				publishStats(widgetProfile, widgetStats);
+			if (SpawsServerConfiguration.getInstance().isEnabled() && includeExternalStats){
 				widgetStats = includeExternalStats(widgetProfile, widgetStats);
 			}
 
@@ -84,12 +93,6 @@ public class WidgetStatsService extends AbstractService {
 		}
 
 		return widgetStats;
-	}
-	
-	private void publishStats(Widgetprofile widgetProfile, WidgetStats widgetStats){
-		//
-		// TODO
-		//
 	}
 	
 	/**

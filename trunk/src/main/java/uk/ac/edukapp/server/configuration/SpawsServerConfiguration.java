@@ -40,6 +40,7 @@ public class SpawsServerConfiguration {
 	private Node node;
 	private boolean enabled = true;
 	private long cacheDuration = ONE_HOUR;
+	private int interval;
 
 	private String submitterName = "edukapp";
 	private Submitter submitter;
@@ -62,6 +63,8 @@ public class SpawsServerConfiguration {
 				enabled = properties.getBoolean("spaws.enabled");
 			if (properties.containsKey("spaws.cache"))
 				cacheDuration = properties.getLong("spaws.cache");
+			if (properties.containsKey("spaws.stats.interval"))
+				interval = properties.getInt("spaws.stats.interval",1);
 		} catch (ConfigurationException e) {
 			//
 			// No store properties found, so use default
@@ -110,5 +113,9 @@ public class SpawsServerConfiguration {
 	
 	public long getCacheDuration(){
 		return cacheDuration;
+	}
+	
+	public int getInterval(){
+		return interval;
 	}
 }
