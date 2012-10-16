@@ -8,7 +8,7 @@ $(document).ready(function(){
     //
     // Load profile
     //
-    $.getJSON('/api/user/'+id, function(data){
+    $.getJSON('api/user/'+id, function(data){
     
       var name = document.createElement("h2");
       $(name).text(data.realname).appendTo("#user-profile");

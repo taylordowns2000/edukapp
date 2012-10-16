@@ -3,17 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="../"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<%@ include file='/components/imports.jsp'%>
-<%@ include file='/components/login_check.jsp'%>
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="/scripts/widget_partial.js"></script>
-<script src="/scripts/widget.js"></script>
-<script src="/scripts/bootstrap-modal.js"></script>
-<script src="/scripts/jquery.raty.min.js"></script>
+<script src="scripts/widget_partial.js"></script>
+<script src="scripts/widget.js"></script>
+<script src="scripts/bootstrap-modal.js"></script>
+<script src="scripts/jquery.raty.min.js"></script>
 </head>
 
 
@@ -30,7 +31,7 @@
 			<div class="span4">
 				<div class="row-fluid" style="position:relative;">
 					<div class="span9">
-					<img id="widget_icon" src="/images/default-icon.png" class="widget-icon pull-left">
+					<img id="widget_icon" src="images/default-icon.png" class="widget-icon pull-left">
 					<h1 id="widget_name">Widget name</h1>
 					<p id="upload-info" class="upload-info">no upload info
 						available</p>

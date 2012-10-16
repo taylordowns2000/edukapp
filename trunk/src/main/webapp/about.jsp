@@ -5,14 +5,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ include file='/components/imports.jsp'%>
-<%@ include file='/components/login_check.jsp'%>
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
 </head>
 <body>
 
-	<%@ include file='/components/header.jsp'%>
+	<%@ include file='components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -20,7 +20,7 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>
+						<li><a href="index.jsp"><i class="icon-home"></i>Home</a></li>
 					</ul>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 					development and you can checkout the back-end code (or contribute)
 					from the public code <a href="http://code.google.com/p/edukapp">repository</a>
 				</p>
-				<%@ include file="/components/footer.jsp"%>
+				<%@ include file="components/footer.jsp"%>
 			</div>
 
 		</div>

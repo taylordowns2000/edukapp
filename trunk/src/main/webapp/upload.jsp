@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ include file='/components/imports.jsp'%>
-<%@ include file='/components/login_check.jsp'%>
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
 </head>
@@ -16,7 +16,7 @@
 		
 		
 		
-        <%@ include file='/components/header.jsp'%>
+        <%@ include file='components/header.jsp'%>
         
         <div class="container-fluid">
 		   <div class="row-fluid">
@@ -24,7 +24,7 @@
 				<div class="well sidebar-nav">
 				   <ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						 <li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
+						 <li><a href="index.jsp"><i class="icon-home"></i>Home</a></li>						
 						<li><a href="#"><i class="icon-question-sign"></i>Help topic: uploading</a>
 						</li>
 					</ul>
@@ -55,7 +55,7 @@
                   <div class="tab-content">
                     <div class="tab-pane active" id="1">
 						  <form method="post"
-							action="/api/upload"
+							action="api/upload"
 							name="upform" enctype="multipart/form-data"
 							class="well">
 							
@@ -68,7 +68,7 @@
                     <div class="tab-pane" id="2">
 						  <form 
 						   method="post" 
-						   action="/api/upload" 
+						   action="api/upload" 
 						   name="gadgetupform"
 						   class="well">
 						   

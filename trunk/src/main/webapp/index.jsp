@@ -5,15 +5,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <%@ include file='/components/imports.jsp'%>
-        <%@ include file='/components/login_check.jsp'%>
+        <%@ include file='components/imports.jsp'%>
+        <%@ include file='components/login_check.jsp'%>
 
         <title>EDUKApp</title>
-        <script src="/scripts/featured.js"></script>
+        <script src="scripts/featured.js"></script>
     </head>
     <body>
 
-        <%@ include file='/components/header.jsp'%>
+        <%@ include file='components/header.jsp'%>
 
         <div class="container-fluid">
             <div class="row-fluid">
@@ -61,11 +61,11 @@
                     <div class="span4 promotion">
                         <h1>got something to share?</h1>
                         <p>Upload your W3C widget or opensocial gadget and share it with the world!</p>
-                        <a href="/upload.jsp" class="btn btn-warning btn-large">Upload</a>
+                        <a href="upload.jsp" class="btn btn-warning btn-large">Upload</a>
                     </div>
             </div>
                     
-            <%@ include file="/components/footer.jsp"%>
+            <%@ include file="components/footer.jsp"%>
 
         </div>
     </body>

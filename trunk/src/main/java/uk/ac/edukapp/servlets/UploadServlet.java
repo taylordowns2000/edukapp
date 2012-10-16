@@ -98,23 +98,23 @@ public class UploadServlet extends HttpServlet {
 						int widget_id = uploadW3CWidget(filePart);
 
 						if (widget_id == -1) {
-							doForward(request, response, "/upload.jsp?error=3");
+							doForward(request, response, "../upload.jsp?error=3");
 						} else {
 							//
 							// log the user upload to UserActivity table
 							//
 							addUserUploadActivity(widget_id);
-							doForward(request, response, "/widget/" + widget_id);
+							doForward(request, response, "../widget/" + widget_id);
 						}
 					}
 				}
 
 			} catch (FileUploadException fue) {
 				fue.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=6");
+				doForward(request, response, "../upload.jsp?error=6");
 			} catch (Exception e) {
 				e.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=9");
+				doForward(request, response, "../upload.jsp?error=9");
 			}
 
 		} else {
@@ -137,7 +137,7 @@ public class UploadServlet extends HttpServlet {
 				// log the user upload to UserActivity table
 				//
 				addUserUploadActivity(gadget.getId());
-				doForward(request, response, "/widget.jsp?id=" + gadget.getId());
+				doForward(request, response, "../widget.jsp?id=" + gadget.getId());
 				
 				//
 				// Update the index
@@ -146,7 +146,7 @@ public class UploadServlet extends HttpServlet {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				doForward(request, response, "/upload.jsp?error=1");
+				doForward(request, response, "../upload.jsp?error=1");
 			}
 		}
 
@@ -223,6 +223,8 @@ public class UploadServlet extends HttpServlet {
 			throws JDOMException, IOException {
 		//
 		// parse the response and extract the widget metadata
+	    // TODO - use the W3C parser for this
+	    
 		//
 		SAXBuilder builder = new SAXBuilder();
 		Document document = (Document) builder.build(body);
@@ -232,7 +234,11 @@ public class UploadServlet extends HttpServlet {
 		String uri = document.getRootElement().getAttributeValue("id");
 		String name = rootNode.getChildText("name", XML_NS);
 		String description = rootNode.getChildText("description", XML_NS);
-		String icon = rootNode.getChild("icon", XML_NS).getAttributeValue("src");
+		String icon = "";
+		Element e = rootNode.getChild("icon", XML_NS);
+		if(equals(e != null)){
+		    icon = e.getAttributeValue("src");
+		}
 		//
 		// create and return the widget profile
 		//

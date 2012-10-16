@@ -4,7 +4,7 @@ $(document).ready(function () {
   //
   // Get featured widgets
   //
-  $.getJSON('/api/featured', function (data) {
+  $.getJSON('api/featured', function (data) {
 
     //
     // No featured widgets

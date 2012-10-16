@@ -3,21 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="../"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <%@ include file='components/imports.jsp'%>
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="/scripts/widget_partial.js"></script>
-<script src="/scripts/tag.js"></script>
+<script src="scripts/widget_partial.js"></script>
+<script src="scripts/tag.js"></script>
 </head>
 <body>
 	<%
 	  String tagid = request.getParameter("id");
 	%>
 	<input id="tagid" type="hidden" value="<%=tagid%>"></input>
-	<%@ include file='/components/header.jsp'%>
+	<%@ include file='components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -38,7 +39,7 @@
             </div>
 
 
-				<%@ include file="/components/footer.jsp"%>
+				<%@ include file="components/footer.jsp"%>
 			</div>
 		</div>
 
