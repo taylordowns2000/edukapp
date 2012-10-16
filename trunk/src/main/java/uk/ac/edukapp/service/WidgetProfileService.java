@@ -25,7 +25,6 @@ import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 import uk.ac.edukapp.util.Message;
-import uk.ac.edukapp.service.WidgetService;
 
 /*
  *  (c) 2012 University of Bolton
@@ -350,6 +349,9 @@ public class WidgetProfileService extends AbstractService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public SearchResults searchWidgetProfiles(String query, String lang,
 			int rows, int offset) {
+	    if(query.equals("")||query.equals(null)){
+	        query="*:*";
+	    }
 		SearchResults searchResults = SolrConnector.getInstance().query(query,
 				lang, rows, offset);
 		List widgets = searchResults.getWidgets();

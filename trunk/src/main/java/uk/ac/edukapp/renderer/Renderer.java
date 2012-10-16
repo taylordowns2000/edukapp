@@ -17,7 +17,7 @@ public class Renderer {
 			return WidgetRenderer.getInstance()
 					.getDownloadUrl(widgetprofile.getWidId());
 		} else if (w3cOrOs == 1) {// is os
-			return null;
+			return widgetprofile.getWidId();
 		}
 		return null;
 		

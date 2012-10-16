@@ -40,8 +40,16 @@ public class Widget implements Serializable{
 	public String license;
 	@Field
 	public String author;
+	@Field
+    public String type;
 
-	public String getTitle() {
+	public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {

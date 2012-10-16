@@ -17,6 +17,8 @@ package uk.ac.edukapp.renderer;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * Holds a set of search results
  * @author scottw
@@ -29,6 +31,7 @@ public class SearchResults {
 	/**
 	 * @return the widgets
 	 */
+	@JsonProperty("SearchResults")
 	public List getWidgets() {
 		return widgets;
 	}
