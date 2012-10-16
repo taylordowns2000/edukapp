@@ -3,16 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="../"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<%@ include file='/components/imports.jsp'%>
-<%@ include file='/components/login_check.jsp'%>
-<script src="/scripts/profile.js"></script>
+<%@ include file='components/imports.jsp'%>
+<%@ include file='components/login_check.jsp'%>
+<script src="scripts/profile.js"></script>
 
 <title>EDUKApp</title>
 </head>
 <body>    
-        <%@ include file='/components/header.jsp'%>
+        <%@ include file='components/header.jsp'%>
 
         <div class="container-fluid">
 		  <div class="row-fluid">

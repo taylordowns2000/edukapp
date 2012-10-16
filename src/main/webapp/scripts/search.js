@@ -22,7 +22,7 @@ $(document).ready(function(){
   //
   // Execute query
   //
-  $.getJSON('/api/search?q='+q+"&start="+start, displaySearchResults);
+  $.getJSON('api/search?q='+q+"&start="+start, displaySearchResults);
 
 });
 
@@ -38,12 +38,12 @@ function displaySearchResults(data){
     if (isNaN(number_of_results) || number_of_results==0){
       $("#search_results_info").text("No results found");
     } else {
-      var end = start + data.widgets.length;
+      var end = start + data.SearchResults.length;  
       $("#search_results_info").text("showing results "+(start+1)+" to "+end+" of "+number_of_results);    
     }
-    
-    for (var i=0;i<data.widgets.length;i++){
-        $('#search_results').append(''+renderWidget(data.widgets[i].id, data.widgets[i].icon, data.widgets[i].name, data.widgets[i].description));	        
+
+    for (var i=0;i<data.SearchResults.length;i++){
+        $('#search_results').append(''+renderWidget(data.SearchResults[i].id, data.SearchResults[i].icon, data.SearchResults[i].name, data.SearchResults[i].description));	        
     }
 }
 /*

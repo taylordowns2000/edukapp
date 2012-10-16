@@ -3,21 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="../"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <%@ include file='components/imports.jsp'%>
 <%@ include file='components/login_check.jsp'%>
 
 <title>EDUKApp</title>
-<script src="/scripts/widget_partial.js"></script>
-<script src="/scripts/activity.js"></script>
+<script src="scripts/widget_partial.js"></script>
+<script src="scripts/activity.js"></script>
 </head>
 <body>
 	<%
 		String activityid = request.getParameter("id");
 	%>
 	<input id="activityid" type="hidden" value="<%=activityid%>"></input>
-	<%@ include file='/components/header.jsp'%>
+	<%@ include file='components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -25,7 +26,7 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>
+						<li><a href="index.jsp"><i class="icon-home"></i>Home</a></li>
 
 						</li>
 					</ul>
@@ -43,7 +44,7 @@
 				</ul>
 
 
-				<%@ include file="/components/footer.jsp"%>
+				<%@ include file="components/footer.jsp"%>
 			</div>
 
 		</div>

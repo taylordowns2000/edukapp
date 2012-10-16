@@ -27,7 +27,7 @@ function () {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url:"/api/widget/"+widget_id+"/rating",
+                url:"api/widget/"+widget_id+"/rating",
                 data: JSON.stringify(rate),
                 cache: false,
                 beforeSend: function(x) {
@@ -52,7 +52,7 @@ function () {
         },
         starOff : 'star-off.png',
         starOn  : 'star-on.png',
-        path    : '/images',
+        path    : 'images',
            //cancel  : true
         });
     
@@ -68,7 +68,7 @@ function () {
             $.ajax({
                 type: 'PUT',
                 dataType: 'json',
-                url: "/api/widget/" + widget_id + "/description",
+                url: "api/widget/" + widget_id + "/description",
                 data: newText,
                 cache: false,
                 success: function (resp) {
@@ -104,7 +104,7 @@ function () {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url: "/api/widget/" + widget_id +"/tag",
+                url: "api/widget/" + widget_id +"/tag",
                 data: newTag,
                 cache: false,
                 success: function (resp) {
@@ -142,7 +142,7 @@ function () {
         $.ajax({
                 type: 'GET',
                 dataType: 'json',
-                url: "/api/activity?operation=all",
+                url: "api/activity?operation=all",
                 cache: false,
                 beforeSend: function(){
                     //implement a loading icon here
@@ -190,7 +190,7 @@ function () {
                         $.ajax({
                             type: 'POST',
                             dataType: 'json',
-                            url: "/api/widget/" + widget_id +"/activity",
+                            url: "api/widget/" + widget_id +"/activity",
                             data: affordance_id,
                             cache: false,
                             success: function (resp) {
@@ -255,7 +255,7 @@ function () {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url:"/api/widget/"+widget_id+"/comment",
+                url:"api/widget/"+widget_id+"/comment",
                 data: JSON.stringify(review),
                 cache: false,
                 beforeSend: function(x) {
@@ -287,7 +287,7 @@ function () {
     //
     // Load the widget profile
     //
-    $.getJSON('/api/widget/' + widget_id, function (data) {
+    $.getJSON('api/widget/' + widget_id, function (data) {
         widgetUri = data.widgetProfile.uri;
         
         //
@@ -339,7 +339,7 @@ function () {
                 start       : average_rating,
                 starOff : 'star-off.png',
                 starOn  : 'star-on.png',
-                path    : '/images',
+                path    : 'images',
             });
 
 
@@ -389,7 +389,7 @@ function () {
                 $(tag_icon).attr("class", "icon-tag icon-white");
                 $(tag).attr("class", "btn btn-info");
                 $(tag).text(tags[i].tagtext);
-                $(tag).attr("href", "/tag/" + tags[i].id);
+                $(tag).attr("href", "tag/" + tags[i].id);
                 $(tag).prepend(tag_icon);
                 $("#widget-tags").append(tag).append(" ");
             }
@@ -407,7 +407,7 @@ function () {
                 $(affordance_icon).attr("class", "icon-ok-circle icon-white");
                 $(affordance).attr("class", "btn btn-warning");
                 $(affordance).text(affordances[i].activitytext);
-                $(affordance).attr("href", "/activity/" + affordance_id);
+                $(affordance).attr("href", "activity/" + affordance_id);
                 $(affordance).prepend(affordance_icon);
                 $("#widget-useful-for").append(affordance).append(" ");
             }
@@ -417,7 +417,7 @@ function () {
         //
         // Load similar widget profiles
         //
-        $.getJSON('/api/widget/' + widget_id + "/similar", function (data) {
+        $.getJSON('api/widget/' + widget_id + "/similar", function (data) {
             for (var i = 0; i < data.length; i++) {
                 $('#related-widgets').append(''+renderWidget(data[i].id, data[i].icon, data[i].name, data[i].description));	        
             }
@@ -426,7 +426,7 @@ function () {
         //
         // Load reviews
         //
-        $.getJSON('/api/widget/' + widget_id +'/comments', function (reviews) {
+        $.getJSON('api/widget/' + widget_id +'/comments', function (reviews) {
             for (var i = 0; i < reviews.length; i++) {
                 var wrapper = document.createElement("div");
                 $(wrapper).hide();

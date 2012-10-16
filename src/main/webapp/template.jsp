@@ -16,7 +16,7 @@
 </head>
 <body>
 
-	<%@ include file='/components/header.jsp'%>
+	<%@ include file='components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -24,12 +24,12 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>						
+						<li><a href="index.jsp"><i class="icon-home"></i>Home</a></li>						
 					</ul>
 				</div>
 			</div>
 			<div class="span9">
-				<%@ include file="/components/footer.jsp"%>
+				<%@ include file="components/footer.jsp"%>
 			</div>
 
 		</div>

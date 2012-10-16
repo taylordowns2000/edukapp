@@ -10,7 +10,7 @@ function renderWidget(id, icon, name, description){
 
     var renderedWidget = 
     '<li class="span4 widget-partial-container">'+
-    '	 <a href="/widget/'+id+'">'+
+    '	 <a href="widget/'+id+'">'+
     '   <div class="widget-partial">'+
     '		<img class="widget-icon pull-left" src="'+icon+'" alt="">'+
     '			<h4>'+name+'</h4>'+

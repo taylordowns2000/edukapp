@@ -12,7 +12,7 @@
 </head>
 <body>
 
-	<%@ include file='/components/header.jsp'%>
+	<%@ include file='components/header.jsp'%>
 
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -20,7 +20,7 @@
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Sidebar</li>
-						<li><a href="/index.jsp"><i class="icon-home"></i>Home</a></li>
+						<li><a href="index.jsp"><i class="icon-home"></i>Home</a></li>
 												
 					</ul>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="span9">
 				<div id="formWrapper">
 					<h2>Register</h2>
-					<form method="POST" action="/register">
+					<form method="POST" action="register">
 						<div>
 							<label for="name">Name</label> <input autocomplete="off"
 								id="name" name="name" type="text" /> <span id="nameInfo">What's
@@ -62,7 +62,7 @@
 					</form>
 				</div>
 
-				<%@ include file="/components/footer.jsp"%>
+				<%@ include file="components/footer.jsp"%>
 			</div>
 
 		</div>

@@ -1,21 +1,21 @@
-<script src="/scripts/footer.js"></script>
+<script src="scripts/footer.js"></script>
 		<footer>
 			<div class="row-fluid">
 				<div id="footer-logos" class="span3">
 					<div id="ou-logo">
-						<img width="45" src="/images/ou-logo.png"
+						<img width="45" src="images/ou-logo.png"
 							alt="open university logo" />
 					</div>
 					<div id="jisc-logo">
-						<img width="45" src="/images/jisc-logo.png" alt="jisc logo" />
+						<img width="45" src="images/jisc-logo.png" alt="jisc logo" />
 					</div>
 				</div>
 				<div id="footer-site-links" class="span3">
 					<h3>Site links</h3>
 					<ul class="unstyled">
-						<li><i class="icon-home"></i><a href="/">Home</a></li>
-						<li><i class="icon-upload"></i><a href="/upload.jsp">Submit a widget</a></li>
-						<li><i class="icon-exclamation-sign"></i><a href="/about.jsp">About</a></li>
+						<li><i class="icon-home"></i><a href="index.jsp">Home</a></li>
+						<li><i class="icon-upload"></i><a href="upload.jsp">Submit a widget</a></li>
+						<li><i class="icon-exclamation-sign"></i><a href="about.jsp">About</a></li>
 						<li>Contact</li>
 						<li>Blog</li>
 					</ul>
