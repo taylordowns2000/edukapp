@@ -22,6 +22,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonUnwrapped;
 
+import uk.ac.edukapp.renderer.Renderer;
+
 /**
  * The persistent class for the widgetprofiles database table.
  * 
@@ -219,6 +221,10 @@ public class Widgetprofile implements Serializable {
 			return "OpenSocial Gadget";
 		}
 	}
+	
+	   public String getDownloadUrl() {
+	       return Renderer.getDownloadUrl(this);
+	    }
 
 	@Override
 	public int hashCode() {

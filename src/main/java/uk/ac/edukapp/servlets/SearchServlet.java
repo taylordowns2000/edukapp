@@ -48,7 +48,12 @@ public class SearchServlet extends HttpServlet{
 		int result_size;
 		try {
 			String nResults = req.getParameter("resultsize");
-			if ( nResults == null || nResults.trim().length() == 0) nResults = "10";
+			if ( nResults == null || nResults.trim().length() == 0){
+			    nResults = req.getParameter("rows");
+			    if ( nResults == null || nResults.trim().length() == 0){
+			        nResults = "10";
+			    }
+			} 
 			result_size = Integer.parseInt(nResults);
 			String start = req.getParameter("start");
 			if (start == null || start.trim().length() == 0) start = "0";
