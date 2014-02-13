@@ -83,9 +83,12 @@ public class WidgetRenderer {
 		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject().getPrincipal();
 		if (userAccount != null){
 			User user = new User(String.valueOf(userAccount.getId()), userAccount.getUsername());
+			user.setRole("user");
 			conn.setCurrentUser(user);
 		} else {
-			conn.setCurrentUser(new User("Guest","Guest"));
+			User user = new User("Guest", "Guest");
+			user.setRole("user");
+			conn.setCurrentUser(user);
 		}
 	}
 
