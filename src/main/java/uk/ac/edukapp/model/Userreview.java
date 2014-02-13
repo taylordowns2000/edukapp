@@ -6,6 +6,9 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import uk.ac.edukapp.renderer.CustomJsonDateSerializer;
 
 /**
  * The persistent class for the userreview database table.
@@ -27,6 +30,7 @@ public class Userreview implements Serializable {
 	@JoinColumn(name = "comment_id", referencedColumnName = "id")
 	private Comment comment;
 
+	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	@Column(nullable = false)
 	private Date time;
 
@@ -123,6 +127,17 @@ public class Userreview implements Serializable {
 	 */
 	public String getUser() {
 		return this.getUserAccount().getUsername();
+	}
+	
+	
+	/**
+	 * Return the user's full name for display
+	 * 
+	 * @return
+	 */
+	public String getUserFullName() {
+		Accountinfo info = this.getUserAccount().getAccountInfo();
+		return info.getRealname();
 	}
 	
 	/**
