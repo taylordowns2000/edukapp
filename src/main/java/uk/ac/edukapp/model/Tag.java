@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,7 +27,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name = "tags")
 @NamedQueries({
 	@NamedQuery(name = "Tag.popular", query = "SELECT t, SIZE(t.widgetprofiles) as freq FROM Tag t ORDER BY freq DESC"),
-	@NamedQuery(name = "Tag.findByName", query = "SELECT t FROM Tag t WHERE t.tagtext = :tagname")
+	@NamedQuery(name = "Tag.findByName", query = "SELECT t FROM Tag t WHERE t.tagtext = :tagname"),
+	@NamedQuery(name = "Tag.range", query="SELECT t FROM Tag t LIMIT :offset, :limit")
 })
 public class Tag implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,11 +41,20 @@ public class Tag implements Serializable {
 	@Column(nullable = false, length = 30)
 	private String tagtext;
 
+
 	// bi-directional many-to-many association to Widgetprofile
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "widgetprofiles_tags", joinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "widgetprofile_id", referencedColumnName = "id", nullable = false) })
+	@JoinTable(name = "widgetprofiles_tags", 
+			joinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id", nullable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "widgetprofile_id", referencedColumnName = "id", nullable = false) })
 	private List<Widgetprofile> widgetprofiles;
 
+	
+	@ManyToOne
+	@JoinColumn(name="owner", nullable=false)
+	private Useraccount owner;
+	
+	
 	public Tag() {
 	}
 
@@ -72,6 +83,14 @@ public class Tag implements Serializable {
 		this.widgetprofiles = widgetprofiles;
 	}
 
+	public void setOwner(Useraccount owner) {
+		this.owner = owner;
+	}
+
+	public Useraccount getOwner() {
+		return owner;
+	}
+/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -82,7 +101,7 @@ public class Tag implements Serializable {
 				+ ((widgetprofiles == null) ? 0 : widgetprofiles.hashCode());
 		return result;
 	}
-
+*/
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -99,11 +118,11 @@ public class Tag implements Serializable {
 				return false;
 		} else if (!tagtext.equals(other.tagtext))
 			return false;
-		if (widgetprofiles == null) {
-			if (other.widgetprofiles != null)
-				return false;
-		} else if (!widgetprofiles.equals(other.widgetprofiles))
-			return false;
+		//if (widgetprofiles == null) {
+		//	if (other.widgetprofiles != null)
+		//		return false;
+		//} else if (!widgetprofiles.equals(other.widgetprofiles))
+		//	return false;
 		return true;
 	}
 
