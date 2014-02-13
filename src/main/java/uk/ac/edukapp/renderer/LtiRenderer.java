@@ -91,12 +91,13 @@ public class LtiRenderer {
 		if(parameters.containsKey("user_image")){
 			userImage = parameters.get("user_image")[0]; //$NON-NLS-1$
 		}
+
 		//
 		// Create a user
 		//
 		User user = new User(userId, userName, userImage);
 
-
+		this.setCurrentUserRole(user, parameters);
 		//
 		// Get the consumer key for the request
 		//
@@ -159,6 +160,17 @@ public class LtiRenderer {
 				String value = parameters.get(name)[0];
 				setPreference(widgetInstance, name, value);
 			}
+		}
+	}
+	
+	private void setCurrentUserRole ( User u, Map<String, String[]> parameters ) {
+		// wookie can only deal with one role per person
+		// for now just taking the first but this is probably not the best way of doing this
+		if ( parameters.get("roles") != null && parameters.get("roles").length > 0 ) {
+			u.setRole(parameters.get("roles")[0]);
+		}
+		else {
+			u.setRole("None");
 		}
 	}
 
