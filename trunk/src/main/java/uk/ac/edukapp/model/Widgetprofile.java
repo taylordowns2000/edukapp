@@ -1,28 +1,37 @@
 package uk.ac.edukapp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonUnwrapped;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import uk.ac.edukapp.renderer.CustomJsonDateSerializer;
 
 import uk.ac.edukapp.renderer.Renderer;
+
 
 /**
  * The persistent class for the widgetprofiles database table.
@@ -32,7 +41,9 @@ import uk.ac.edukapp.renderer.Renderer;
 @NamedQueries({
 		@NamedQuery(name = "Widgetprofile.findByUri", query = "SELECT w FROM Widgetprofile w WHERE w.widId = :uri"),
 		@NamedQuery(name = "Widgetprofile.featured", query = "SELECT w FROM Widgetprofile w WHERE w.featured = 1"),
-		@NamedQuery(name = "Widgetprofile.updated", query = "SELECT w FROM Widgetprofile w ORDERBY w.updated") })
+		@NamedQuery(name = "Widgetprofile.updated", query = "SELECT w FROM Widgetprofile w ORDERBY w.updated"),
+		@NamedQuery(name = "Widgetprofile.ownedBy", query = "SELECT w FROM Widgetprofile w WHERE w.owner = :user")})
+		
 @Table(name = "widgetprofiles")
 public class Widgetprofile implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -50,6 +61,15 @@ public class Widgetprofile implements Serializable {
 
 	@Column(nullable = false)
 	private String icon;
+	
+	@Column(nullable = false)
+	private int publish_level;
+	
+	@Column(nullable = false)
+	private byte deleted;
+	
+	@Column(nullable = false)
+	private String meta_data;
 
 	@JsonIgnore
 	@Column(name = "w3c_or_os", nullable = false)
@@ -62,9 +82,11 @@ public class Widgetprofile implements Serializable {
 	@Column(name = "wid_id", nullable = false, length = 150)
 	private String widId;
 
+	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	@Column(nullable = false)
 	private Date created;
 
+	@JsonSerialize(using=CustomJsonDateSerializer.class)
 	@Column(nullable = false)
 	private Date updated;
 	
@@ -73,26 +95,49 @@ public class Widgetprofile implements Serializable {
 	
 	@Column(nullable = true)
 	private String author;
+	
+	
+	@Column(nullable = true)
+	private String builder;
 
 	// bi-directional many-to-many association to Tag
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "widgetprofiles_tags", joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "tag_id", nullable = false) })
+	@JoinTable(name = "widgetprofiles_tags", 
+			joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "tag_id", nullable = false) })
 	private List<Tag> tags;
 
 	// bi-directional many-to-many association to Activity
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "widgetactivities", joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "activity_id", nullable = false) })
+	@JoinTable(name = "widgetactivities", 
+			joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "activity_id", nullable = false) })
 	private List<Activity> activities;
+	
 
 	@JsonUnwrapped
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetDescription description;
 
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "wid_id")
 	WidgetStats widgetStats;
+	
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="widgetProfile")
+	private List<WidgetFunctionality> functionalities;
+	
+	@ManyToOne
+	@JoinColumn(name="owner", nullable=false)
+	private Useraccount owner;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinTable(name="widgetprofiles_category",
+			joinColumns = { @JoinColumn(name="widgetprofiles_id", referencedColumnName="id")},
+			inverseJoinColumns = { @JoinColumn(name="category_id", referencedColumnName="id") })
+	private List<Category> categories;
+	
 
 	public Widgetprofile() {
 	}
@@ -210,7 +255,7 @@ public class Widgetprofile implements Serializable {
 		return widgetStats;
 	}
 
-	public void setWidgetStatus(WidgetStats widgetStats) {
+	public void setWidgetStats(WidgetStats widgetStats) {
 		this.widgetStats = widgetStats;
 	}
 
@@ -225,6 +270,77 @@ public class Widgetprofile implements Serializable {
 	   public String getDownloadUrl() {
 	       return Renderer.getDownloadUrl(this);
 	    }
+
+	/**
+	 * @return the widgetFunctionalities
+	 */
+	public List<WidgetFunctionality> getFunctionalities() {
+		return functionalities;
+	}
+
+	/**
+	 * @param widgetFunctionalities the widgetFunctionalities to set
+	 */
+	public void setFunctionalities(
+			List<WidgetFunctionality> widgetFunctionalities) {
+		this.functionalities = widgetFunctionalities;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public Useraccount getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner the owner to set
+	 */
+	public void setOwner(Useraccount owner) {
+		this.owner = owner;
+	}
+
+	/**
+	 * @return the publish_level
+	 */
+	public int getPublish_level() {
+		return publish_level;
+	}
+
+	/**
+	 * @param publish_level the publish_level to set
+	 */
+	public void setPublish_level(int publish_level) {
+		this.publish_level = publish_level;
+	}
+
+	/**
+	 * @return the deleted
+	 */
+	public byte getDeleted() {
+		return deleted;
+	}
+
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(byte deleted) {
+		this.deleted = deleted;
+	}
+
+	/**
+	 * @return the meta_data
+	 */
+	public String getMeta_data() {
+		return meta_data;
+	}
+
+	/**
+	 * @param meta_data the meta_data to set
+	 */
+	public void setMeta_data(String meta_data) {
+		this.meta_data = meta_data;
+	}
 
 	@Override
 	public int hashCode() {
@@ -313,5 +429,53 @@ public class Widgetprofile implements Serializable {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	
+	
+	
+
+	/**
+	 * @return the builder
+	 */
+	public String getBuilder() {
+		return builder;
+	}
+
+	/**
+	 * @param builder the builder to set
+	 */
+	public void setBuilder(String builder) {
+		this.builder = builder;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+	
+	
+	public void addCategory( Category category ) {
+		if ( !this.getCategories().contains(category)) {
+			this.getCategories().add(category);
+		}
+		if (!category.getWidgetprofiles().contains(this)) {
+			category.getWidgetprofiles().add(this);
+		}
+	}
+	
+	
+	public void removeCategory (Category category ) {
+		if ( this.getCategories().contains(category)) {
+			this.getCategories().remove(category);
+		}
+		if ( category.getWidgetprofiles().contains(this)) {
+			category.getWidgetprofiles().remove(this);
+		}
+	}
+
+
+
 
 }
