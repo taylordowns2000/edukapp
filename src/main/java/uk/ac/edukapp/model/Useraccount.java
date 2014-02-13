@@ -28,7 +28,7 @@ public class Useraccount {
 	@Column(nullable = false, length = 256)
 	private String password;
 
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 256)
 	private String username;
 
 	@Column(nullable = false, length = 256)
@@ -45,6 +45,13 @@ public class Useraccount {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "useraccount_roles", joinColumns = { @JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "role_id", nullable = false) })
 	private List<Userrole> roles;
+	
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="userAccount", fetch=FetchType.EAGER)
+	private List<WidgetFavourite> favourites;
+	
+	
+
 
 	@JsonIgnore
 	public String getSalt() {
@@ -119,9 +126,37 @@ public class Useraccount {
 	}
 
 	/**
-	 * @param accountInfo the accountInfo to set
+	 * @param accountinfo the accountinfo to set
 	 */
 	public void setAccountInfo(Accountinfo accountInfo) {
 		this.accountInfo = accountInfo;
 	}
+
+	public void setFavourites(List<WidgetFavourite> favourites) {
+		this.favourites = favourites;
+	}
+
+	public List<WidgetFavourite> getFavourites() {
+		return favourites;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Useraccount other = (Useraccount)obj;
+		if ( other.getId() == this.getId() ) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 }
