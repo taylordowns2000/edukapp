@@ -79,6 +79,26 @@ public class SolrConnector {
 			return false;
 		}
 	}
+
+	/**
+	 * Execute delete on Solr server to remove a particular item from the index
+	 * 
+	 * @param profile
+	 * @param lang
+	 * @return boolean to indicate success
+	 */
+	public boolean delete (Widgetprofile profile, String lang ) {
+		try {
+			SolrServer server = getLocalizedSolrServer(lang);
+			server.deleteById(profile.getWidId());
+			server.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
 	
 	public boolean index(Widgetprofile profile, String lang){
 		Widget widget = new Widget();
