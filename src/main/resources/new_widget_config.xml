@@ -1,0 +1,11 @@
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		id="{id}"
+		version="{version}" 
+		width="{width}" 
+		height="{height}" >
+	<name>{name}</name>
+	<description>{description}</description>
+	<icon src="{icon}"/>
+	<content src="{content}"/>
+	<author>{author}</author>
+</widget>
