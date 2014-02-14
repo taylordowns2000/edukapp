@@ -40,7 +40,7 @@ public class UserRateService extends AbstractService {
 
 		Number average = (Number) q.getSingleResult();
 		if (average == null) average = 0.0;
-
+		entityManager.close();
 		return average;
 	}
 	
@@ -51,9 +51,22 @@ public class UserRateService extends AbstractService {
 		q.setParameter("widgetprofile", widgetProfile);
 
 		Long count = (Long) q.getSingleResult();
-
+		entityManager.close();
 		return count;
 	}
+	
+	
+	public Userrating getUserRatingForWidget ( Widgetprofile widgetProfile, Useraccount user ) {
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		Query q = entityManager.createNamedQuery("Userrating.findForWidgetAndUser");
+		q.setParameter ( "widgetprofile", widgetProfile);
+		q.setParameter("useraccount", user );
+		Userrating ur = (Userrating)q.getSingleResult();
+		entityManager.close();
+		return ur;
+	}
+	
+	
 
 	public Message publishUserRate(String rating, Useraccount userAccount,
 			Widgetprofile widgetProfile) {
@@ -97,13 +110,14 @@ public class UserRateService extends AbstractService {
 			entityManager.persist(userRating);
 
 			entityManager.getTransaction().commit();
-
+			entityManager.close();
 			msg.setMessage("OK");
 			
 			//
 			// Remove cached stats for this widget profile
 			//
 			Cache.getInstance().remove("widgetStats:"+widgetProfile.getId());
+			
 
 		} catch (Exception e) {
 			msg.setMessage("error:" + e.getMessage());
