@@ -94,7 +94,7 @@ public class UserReviewService extends AbstractService {
 		userReview.setComment(comment);
 
 		entityManager.getTransaction().commit();
-		
+		entityManager.close();
 		//
 		// Sync the review
 		//
