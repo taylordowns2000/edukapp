@@ -27,6 +27,7 @@ import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
 import uk.ac.edukapp.server.configuration.SpawsServerConfiguration;
+import uk.ac.edukapp.util.Message;
 
 public class WidgetStatsService extends AbstractService {
 
@@ -46,6 +47,26 @@ public class WidgetStatsService extends AbstractService {
 	 */
 	public WidgetStats getStats(Widgetprofile widgetProfile){
 		return getStats(widgetProfile, true);
+	}
+	
+	
+	public void updateWidgetRatings(Widgetprofile widgetProfile) {
+		WidgetStats widgetStats = null;
+		
+		Number averageRating = userRateService.getAverageRating(widgetProfile);
+		Number totalRatings = userRateService.getRatingCount(widgetProfile);
+		
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		widgetStats = em.find(WidgetStats.class, widgetProfile.getId());
+		widgetStats.setAverageRating(averageRating);
+		widgetStats.setTotalRatings(totalRatings.longValue());
+		em.persist(em.merge(widgetStats));
+		em.getTransaction().commit();
+		em.close();
+		
+		Cache cache = Cache.getInstance();
+		cache.put("widgetStats:" + widgetProfile.getId(), widgetStats, SpawsServerConfiguration.getInstance().getCacheDuration());
 	}
 
 	/**
@@ -70,8 +91,7 @@ public class WidgetStatsService extends AbstractService {
 			em.close();
 
 			//
-			// TODO implement
-			// widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
+			widgetStats.setAverageRating(userRateService.getAverageRating(widgetProfile));
 			
 			widgetStats.setTotalRatings(userRateService
 					.getRatingCount(widgetProfile));
@@ -116,5 +136,57 @@ public class WidgetStatsService extends AbstractService {
 		
 		return widgetStats;
 	}
+	
+	
+	public Message addToEmbeds ( Widgetprofile widgetProfile ) {
+		Message m = new Message ();
+		
+		WidgetStats ws = widgetProfile.getWidgetStats();
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		ws.setEmbeds(ws.getEmbeds()+1);
+		em.persist(em.merge(ws));
+		em.getTransaction().commit();
+		em.close();
+		
+		m.setMessage("OK");
+		return m;
+	}
+	
+	
+	public Message addToViews ( Widgetprofile widgetProfile ) {
+		Message m = new Message ();
+
+		WidgetStats ws = widgetProfile.getWidgetStats();
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		ws.setViews(ws.getViews()+1);
+		em.persist(em.merge(ws));
+		em.getTransaction().commit();
+		em.close();
+		
+		m.setMessage("OK");
+		
+		return m;
+	}
+	
+	
+	public Message addToDownloads ( Widgetprofile widgetProfile ) {
+		Message m = new Message ();
+
+		WidgetStats ws = widgetProfile.getWidgetStats();
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		ws.setDownloads(ws.getDownloads()+1);
+		em.persist(em.merge(ws));
+		em.getTransaction().commit();
+		em.close();
+		
+		m.setMessage("OK");
+		
+		return m;	
+	}
+
+
 
 }
