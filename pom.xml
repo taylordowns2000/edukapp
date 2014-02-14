@@ -4,10 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.ac.edukapp</groupId>
 	<artifactId>edukapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>war</packaging>
-	<name>Edukapp</name>
+	<name>edukapp</name>
 	<build>
+		<finalName>edukapp</finalName>
 		<plugins>
 
 			<!-- set the java version to 1.6 as we need to use generics (etc) -->
@@ -29,6 +30,12 @@
 					<configuration>
 						<properties>
 							<cargo.tomcat.context.reloadable>true</cargo.tomcat.context.reloadable>
+							<cargo.jvmargs>
+								-Xdebug
+								-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8001
+								-Xnoagent
+								-Djava.compiler=NONE
+							</cargo.jvmargs>
 						</properties>
 						<configfiles>
 							<configfile>
@@ -71,8 +78,15 @@
 									<context>/shindig</context>
 								</properties>
 							</deployable>
-
+							
 						</deployables>
+						<files>
+							<copy>
+								<file>${project.basedir}/StoreClient</file>
+								<todir>webapps/StoreClient</todir>
+								<overwrite>true</overwrite>
+							</copy>
+						</files>
 					</configuration>
 					<container>
 						<containerId>tomcat6x</containerId>
@@ -138,6 +152,41 @@
 			<!-- </executions> -->
 			<!-- </plugin> -->
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											openjpa-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2,)
+										</versionRange>
+										<goals>
+											<goal>enhance</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<!-- for xml parsing -->
@@ -166,7 +215,7 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie</artifactId>
-			<version>0.10.0-incubating</version>
+			<version>0.11.0-incubating</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>
@@ -202,7 +251,7 @@
 		<dependency>
 			<groupId>org.apache.wookie</groupId>
 			<artifactId>wookie-java-connector</artifactId>
-			<version>0.10.0-incubating</version>
+			<version>0.11.0-incubating</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -292,6 +341,13 @@
 			<groupId>org.apache.wink</groupId>
 			<artifactId>wink-jackson-provider</artifactId>
 			<version>1.2.0-incubating</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.5</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
