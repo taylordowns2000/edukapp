@@ -4,20 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import uk.ac.edukapp.cache.Cache;
 import uk.ac.edukapp.model.Activity;
+import uk.ac.edukapp.model.Category;
 import uk.ac.edukapp.model.Tag;
+import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.WidgetDescription;
 import uk.ac.edukapp.model.WidgetStats;
 import uk.ac.edukapp.model.Widgetprofile;
@@ -25,6 +31,7 @@ import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.repository.SolrConnector;
 import uk.ac.edukapp.repository.Widget;
 import uk.ac.edukapp.util.Message;
+import uk.ac.edukapp.util.ServletUtils;
 
 /*
  *  (c) 2012 University of Bolton
@@ -55,6 +62,8 @@ public class WidgetProfileService extends AbstractService {
 			.getName());
 
 	private PropertiesConfiguration properties;
+	
+	private TagService tagService;
 
 	// popularity factors
 	static int EmbedFactor = 1;
@@ -63,6 +72,7 @@ public class WidgetProfileService extends AbstractService {
 
 	public WidgetProfileService(ServletContext ctx) {
 		super(ctx);
+		tagService = new TagService(ctx);
 		try {
 			properties = new PropertiesConfiguration("store.properties");
 			if (properties.containsKey("popularity.factor.embeds")) {
@@ -85,8 +95,27 @@ public class WidgetProfileService extends AbstractService {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		// em.getTransaction().begin();
 		Query q = em.createQuery("SELECT w FROM Widgetprofile w ");
+		@SuppressWarnings("unchecked")
 		List<Widgetprofile> results = q.getResultList();
+		em.close();
 		return results;
+	}
+	
+	
+	
+	public List<Widgetprofile> getWidgetsForUser ( Useraccount owner ) {
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Widgetprofile.ownedBy");
+		q.setParameter("user", owner);
+		@SuppressWarnings("unchecked")
+		List<Widgetprofile> results= q.getResultList();
+		em.close();
+		return results;
+	}
+	
+	public Widgetprofile createWidgetProfile(String uri, String name,
+			String description, String icon, String type) {
+		return createWidgetProfile(uri,name,description,icon,null);
 	}
 
 	/**
@@ -98,13 +127,17 @@ public class WidgetProfileService extends AbstractService {
 	 * @return the widget profile
 	 */
 	public Widgetprofile createWidgetProfile(String uri, String name,
-			String description, String icon, String type) {
+			String description, String icon, String type, Useraccount owner) {
+
 
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
 		Widgetprofile widgetprofile = new Widgetprofile();
 		widgetprofile.setName(name);
 		widgetprofile.setCreated(new Date());
+		widgetprofile.setUpdated(new Date());
+		widgetprofile.setIcon(icon);
+		widgetprofile.setOwner(owner);
 		widgetprofile.setUpdated(new Date());
 		widgetprofile.setIcon(icon);
 		byte zero = 0;
@@ -140,7 +173,7 @@ public class WidgetProfileService extends AbstractService {
 	}
 
 	public Widgetprofile updateWidgetProfile(String uri, String name,
-			String description) {
+			String description, String icon) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		em.getTransaction().begin();
 		Query wpQuery = em.createNamedQuery("Widgetprofile.findByUri");
@@ -159,9 +192,27 @@ public class WidgetProfileService extends AbstractService {
 			em.persist(em.merge(widgetprofile));
 		}
 		em.getTransaction().commit();
+		em.close();
 		return widgetprofile;
 	}
 
+	
+	public Widgetprofile addEditInformation ( Widgetprofile widgetProfile, String builderType, String data, String width, String height ) {
+		
+		String escapedHTML = StringEscapeUtils.escapeHtml(data);
+		String metaDataJSON = "{\"width\":"+width+",\"height\":"+height+",\"html\":\""+escapedHTML+"\"}";
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		widgetProfile.setMeta_data(metaDataJSON);
+		widgetProfile.setBuilder(builderType);
+		em.merge(widgetProfile);
+		em.getTransaction().commit();
+		em.close();
+		return widgetProfile;
+	}
+	
+	
+	
 	public List<Widgetprofile> findWidgetProfilesForTag(Tag tag) {
 		return tag.getWidgetprofiles();
 	}
@@ -187,18 +238,27 @@ public class WidgetProfileService extends AbstractService {
 				"FeaturedWidgets");
 
 		if (widgetProfiles == null) {
-			EntityManager entityManager = getEntityManagerFactory()
-					.createEntityManager();
-			Query wpQuery = entityManager
-					.createNamedQuery("Widgetprofile.featured");
-			widgetProfiles = (List<Widgetprofile>) wpQuery.getResultList();
-			entityManager.close();
-			Cache.getInstance().put("FeaturedWidgets", widgetProfiles, 3200);
+			widgetProfiles = this.rebuildFeaturedWidgetsCache();
 			logger.debug("Loaded featured widgets from JPA");
 		} else {
 			logger.debug("Loaded featured widgets from cache");
 		}
 
+		return widgetProfiles;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Widgetprofile> rebuildFeaturedWidgetsCache () {
+		List<Widgetprofile> widgetProfiles;
+		EntityManager entityManager = getEntityManagerFactory()
+		.createEntityManager();
+		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.featured");
+		widgetProfiles = (List<Widgetprofile>) wpQuery.getResultList();
+		entityManager.close();
+		
+		Cache.getInstance().put("FeaturedWidgets", widgetProfiles, 3200);
 		return widgetProfiles;
 	}
 
@@ -295,6 +355,39 @@ public class WidgetProfileService extends AbstractService {
 		sr.setWidgets(widgetprofiles);
 		return sr;
 	}
+	
+	/**
+	 * 
+	 * @param categories
+	 * @return
+	 */
+	public SearchResults returnWidgetProfilesFilteredByCategories( List<List<Category>> categories )
+	{
+		ArrayList<Widgetprofile> widgetList = new ArrayList<Widgetprofile>();
+		
+		for ( List<Category> group: categories ) {
+			HashSet<Widgetprofile> groupList = new HashSet<Widgetprofile>();
+			for ( Category category: group) {
+				List<Widgetprofile> widgets = category.getWidgetprofiles();
+				if ( widgets != null ) {
+					groupList.addAll(widgets);
+				}
+				
+			}
+			if ( widgetList.isEmpty()) {
+				widgetList.addAll(groupList);
+			}
+			else {
+				if ( !groupList.isEmpty()) {
+					widgetList.retainAll(groupList);
+				}
+			}
+		}
+		SearchResults sr = new SearchResults();
+		sr.setWidgets(widgetList);
+		sr.setNumber_of_results(widgetList.size());
+		return sr;
+	}
 
 	public List<Widgetprofile> findSimilarWidgetsProfiles(
 			Widgetprofile profile, String language) {
@@ -319,12 +412,43 @@ public class WidgetProfileService extends AbstractService {
 			widgetProfile.getTags();
 			widgetProfile.getActivities();
 			widgetProfile.getDescription();
+			widgetProfile.getFunctionalities();
+			widgetProfile.getCategories();
 			entityManager.close();
 			return widgetProfile;
 		} catch (NoResultException e) {
 			return null;
 		}
 
+	}
+	
+	
+	
+	public int countProfilesByName ( String name ) {
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		Query wpQuery = entityManager.createQuery("SELECT COUNT(wp.name) FROM Widgetprofile wp WHERE wp.name = :widgetTitle");
+		wpQuery.setParameter("widgetTitle", name);
+		Number n = (Number)wpQuery.getSingleResult();
+		entityManager.close();
+		
+		return n.intValue();
+	}
+	
+	
+	public Widgetprofile findWidgetProfileByName( String name ) {
+		Widgetprofile wp = null;
+		EntityManager entityManager = this.getEntityManagerFactory().createEntityManager();
+		try {
+			String sql = "SELECT w FROM Widgetprofile w WHERE w.name = :widgetName";
+			TypedQuery<Widgetprofile> query = entityManager.createQuery ( sql, Widgetprofile.class);
+			query.setParameter("widgetName", name);
+			wp = query.getSingleResult();
+		}
+		catch ( NoResultException exception ) {
+			// fine don't do anything
+		}
+		entityManager.close();
+		return wp;
 	}
 
 	public Widgetprofile findWidgetProfileById(String id) {
@@ -342,6 +466,8 @@ public class WidgetProfileService extends AbstractService {
 		widgetProfile.getTags();
 		widgetProfile.getActivities();
 		widgetProfile.getDescription();
+		widgetProfile.getFunctionalities();
+		widgetProfile.getCategories();
 		entityManager.close();
 		return widgetProfile;
 	}
@@ -387,6 +513,35 @@ public class WidgetProfileService extends AbstractService {
 				//
 				widgetProfile.getTags();
 				widgetProfile.getActivities();
+				widgetProfile.getFunctionalities();
+				widgetProfile.getCategories();
+				
+				// add stats here otherwise we done have them on the searched widget list.
+				WidgetStats widgetStats = entityManager.find(WidgetStats.class, widgetProfile.getId());
+				if ( widgetStats == null ) {
+					widgetStats = new WidgetStats();
+					widgetStats.setWid_id(widgetProfile.getId());
+					widgetStats.setDownloads(0);
+					widgetStats.setEmbeds(0);
+					widgetStats.setViews(0);
+				}
+				
+				Query q = entityManager.createNamedQuery("Userrating.getAverageValue");
+				q.setParameter("widgetprofile", widgetProfile);
+
+				Number average = (Number) q.getSingleResult();
+				if (average == null) average = 0.0;
+
+				widgetStats.setAverageRating(average);
+								
+				q = entityManager.createNamedQuery("Userrating.getCount");
+				q.setParameter("widgetprofile", widgetProfile);
+
+				Long count = (Long) q.getSingleResult();
+				widgetStats.setTotalRatings(count);
+				
+
+				
 
 			} catch (NoResultException e) {
 
@@ -431,10 +586,68 @@ public class WidgetProfileService extends AbstractService {
 
 		return widgetProfiles;
 	}
+	
+	
+	/*	
+	public ExtendedWidgetProfile convertWidgetProfileToExtended ( Widgetprofile widgetProfile ) {
+		widgetProfile.getTags();
+		widgetProfile.getActivities();
+		widgetProfile.getDescription();
+		widgetProfile.getFunctionalities();
+		widgetProfile.getCategories();
+		ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
+		extendedWidgetProfile.setWidgetProfile(widgetProfile);
+		extendedWidgetProfile.setRenderInfo(Renderer.render(widgetProfile, true));
+		extendedWidgetProfile.setRenderUrl(Renderer.render(widgetProfile, false));
+		ActivityService activityService = new ActivityService(this.servletContext);
+		
+	}
 
-	@SuppressWarnings("unchecked")
-	private Message addTagToWidget(Widgetprofile widget, String newTag) {
-		EntityManager entityManager = getEntityManagerFactory()
+
+wp.getTags();
+wp.getActivities();
+wp.getDescription();
+wp.getFunctionalities();
+
+// make extended widget profile
+
+ExtendedWidgetProfile extendedWidgetProfile = new ExtendedWidgetProfile();
+extendedWidgetProfile.setWidgetProfile(wp);
+extendedWidgetProfile.setRenderInfo(Renderer.render(wp, true));
+extendedWidgetProfile.setRenderUrl(Renderer.render(wp, false));
+ActivityService activityService = new ActivityService(ctx);
+extendedWidgetProfile.setUploadedBy(activityService.getUploadedBy(wp));
+WidgetStatsService widgetStatsService = new WidgetStatsService(ctx);
+extendedWidgetProfile.setWidgetStats(widgetStatsService.getStats(wp));
+
+return extendedWidgetProfile;
+}
+	*/
+
+	private Message addTagToWidget(Widgetprofile widget, String newTag){
+		Message msg = new Message();
+		try {
+			Tag tag = tagService.insertTag(newTag);
+			if ( widget.getTags().contains(tag)) {
+				msg.setMessage("Widget already has tag: "+newTag);
+			}
+			else {
+				EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+				entityManager.getTransaction().begin();	
+				widget.getTags().add(tag);
+				entityManager.merge(widget);
+				entityManager.getTransaction().commit();
+				entityManager.close();
+				msg.setMessage("OK");
+			}
+				
+		}
+		catch ( Exception e ) {
+			msg.setMessage("Problem creating tag: " + e.getMessage());
+		}
+		
+		return msg;
+		/*EntityManager entityManager = getEntityManagerFactory()
 				.createEntityManager();
 
 		entityManager.getTransaction().begin();
@@ -486,35 +699,135 @@ public class WidgetProfileService extends AbstractService {
 		// entityManager.merge(widget);
 
 		entityManager.getTransaction().commit();
+		entityManager.close();
 		Message msg = new Message();
 		msg.setMessage("OK");
 		msg.setId("" + tag.getId());
-		return msg;
+		return msg;*/
 
 	}
 
 	private Message addTagIdToWidget(Widgetprofile widget, String tagid) {
-		// not yet implemented
+		// TODO not yet implemented
 		return null;
 	}
 
-	private boolean isNumeric(String str) {
-		return str.matches("-?\\d+(.\\d+)?");
-	}
 
 	public Message addTag(Widgetprofile widgetProfile, String newTag) {
-		if (isNumeric(newTag)) {
+		if (ServletUtils.isNumeric(newTag)) {
 			return addTagIdToWidget(widgetProfile, newTag);
 		} else {
 			return addTagToWidget(widgetProfile, newTag);
 		}
+	}
+	
+	
+	
+	public Message addCategory(Widgetprofile widgetProfile, Category category ) {
+		Message message = new Message();
+		message.setMessage("OK");
+		
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		widgetProfile.addCategory(category);
+		em.merge(widgetProfile);
+		//em.persist(widgetProfile);
+		em.getTransaction().commit();
+		em.close();
+		
+		return message;
+	}
+	
+	
+	
+	public Message removeCategory(Widgetprofile widgetProfile, Category category ) {
+		Message message = new Message();
+		message.setMessage("OK");
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		widgetProfile.removeCategory(category);
+		em.merge(widgetProfile);
+		em.getTransaction().commit();
+		em.close();
+		return message;
+	}
+	
+	
+	
+	/*
+	 *
+
+	 */
+	
+	
+	public Message removeTagFromWidget (Widgetprofile widgetProfile, Tag tag ){
+ 		EntityManager entityManager = getEntityManagerFactory()
+		.createEntityManager();
+
+		List<Tag> tags = widgetProfile.getTags();
+		//int index = tags.indexOf(tag);
+		//if ( index != -1 ) {
+		//	tags.remove(index);
+		//}
+		// for some reason the tag is not found in the list so  going to do this manually
+		boolean found = false;
+		int index = -1;
+		for ( int i = 0; i < tags.size(); i++ ) {
+			Tag aTag = tags.get(i);
+			index++;
+			if ( aTag.getId() == tag.getId()){
+				found = true;
+				break;
+			}
+		}
+		if (found ) {
+			entityManager.getTransaction().begin();
+			tags.remove(index);
+			widgetProfile.setTags(tags);
+			entityManager.merge(widgetProfile);
+			entityManager.getTransaction().commit();
+		}
+
+		Message msg = new Message();
+		if ( found ) {
+			msg.setMessage("OK");
+		}
+		else {
+			msg.setMessage("Link between widget: "+widgetProfile.getId()+" and tag: "+tag.getTagtext()+" could not be deleted");
+		}
+		
+		entityManager.close();
+		return msg;
+		/*
+		EntityManager entityManager = getEntityManagerFactory()
+		.createEntityManager();
+
+		entityManager.getTransaction().begin();
+
+		Query q = entityManager.createQuery("DELETE FROM widgetprofiles_tags WHERE widgetprofile_id=?1 AND tag_id=?2");
+		q.setParameter(1, widgetProfile.getId());
+		q.setParameter(2, tag.getId());
+		int n = q.executeUpdate();
+		Message msg = new Message();
+		if ( n == 1 ) {
+			msg.setMessage("OK");
+		}
+		else if ( n == 0 ) {
+			msg.setMessage("Link between widget: "+widgetProfile.getId()+" and tag: "+tag.getTagtext()+" could not be deleted");
+		}
+		else {
+			msg.setMessage("Serious internal error, too many tags deleted");
+		}
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return msg;*/
 	}
 
 	public Message addTag(String id, String newTag) {
 		Widgetprofile widget = null;
 
 		// check whether id is numeric
-		if (isNumeric(id)) {
+		if (ServletUtils.isNumeric(id)) {
 			widget = findWidgetProfileById(id);
 		} else {
 			widget = findWidgetProfileByUri(id);
@@ -534,7 +847,7 @@ public class WidgetProfileService extends AbstractService {
 		Widgetprofile widget = null;
 
 		// check whether id is numeric
-		if (isNumeric(id)) {
+		if (ServletUtils.isNumeric(id)) {
 			widget = findWidgetProfileById(id);
 		} else {
 			widget = findWidgetProfileByUri(id);
@@ -572,6 +885,7 @@ public class WidgetProfileService extends AbstractService {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entityManager.merge(widgetProfile));
 		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 
 	public boolean addActivity(Widgetprofile widgetProfile, String body) {
@@ -610,7 +924,66 @@ public class WidgetProfileService extends AbstractService {
 
 		entityManager.persist(entityManager.merge(widgetProfile));
 		entityManager.getTransaction().commit();
+		entityManager.close();
 		return true;
 	}
+	
+	
+	
+	public Message toggleFeatured ( String widgetId ) {
+		Message msg = new Message();
+		EntityManager em = this.getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Widgetprofile widgetProfile = em.find(Widgetprofile.class, widgetId);
+		Byte featured = widgetProfile.getFeatured();
+		if ( featured.intValue() == 0) {
+			msg.setMessage("true");
+			widgetProfile.setFeatured((byte)1);
+		}
+		else {
+			msg.setMessage("false");
+			widgetProfile.setFeatured((byte)0);
+		}
+		em.persist(widgetProfile);
+		em.getTransaction().commit();
+		em.close();
+		return msg;
+	}
+	
+	
+	public Message setPublishLevel ( String widgetId, int level )
+	{
+		Message msg = new Message();
+		EntityManager em = this.getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Widgetprofile widgetProfile = em.find(Widgetprofile.class, widgetId);
+		widgetProfile.setPublish_level(level);
+		em.persist(widgetProfile);
+		em.getTransaction().commit();
+		em.close();
+		msg.setMessage("OK");
+		return msg;
+	}
+
+	// this just sets a flag
+	public Message deleteWidgetProfileWithId(String widgetId, boolean fullDelete) {
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		em.getTransaction().begin();
+		Widgetprofile widgetProfile = em.find(Widgetprofile.class, widgetId);
+		if ( fullDelete ) {
+			em.remove(widgetProfile);
+		}
+		else {
+			widgetProfile.setDeleted((byte) 1);
+		}
+		em.getTransaction().commit();
+		em.close();
+		Message msg = new Message ( );
+		msg.setMessage("OK");
+		return msg;
+
+	}
+	
+	
 
 }
