@@ -5,6 +5,7 @@
     <persistence-unit name="edukapp">
 	<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 	<class>uk.ac.edukapp.model.Activity</class>
+	<class>uk.ac.edukapp.model.Category</class>
 	<class>uk.ac.edukapp.model.Comment</class>
 	<class>uk.ac.edukapp.model.Tag</class>
 	<class>uk.ac.edukapp.model.Type</class>
@@ -18,6 +19,9 @@
 	<class>uk.ac.edukapp.model.LtiProvider</class>
 	<class>uk.ac.edukapp.model.Userrole</class>
 	<class>uk.ac.edukapp.model.Userrating</class>
+	<class>uk.ac.edukapp.model.Functionality</class>
+	<class>uk.ac.edukapp.model.WidgetFunctionality</class>
+	<class>uk.ac.edukapp.model.WidgetFavourite</class>
 		<!--
 		<class>put your classes here</class>
 		-->
@@ -25,8 +29,7 @@
 		
     	<properties>	    
     	
-    	    <property name="openjpa.Log" value="SQL=TRACE"/>
-    	    
+    	    <property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE"/>
     		<property name="openjpa.ConnectionDriverName"   value="com.mysql.jdbc.Driver"/>
     		<property name="openjpa.ConnectionURL"      	value="jdbc:mysql://localhost/edukapptests"/>
     		<property name="openjpa.ConnectionUserName"     value="edukapptests"/>
