@@ -1,5 +1,7 @@
 package uk.ac.edukapp.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
@@ -16,9 +18,12 @@ public class LtiProviderService extends AbstractService {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		Query query = em.createNamedQuery("ltiprovider.findByConsumerKey");
 		query.setParameter("key", consumerKey);
-		LtiProvider ltiProvider;
+		LtiProvider ltiProvider = null;
 		try {
-			ltiProvider = (LtiProvider) query.getSingleResult();
+			List<?> r = query.getResultList();
+			if ( !r.isEmpty()) {
+				ltiProvider = (LtiProvider)r.get(0);
+			}
 		} catch (Exception e) {
 			ltiProvider = null;
 		}
