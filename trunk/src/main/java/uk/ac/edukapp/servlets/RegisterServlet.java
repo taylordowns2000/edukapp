@@ -84,6 +84,7 @@ public class RegisterServlet extends HttpServlet {
 		String hashedPassword = MD5Util.md5Hex(salt + password);
 		ua.setPassword(hashedPassword);
 		ua.setSalt(salt);
+		ua.setToken("02");
 		em.persist(ua);
 
 		try {
