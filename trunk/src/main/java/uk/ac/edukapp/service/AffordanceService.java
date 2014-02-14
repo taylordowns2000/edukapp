@@ -89,7 +89,7 @@ public class AffordanceService extends AbstractService {
 				.createEntityManager();
 		activities = entityManager.createQuery("Select a from Activity a")
 				.getResultList();
-
+		entityManager.close();
 		return activities;
 	}
 

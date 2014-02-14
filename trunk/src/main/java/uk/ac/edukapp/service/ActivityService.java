@@ -60,10 +60,8 @@ public class ActivityService extends AbstractService {
 		if (activities.size() == 0)
 			return null;
 		Useractivity userActivity = activities.get(0);
-		EntityManager entityManager = getEntityManagerFactory()
-				.createEntityManager();
-		Useraccount userAccount = entityManager.find(Useraccount.class,
-				userActivity.getSubjectId());
+		EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+		Useraccount userAccount = entityManager.find(Useraccount.class, userActivity.getSubjectId());
 		entityManager.close();
 		return userAccount;
 	}

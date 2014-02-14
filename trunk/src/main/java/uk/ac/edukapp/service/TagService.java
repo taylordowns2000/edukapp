@@ -19,6 +19,7 @@ package uk.ac.edukapp.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
@@ -86,6 +87,23 @@ public class TagService extends AbstractService {
 		}
 		return tags;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Tag> getAllTags() {
+		List<Tag> tags;
+		
+		//tags = (List<Tag>) Cache.getInstance().get("AllTags");
+		//if ( tags == null ) {
+			EntityManager entityManager = getEntityManagerFactory().createEntityManager();
+			tags = entityManager.createQuery("SELECT a FROM Tag a").getResultList();
+			Cache.getInstance().put("AllTags", tags);
+			entityManager.close();
+		//}
+		return tags;
+	}
+	
+	
 
 	/**
 	 * Get a tag
@@ -133,40 +151,30 @@ public class TagService extends AbstractService {
 	 * @return true if a new tag was created; false if one already exists with the same label
 	 * @throws Exception if there was a problem creating the tag
 	 */
-	public boolean insertTag(String text) throws Exception {
+	public Tag insertTag(String text) {
+		EntityManager entityManager = getEntityManagerFactory()
+		.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		//
+		// check if the tag text already exists. If it does,
+		// return false.
+		//
+		// (any better way to do this?)
+		//
+		Tag tag;
 		try {
-			EntityManager entityManager = getEntityManagerFactory()
-			.createEntityManager();
-
-			//
-			// check if the tag text already exists. If it does,
-			// return false.
-			//
-			// (any better way to do this?)
-			//
-			
-			TypedQuery<Tag> query = entityManager.createNamedQuery(
-					"Tag.findByName", Tag.class);
+			TypedQuery<Tag> query = entityManager.createNamedQuery("Tag.findByName", Tag.class);
 			query.setParameter("tagname", text);
-			List<Tag> result = query.getResultList();// getSingleResult();
-			if (result.size() > 0) {
-				return false;
-			}
-
-			//
-			// execute the insert
-			//
-			Tag tag = new Tag();
-			tag.setTagtext(text);
-			entityManager.getTransaction().begin();
-			entityManager.persist(tag);
-			entityManager.getTransaction().commit();
-			entityManager.close();
-			return true;
-			
-		} catch (Exception e) {
-			logger.error("problem creating tag:"+text, e);
-			throw e;
+			tag = query.getSingleResult();
 		}
+		catch ( NoResultException exception ) {
+			tag = new Tag();
+			tag.setTagtext(text);
+			entityManager.persist(tag);
+		}
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return tag;
 	}
 }
