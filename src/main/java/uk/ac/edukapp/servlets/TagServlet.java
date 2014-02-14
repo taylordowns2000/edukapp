@@ -30,6 +30,7 @@ import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.renderer.MetadataRenderer;
 import uk.ac.edukapp.renderer.SearchResults;
 import uk.ac.edukapp.service.TagService;
+import uk.ac.edukapp.util.Message;
 
 /**
  * Tags api endpoint
@@ -137,11 +138,12 @@ public class TagServlet extends HttpServlet {
 		}
 
 		try {
-			if (tagService.insertTag(text)){
-				resp.setStatus(HttpServletResponse.SC_CREATED);
-			} else {
-				resp.setStatus(HttpServletResponse.SC_OK);				
-			}
+			tagService.insertTag(text);
+			//if (){
+			resp.setStatus(HttpServletResponse.SC_OK);
+			//} else {
+			//	resp.setStatus(HttpServletResponse.SC_OK);				
+			//}
 		} catch (Exception e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
