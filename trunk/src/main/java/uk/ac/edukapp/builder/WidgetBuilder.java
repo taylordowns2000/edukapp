@@ -105,7 +105,7 @@ public class WidgetBuilder {
 		String author = userAccount.getAccountInfo().getRealname();
 		
 		// sort widget name
-		name = name.replaceAll("\\s+", "_");
+		name = this.zapTitleGremlins(name);
 		// create a folder
 		File widgetFolder = FileFolderUtils.createTempDirectory ( name );
 		FileFolderUtils.moveFileToFolder(mediaFile, widgetFolder);
@@ -226,7 +226,8 @@ public class WidgetBuilder {
 		String author = userAccount.getAccountInfo().getRealname();
 		
 		// sort widget name
-		name = name.replaceAll("\\s+", "_");
+		name = this.zapTitleGremlins(name);
+
 		// create a folder
 		File widgetFolder = FileFolderUtils.createTempDirectory ( name );
 		String folderDirectory = widgetFolder.getCanonicalPath();
@@ -250,6 +251,14 @@ public class WidgetBuilder {
 		// return a file pointer to it
 		return widgetFile;		
 		
+	}
+	
+	
+	private String zapTitleGremlins ( String title )
+	{
+		//title = title.replaceAll("\\s+", "_");
+
+		return title;
 	}
 	
 
