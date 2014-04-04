@@ -1,8 +1,6 @@
 package uk.ac.edukapp.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +27,6 @@ import org.codehaus.jackson.annotate.JsonUnwrapped;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import uk.ac.edukapp.renderer.CustomJsonDateSerializer;
-
 import uk.ac.edukapp.renderer.Renderer;
 
 
@@ -101,7 +98,7 @@ public class Widgetprofile implements Serializable {
 	private String builder;
 
 	// bi-directional many-to-many association to Tag
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany()
 	@JoinTable(name = "widgetprofiles_tags", 
 			joinColumns = { @JoinColumn(name = "widgetprofile_id", nullable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "tag_id", nullable = false) })
@@ -125,14 +122,14 @@ public class Widgetprofile implements Serializable {
 	WidgetStats widgetStats;
 	
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="widgetProfile")
+	@OneToMany(mappedBy="widgetProfile")
 	private List<WidgetFunctionality> functionalities;
 	
 	@ManyToOne
 	@JoinColumn(name="owner", nullable=false)
 	private Useraccount owner;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="widgetprofiles_category",
 			joinColumns = { @JoinColumn(name="widgetprofiles_id", referencedColumnName="id")},
 			inverseJoinColumns = { @JoinColumn(name="category_id", referencedColumnName="id") })
