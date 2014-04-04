@@ -466,7 +466,70 @@ public class Creator {
 		wp = wps.addEditInformation(wp, "embed", embed, width, height);
 
 		return wp;
-}
+	}
+	
+	/**
+	 * new URL Widget
+	 * @param request
+	 * @param title
+	 * @param description
+	 * @param url
+	 * @param width
+	 * @param height
+	 * @param icon
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 * @throws RESTException
+	 */
+	@POST
+	@Path("webaddress")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Widgetprofile newWebAddressWidget(@Context HttpServletRequest request,
+			@FormParam("widgetname") String title,
+			@FormParam("widgetdescription") String description,
+			@FormParam("webaddress") String webaddress,
+			@FormParam("widgetwidth") String width,
+			@FormParam("widgetheight") String height,
+			@FormParam("icon") String icon) throws JDOMException, IOException,
+			RESTException {
+		ServletContext ctx = request.getSession().getServletContext();
+		Widgetprofile wp = null;
+		checkParam(title, "title");
+		WidgetProfileService wps = new WidgetProfileService(ctx);
+		if (width == null || width.equals("")) {
+			width = "400";
+		}
+		if (height == null || height.equals("")) {
+			height = "400";
+		}
+		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject()
+				.getPrincipal();
+		if (userAccount == null) {
+			String ErrorString = "Not logged in!";
+			log.debug(ErrorString);
+			throw new WebApplicationException(new RESTException(ErrorString),
+					Response.Status.UNAUTHORIZED);
+		}
+		
+		// check web address
+		
+		if (!ServletUtils.checkURL(webaddress)) {
+			throw new WebApplicationException(new RESTException("Web Address Not Valid"), Response.Status.NOT_ACCEPTABLE);
+		}
+		WidgetBuilder wb = new WidgetBuilder();
+		File widgetFile = wb.buildWidgetFromUrl(webaddress, title,
+				userAccount.getUsername(), description, width, height, icon,
+				ctx);
+		wp = this.uploadWidgetToWookie(widgetFile, ctx, userAccount);
+
+		// add edit information to widget profile
+		wp = wps.addEditInformation(wp, "webaddress", webaddress, width, height);
+
+		return wp;
+	}
+											
 	
 	
 	
