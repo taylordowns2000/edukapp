@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CorsFilter implements Filter {
@@ -17,10 +18,15 @@ public class CorsFilter implements Filter {
 
 	}
 
-	public void doFilter(ServletRequest arg0, ServletResponse response,
+	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		((HttpServletResponse)response).addHeader("Access-Control-Allow-Origin", "*");
-		chain.doFilter(arg0, response);
+
+		String method = ((HttpServletRequest)request).getMethod();
+		if ( "OPTIONS".equalsIgnoreCase(method)) {
+			((HttpServletResponse)response).addHeader("Access-Control-Allow-Methods", "OPTIONS");
+			((HttpServletResponse)response).addHeader("Access-Control-Allow-Credentials", "true");
+		}
+		chain.doFilter(request, response);
 
 	}
 
