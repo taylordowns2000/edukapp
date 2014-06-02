@@ -60,6 +60,15 @@ public class Users {
 		return uas.listUsers();
 	}
 	
+	@GET
+	@Path("withfavourites")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Useraccount> listUsersWithFavourites(@Context HttpServletRequest request ) {
+		ServletContext ctx = request.getSession().getServletContext();
+		UserAccountService uas = new UserAccountService (ctx );
+		return uas.listUsersWithFavourites();
+	}
+	
 	@PUT
 	@Path("edit")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
