@@ -53,12 +53,10 @@ public class HttpRequestMessage extends OAuthMessage {
     }
 
     private static void copyHeaders(HttpServletRequest request, Collection<Map.Entry<String, String>> into) {
-        @SuppressWarnings("unchecked")
         Enumeration<String> names = request.getHeaderNames();
         if (names != null) {
             while (names.hasMoreElements()) {
                 String name = names.nextElement();
-                @SuppressWarnings("unchecked")
                 Enumeration<String> values = request.getHeaders(name);
                 if (values != null) {
                     while (values.hasMoreElements()) {
@@ -72,8 +70,7 @@ public class HttpRequestMessage extends OAuthMessage {
 
     public static List<OAuth.Parameter> getParameters(HttpServletRequest request) {
         List<OAuth.Parameter> list = new ArrayList<OAuth.Parameter>();
-        for (@SuppressWarnings("unchecked")
-        Enumeration<String> headers = request.getHeaders("Authorization"); headers != null
+        for (Enumeration<String> headers = request.getHeaders("Authorization"); headers != null
                 && headers.hasMoreElements();) {
             String header = headers.nextElement();
             for (OAuth.Parameter parameter : OAuthMessage
