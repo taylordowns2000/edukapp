@@ -1,5 +1,5 @@
 /*
- *  (c) 2012 University of Bolton
+ *  (c) 2014 University of Bolton
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package uk.ac.edukapp.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +34,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 import uk.ac.edukapp.model.Accountinfo;
-import uk.ac.edukapp.model.LtiProvider;
 import uk.ac.edukapp.model.Useraccount;
 import uk.ac.edukapp.model.WidgetFavourite;
 import uk.ac.edukapp.model.Widgetprofile;
@@ -45,6 +45,7 @@ import uk.ac.edukapp.util.Message;
  * Service for obtaining user accounts
  * 
  * @author scottw
+ * @author Kris Popat
  * 
  */
 public class UserAccountService extends AbstractService {
@@ -66,6 +67,21 @@ public class UserAccountService extends AbstractService {
 		List<Useraccount> results = q.getResultList();
 		em.close();
 		return results;
+	}
+	
+	// TODO - must redo this with sql, this is a hack!
+	public List<Useraccount>listUsersWithFavourites()
+	{
+		ArrayList<Useraccount> newList = new ArrayList<Useraccount>();
+		List<Useraccount> users = listUsers();
+		
+		for(Useraccount u: users) {
+			List<WidgetFavourite> userFavourites = u.getFavourites();
+			if (userFavourites != null && userFavourites.size() > 0 ) {
+				newList.add(u);
+			}
+		}
+		return newList;
 	}
 
 	/*
