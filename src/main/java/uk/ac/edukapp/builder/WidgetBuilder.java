@@ -1,5 +1,5 @@
 /*
- *  (c) 2013 University of Bolton
+ *  (c) 2014 University of Bolton
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -107,7 +107,9 @@ public class WidgetBuilder {
 		// sort widget name
 		name = this.zapTitleGremlins(name);
 		// create a folder
-		File widgetFolder = FileFolderUtils.createTempDirectory ( name );
+		String safeName = this.createSafeFileName(name);
+		
+		File widgetFolder = FileFolderUtils.createTempDirectory ( safeName );
 		FileFolderUtils.moveFileToFolder(mediaFile, widgetFolder);
 		
 		String folderDirectory = widgetFolder.getCanonicalPath();
@@ -118,7 +120,7 @@ public class WidgetBuilder {
 		FileFolderUtils.writeStringToFile(folderDirectory+"/index.html", html);
 		
 		// build the widget config file
-		String config = this.constructConfig(name, "1.0", width, height, description, icon, "index.html", author, "flash");
+		String config = this.constructConfig(safeName, name, "1.0", width, height, description, icon, "index.html", author, "flash");
 		FileFolderUtils.writeStringToFile(folderDirectory+"/config.xml", config);
 
 		// put the default widget flash widget icon in it
@@ -179,6 +181,7 @@ public class WidgetBuilder {
 										ServletContext context ) throws IOException {
 		Useraccount userAccount = (Useraccount) SecurityUtils.getSubject().getPrincipal();
 		String author = userAccount.getAccountInfo().getRealname();
+		String safeName = this.createSafeFileName(tempFolderName);
 
 		String tempFolderPath = WidgetBuilder.tmp + "/"+tempFolderName;
 		File widgetFolder = new File(tempFolderPath);
@@ -187,7 +190,7 @@ public class WidgetBuilder {
 		}
 		
 		
-		String config = this.constructConfig(name, "1.0", width, height, description, icon, chosenIndexFile, author, "webfolder");
+		String config = this.constructConfig(safeName, name, "1.0", width, height, description, icon, chosenIndexFile, author, "webfolder");
 		FileFolderUtils.writeStringToFile(tempFolderPath+"/config.xml", config);
 
 		// put the default widget flash widget icon in it
@@ -198,6 +201,33 @@ public class WidgetBuilder {
 		
 		// return a file pointer to it
 		return widgetFile;
+	}
+	
+	
+	public File buildWidgetFromUrl (String Url, 
+										String name, 
+										String username, 
+										String description, 
+										String width, 
+										String height,
+										String icon,
+										ServletContext context ) throws IOException {
+		Integer newWidth;
+		Integer newHeight;
+		try {
+			newWidth = Integer.valueOf(width);
+			newHeight = Integer.valueOf(height);
+			// offset for container
+			newWidth = newWidth - 4;
+			newHeight = newHeight - 4;
+		}
+		catch (NumberFormatException exp ) {
+			// user defaults
+			newWidth = new Integer ( 300 );
+			newHeight = new Integer ( 400 );
+		}
+		String embedCode = "<iFrame src=\""+Url+"\" width=\""+newWidth+"\" height=\""+newHeight+"\"></Frame>";
+		return this.buildWidgetFromEmbed(embedCode, name, username, description, width, height, icon, context);
 	}
 	
 	
@@ -227,9 +257,11 @@ public class WidgetBuilder {
 		
 		// sort widget name
 		name = this.zapTitleGremlins(name);
-
+		
+		String safeName = this.createSafeFileName(name);
+		
 		// create a folder
-		File widgetFolder = FileFolderUtils.createTempDirectory ( name );
+		File widgetFolder = FileFolderUtils.createTempDirectory ( safeName );
 		String folderDirectory = widgetFolder.getCanonicalPath();
 		
 		
@@ -238,7 +270,7 @@ public class WidgetBuilder {
 		FileFolderUtils.writeStringToFile(folderDirectory+"/index.html", html);
 		
 		// build the widget config file
-		String config = this.constructConfig(name, "1.0", width, height, description, icon, "index.html", author, "embed");
+		String config = this.constructConfig(safeName, name, "1.0", width, height, description, icon, "index.html", author, "embed");
 		FileFolderUtils.writeStringToFile(folderDirectory+"/config.xml", config);
 
 		// put the default widget flash widget icon in it
@@ -254,6 +286,9 @@ public class WidgetBuilder {
 	}
 	
 	
+
+	
+	
 	private String zapTitleGremlins ( String title )
 	{
 		//title = title.replaceAll("\\s+", "_");
@@ -261,10 +296,16 @@ public class WidgetBuilder {
 		return title;
 	}
 	
+	private String createSafeFileName ( String title )
+	{
+		String safename = title.replaceAll("\\W+", "");
+		return safename;
+	}
+	
 
 	
 	
-	private String constructConfig ( String widgetName, String version, 
+	private String constructConfig ( String widgetIDName, String widgetName, String version, 
 									String width, String height, 
 									String description, String icon, 
 									String contentFile, String author, String builder ) throws IOException {
@@ -288,7 +329,7 @@ public class WidgetBuilder {
 		if ( author == null || author == "" ) {
 			author = "Apache Wookie Team";
 		}
-		config = config.replace("{id}", "http://wookie.apache.org/widgets/"+builder+"/"+widgetName);
+		config = config.replace("{id}", "http://wookie.apache.org/widgets/"+builder+"/"+widgetIDName);
 		config = config.replace("{version}", "1.0");
 		config = config.replace("{width}", width);
 		config = config.replace("{height}", height);
