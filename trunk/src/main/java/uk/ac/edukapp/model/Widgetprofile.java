@@ -38,7 +38,7 @@ import uk.ac.edukapp.renderer.Renderer;
 @NamedQueries({
 		@NamedQuery(name = "Widgetprofile.findByUri", query = "SELECT w FROM Widgetprofile w WHERE w.widId = :uri"),
 		@NamedQuery(name = "Widgetprofile.featured", query = "SELECT w FROM Widgetprofile w WHERE w.featured = 1"),
-		@NamedQuery(name = "Widgetprofile.updated", query = "SELECT w FROM Widgetprofile w ORDERBY w.updated"),
+		@NamedQuery(name = "Widgetprofile.created", query = "SELECT w FROM Widgetprofile w ORDERBY w.created DESC"),
 		@NamedQuery(name = "Widgetprofile.ownedBy", query = "SELECT w FROM Widgetprofile w WHERE w.owner = :user")})
 		
 @Table(name = "widgetprofiles")
