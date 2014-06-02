@@ -1,3 +1,18 @@
+/*
+ *  (c) 2014 University of Bolton
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package uk.ac.edukapp.service;
 
 import java.util.ArrayList;
@@ -13,7 +28,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -33,21 +47,7 @@ import uk.ac.edukapp.repository.Widget;
 import uk.ac.edukapp.util.Message;
 import uk.ac.edukapp.util.ServletUtils;
 
-/*
- *  (c) 2012 University of Bolton
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 /**
  * Services for Widget Profiles
@@ -346,7 +346,7 @@ public class WidgetProfileService extends AbstractService {
 		List<Widgetprofile> widgetprofiles;
 		EntityManager entityManager = getEntityManagerFactory()
 				.createEntityManager();
-		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.updated");
+		Query wpQuery = entityManager.createNamedQuery("Widgetprofile.created");
 		wpQuery.setFirstResult(offset);
 		wpQuery.setMaxResults(rows);
 		widgetprofiles = (List<Widgetprofile>) wpQuery.getResultList();
