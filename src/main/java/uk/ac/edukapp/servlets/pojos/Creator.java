@@ -155,6 +155,9 @@ public class Creator {
 		else if ( iconType.equalsIgnoreCase("web")){
 			pattern = "_w\\.+";
 		}
+		else if ( iconType.equalsIgnoreCase("url")){
+			pattern = "_u\\.+";
+		}
 		else if ( iconType.equalsIgnoreCase("general")){
 			pattern = "widget\\.png+";
 		}
@@ -427,13 +430,14 @@ public class Creator {
 	@Path("embed")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Widgetprofile updateEmbedWidget (@Context HttpServletRequest request,
+	public Widgetprofile updateEmbedORAddressWidget (@Context HttpServletRequest request,
 			@FormParam("widgetname") String title,
 			@FormParam("widgetdescription") String description,
 			@FormParam("embed") String embed,
 			@FormParam("widgetwidth") String width,
 			@FormParam("widgetheight") String height,
-			@FormParam("icon") String icon) throws JDOMException, IOException, RESTException
+			@FormParam("icon") String icon,
+			@FormParam("builder") String builder) throws JDOMException, IOException, RESTException
 {
 		ServletContext ctx = request.getSession().getServletContext();
 		Widgetprofile wp = null;
@@ -456,14 +460,22 @@ public class Creator {
 		if ( !this.userOwnsWidgetName(title, userAccount, wps)) {
 			throw new WebApplicationException(Response.Status.CONFLICT);
 		}
+		File widgetFile;
 		WidgetBuilder wb = new WidgetBuilder();
-		File widgetFile = wb.buildWidgetFromEmbed(embed, title,
+		if ( builder == null || builder.equals("embed") ) {
+		 widgetFile = wb.buildWidgetFromEmbed(embed, title,
 				userAccount.getUsername(), description, width, height, icon,
 				ctx);
+		}
+		else {
+			widgetFile = wb.buildWidgetFromUrl(embed, title, 
+					userAccount.getUsername(), description, width, height, icon,
+					ctx);
+		}
 		wp = this.uploadWidgetToWookie(widgetFile, ctx, userAccount);
 
 		// add edit information to widget profile
-		wp = wps.addEditInformation(wp, "embed", embed, width, height);
+		wp = wps.addEditInformation(wp, builder, embed, width, height);
 
 		return wp;
 	}
